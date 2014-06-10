@@ -1,0 +1,208 @@
+
+# language knowledge
+
+# determiner
+(the			tag			det)
+
+# quantifiers
+(all			tag			universal)
+(every			tag			universal)
+(any			tag			existencial)
+(a				tag			existencial)
+(an				tag			existencial)
+(some 			tag 		existencial)
+
+# adverb
+(where			tag			adv_loc)
+(when			tag			adv_time)
+(how			tag			adv_mode)
+(what			tag			adv_class)
+(who			tag			adv_person)
+(there			tag			adv_existencial)
+
+# connectors
+(and			tag			and)
+(or				tag			or)
+
+# sequences
+(later			tag			seq)
+(then			tag			seq)
+
+# definers
+(kind			tag			kind)
+(sort			tag			kind)
+
+# prepositions
+(on 			tag	 		prep_loc)
+(in 			tag	 		prep_loc)
+(at 			tag	 		prep_loc)
+(near 			tag  		prep_loc)
+(next 			tag	 		prep_loc)
+(beside 		tag	 		prep_loc)
+(under 			tag	 		prep_loc)
+(below 			tag	 		prep_loc)
+(over 			tag	 		prep_loc)
+(above 			tag	 		prep_loc)
+(inside 		tag	 		prep_loc)
+(across 		tag	 		prep_loc)
+(through 		tag	 		prep_loc)
+(into 			tag	 		prep_loc)
+(towards 		tag	 		prep_loc)
+(onto 			tag	 		prep_loc)
+(from 			tag	 		prep_loc)
+(to 			tag 		prep_loc)
+(in_front_of 	tag 		prep_loc)
+
+(to 			tag 		particule)
+
+(since 			tag	 		prep_time)
+(for 			tag	 		prep_time)
+(ago 			tag	 		prep_time)
+(before 		tag	 		prep_time)
+(of 			tag	 		prep_own)
+
+# punctuation
+(?				tag			qmark)
+
+# pronouns
+
+(something		tag			pro)
+(anything		tag			pro)
+(someone		tag			pro)
+(somedoby		tag			pro)
+(anyone			tag			pro)
+(me  			tag			pro)
+(it 			tag			pro)
+(i				tag			pro)
+(you			tag			pro)
+(he 			tag			pro)
+(she			tag			pro)
+(speaker		tag			pro)
+
+(your 			tag			pos_pro)
+(mine 			tag			pos_pro)
+(my 			tag			pos_pro)
+(her 			tag			pos_pro)
+(his 			tag			pos_pro)
+
+(that 			tag 		rel_pro)
+(which 			tag 		rel_pro)
+
+
+# verbs
+
+(is				tag			vrb)
+(are			tag			vrb)
+
+
+
+# move
+
+(fetch			tag			vrb)
+(fetches		tag			vrb)
+
+(move			tag			vrb)
+(moves			tag			vrb)
+
+(go				tag			vrb)
+(goes			tag			vrb)
+
+# fetch
+
+(take			tag			vrb)
+(takes			tag			vrb)
+
+(drop			tag			vrb)
+(drops			tag			vrb)
+
+(bring			tag			vrb)
+(brings 		tag			vrb)
+
+(grasp			tag			vrb)
+(grasps			tag			vrb)
+
+(give			tag			vrb)
+(gives			tag			vrb)
+
+# localize
+
+(look_for		tag			vrb)
+(looks_for		tag			vrb)
+
+(search_for		tag			vrb)
+(searches_for	tag			vrb)
+
+(find			tag			vrb)
+(finds			tag			vrb)
+
+(point			tag			vrb)
+(points			tag			vrb)
+
+
+# request
+
+(want			tag			vrb)
+(wants			tag			vrb)
+
+(need			tag			vrb)
+(needs			tag			vrb)
+
+(desire			tag			vrb)
+(desires		tag			vrb)
+
+(require		tag			vrb)
+(requires		tag			vrb)
+
+(request		tag			vrb)
+(requests		tag			vrb)
+
+# communicate
+
+(tell			tag			vrb)
+(tells			tag			vrb)
+
+(talk			tag			vrb)
+(talks			tag			vrb)
+
+(sing			tag			vrb)
+(sings			tag			vrb)
+
+(speak			tag			vrb)
+(speaks			tag			vrb)
+
+(ask			tag			vrb)
+(asks			tag			vrb)
+
+
+# nutritional
+
+(eat 			tag			vrb)
+(eats			tag			vrb)
+
+(drink			tag			vrb)
+(drinks			tag			vrb)
+
+(ingest			tag			vrb)
+(ingests		tag			vrb)
+
+(walk			tag			vrb)
+(walks			tag			vrb)
+
+(navigate		tag			vrb)
+(navigates		tag			vrb)
+
+
+# posession
+
+(have			tag			vrb)
+(has			tag			vrb)
+
+(own			tag			vrb)
+(owns			tag			vrb)
+
+
+# special relations 
+
+(is_object_of 	tag 		declare_obj)
+(is_kind_of 	tag 		declare_clss)
+

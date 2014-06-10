@@ -1,0 +1,122 @@
+
+(attribute 		is_kind_of 		top)
+(stuff  		is_kind_of  	top)
+(action 		is_kind_of 		top)
+
+(is_object_of_action 	is_kind_of 		attribute)
+
+# # # #
+(person 		is_kind_of 		stuff)
+(place	 		is_kind_of 		stuff)
+(item 			is_kind_of 		stuff)
+
+# # # #
+
+# person
+(woman	 		is_kind_of 		person)
+(man	 		is_kind_of 		person)
+(speaker  		is_kind_of 		person)
+(humanoid 		is_kind_of 		person)
+
+
+# place
+(city  			is_kind_of  	place)
+(house  		is_kind_of  	place)
+(room 	 		is_kind_of		place)
+(zone 			is_kind_of 		place)
+(furniture		is_kind_of		place)
+(surface 		is_kind_of		place)
+(container 		is_kind_of		place)
+
+(kitchen		is_kind_of		room)
+(livingroom		is_kind_of		room)
+(bathroom		is_kind_of		room)
+(bedroom		is_kind_of		room)
+(hall			is_kind_of		room)
+(gym			is_kind_of		room)
+(office			is_kind_of		room)
+
+(chair 			is_kind_of 	 	furniture)
+(table 			is_kind_of 	 	furniture)
+(bed			is_kind_of 	 	furniture)
+(sofa 			is_kind_of 	 	furniture)
+(door 			is_kind_of 	 	furniture)
+(shelf			is_kind_of 		furniture)
+(fridge			is_kind_of 		furniture)
+
+(table 			is_kind_of 		surface)
+(counter		is_kind_of 		surface)
+
+(fridge 		is_kind_of		container)
+(shelf 			is_kind_of		container)
+(box	 		is_kind_of		container)
+(bag			is_kind_of 		container)
+
+# # # #
+
+# item
+(instrument		is_kind_of		item)
+(edible 		is_kind_of		item)
+(furniture		is_kind_of		item)
+(clothes		is_kind_of		item)
+
+(tool 			is_kind_of 		instrument)
+(cutlery 		is_kind_of 		instrument)
+(cleaning_good	is_kind_of 		instrument)
+(electronic_device	is_kind_of 		instrument)
+
+# # # #
+
+(paper  		is_kind_of   	office_article)
+(pen  			is_kind_of   	office_article)
+(pencil  		is_kind_of   	office_article)
+
+# # # #
+
+(food 			is_kind_of 		edible)
+(drink 			is_kind_of 		edible)
+
+(shirt 			is_kind_of 	 	clothes)
+(trousers		is_kind_of 	 	clothes)
+(shoe 			is_kind_of 	 	clothes)
+(coat 			is_kind_of 	 	clothes)
+
+# tool
+(gripper		is_kind_of  	tool)
+(broom 			is_kind_of  	tool)
+(hammer 		is_kind_of  	tool)
+
+# cutlery
+
+(plate 			is_kind_of 		cutlery)
+(spoon 			is_kind_of 		cutlery)
+(glass 			is_kind_of 		cutlery)
+
+# cleaning_good
+(soap 			is_kind_of 		cleaning_article)
+(broom 			is_kind_of 		cleaning_article)
+
+# electronic_device
+(computer 		is_kind_of 		electronic_device)
+(television 	is_kind_of 		electronic_device)
+
+# food
+(fruit	 		is_kind_of 		food)
+(vegetable		is_kind_of 		food)
+
+# fruit
+(apple 			is_kind_of 		fruit)
+(banana			is_kind_of 		fruit)
+(kiwi			is_kind_of 		fruit)
+
+#vegetable
+(carrot 		is_kind_of  	vegetable)
+(tomato 		is_kind_of  	vegetable)
+(potato 		is_kind_of  	vegetable)
+
+# drink
+(juice 			is_kind_of 		drink)
+(soda 			is_kind_of 		drink)
+(beer 			is_kind_of 		drink)
+
+

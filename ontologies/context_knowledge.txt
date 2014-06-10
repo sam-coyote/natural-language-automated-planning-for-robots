@@ -1,0 +1,228 @@
+# test apartment
+
+(arena 				is_object_of 		house)
+(main_door 			is_object_of 		door)
+
+(livingroom_1  		is_object_of 		livingroom)
+(kitchen_1  		is_object_of 		kitchen)
+(bedroom_1  		is_object_of  		bedroom)
+(bedroom_2  		is_object_of  		bedroom)
+(bathroom_1 	 	is_object_of  		bathroom)
+(bathroom_2 	 	is_object_of  		bathroom)
+
+# kitchen
+(kitchen_door 		is_object_of 		door)
+(fridge_1 			is_object_of 		fridge)
+(shelf_1 			is_object_of 		shelf)
+(kitchen_table 		is_object_of 		table)
+(chair_8 			is_object_of 		chair)
+(chair_9 			is_object_of 		chair)
+
+# bedroom 1
+(bedroom_1_door 	is_object_of 		door)
+(desk_1 			is_object_of 		table)
+(chair_1 			is_object_of 		chair)
+(box_1 				is_object_of 		box)
+(bed_1 				is_object_of 		bed)
+(computer_1 		is_object_of 		computer)
+
+# bedroom 2
+(bedroom_2_door 	is_object_of 		door)
+(table_2 			is_object_of 		table)
+(chair_2 			is_object_of 		chair)
+(chair_3 			is_object_of 		chair)
+(box_2 				is_object_of 		box)
+(bed_2 				is_object_of 		bed)
+(tv_1 				is_object_of 		television)
+
+# bathroom 1
+(bathroom_1_door 	is_object_of 		door)
+
+# bathroom 2
+(bathroom_2_door 	is_object_of 		door)
+(bag_2 				is_object_of 		bag)
+
+# livingroom 1
+(table_1 			is_object_of 		table)
+(chair_4 			is_object_of 		chair)
+(chair_5 			is_object_of 		chair)
+(chair_6 			is_object_of 		chair)
+(chair_7 			is_object_of 		chair)
+(sofa_1 			is_object_of 		sofa)
+(bag_1 				is_object_of 		bag)
+(box_3 				is_object_of 		box)
+
+# topological information about furniture
+(kitchen_1 			in 				arena)
+(livingroom_1 		in 				arena)
+(bedroom_1 			in 				arena)
+(bedroom_2 			in 				arena)
+
+# kitchen
+(kitchen_door 		in 				kitchen_1)
+(fridge_1 			in 				kitchen_1)
+(shelf_1 			in 				kitchen_1)
+(chair_8 			in 				kitchen_1)
+(chair_9 			in 				kitchen_1)
+(kitchen_table 		in 				kitchen_1)
+(chair_8 			near 			chair_9)
+(chair_9 			near 			kitchen_table)
+
+# bedroom 1
+(bedroom_1_door 	in 				bedroom_1)
+(bed_1 				in 				bedroom_1)
+(bathroom_2 		in 				bedroom_1)
+(chair_1 			in 				bedroom_1)
+(desk_1 			in 				bedroom_1)
+(box_1 				in 				bedroom_1)
+(computer_1 		in 				bedroom_1)
+(chair_)  			near 			desk_1)
+(computer_1  		on 				desk_1)
+(box_1 				on 				desk_1)
+
+# bedroom 2
+(bedroom_2_door 	in 				bedroom_2)
+(bed_2 				in 				bedroom_2)
+(chair_2 			in 				bedroom_2)
+(chair_3 			in 				bedroom_2)
+(table_2 			in 				bedroom_2)
+(box_2 				in 				bedroom_2)
+(tv_1 				in 				bedroom_2)
+(chair_2)  			near 			chair_3)
+(chair_3 			near 			bedroom_2_door)
+(tv_1  				on 				table_2)
+(box_2 				under 			bed_2)
+
+# bathroom 1
+(bathroom_1_door  	in 				bathroom_1)
+
+# bathroom 2
+(bathroom_2_door 	in 				bathroom_2)
+(bag_2 				in 				bathroom_2)
+
+# livingroom 1
+(table_1 			in 				livingroom_1)
+(sofa_1 			in 				livingroom_1)
+(chair_4 			in 				livingroom_1)
+(chair_5 			in 				livingroom_1)
+(chair_6 			in 				livingroom_1)
+(chair_7 			in 				livingroom_1)
+(bag_1 				in 				livingroom_1)
+(box_3 				in 				livingroom_1)
+(chair_4 			near 			table_1)
+(chair_5 			near 			table_1)
+(chair_6 			near 			table_1)
+(chair_7 			near 			table_1)
+(box_3 				on 				table_1)
+
+# properties of furniture
+# furniture color
+(furniture 			color 			black)
+(door 				color 			blue)
+(chair 				color 			white)
+(chair_6 			color 			green)
+(table 				color 			brown)
+
+# weight
+(furniture 			weight 			heavy)
+
+# physical status
+(furnite 			physical_status clean)
+(table_2 			physical_status dirty)
+
+(livingroom_1 		connected 			kitchen_1)
+(livingroom_1 		connected 			bathroom_2)
+(livingroom_1 		connected 			bedroom_1)
+(livingroom_1 		connected 			bedroom_2)
+(bathroom_1 		connected 			bedroom_1)
+
+#functional status
+(furniture 			functional_status 	good)
+(chair_6 			functional_status 	broken)
+(chair_1 			functional_status 	broken)
+(door 				functional_status 	open)
+(bedroom_2_door		functional_status 	closed)
+
+# food and drinks
+(carrot_1 			is_object_of 		carrot)
+(tomato_1 			is_object_of 		tomato)
+(potato_1 			is_object_of 		potato)
+
+(banana_1 			is_object_of 		banana)
+(banana_2 			is_object_of 		banana)
+(apple_1 			is_object_of 		apple)
+(apple_2 			is_object_of 		apple)
+(kiwi_1 			is_object_of 		kiwi)
+
+(vegetable 			in 					fridge_1)
+(fruit				in 					kitchen_table)
+(banana_2 			in 					bag_1)
+(apple_2 			in 					table_1)
+
+(apple_juice 		is_object_of 		juice)
+(orange_juice 		is_object_of 		juice)
+(grape_juice 		is_object_of 		juice)
+(pils_1 			is_object_of 		beer)
+(alt_bier_1 		is_object_of 		beer)
+(coke_1 			is_object_of 		soda)
+(fanta_1 			is_object_of 		soda)
+(sprite_1	 		is_object_of 		soda)
+
+(drink 				in 					fridge_1)
+
+# properties of edible
+# color 
+
+(kiwi 				color 				green)
+(apple 				color 				green)
+(drink 				color 				black)
+(tomato 			color 				red)
+(carrot 			color 				orange)
+(potato 			color 				brown)
+(banana 			color 				yellow)
+
+# shape
+(edible 			shape 				round)
+(edible 			size 				small)
+
+# taste
+(vegetable 			taste				sour)
+(friut				taste				sweet)
+(drink 				taste 				sweet)
+(beer 				taste 				sour)
+
+
+# people
+(person 			attitud 			friendly)
+(sam 				is_object_of 		man)
+(valerie 			is_object_of 		woman)
+(justina 			is_object_of 		humanoid)
+
+(sam 				social_status 		single)
+(valerie 			social_status 		single)
+
+(sam 				shape 				tall)
+(sam 				shape 				round)
+(valerie			shape 				thin)
+
+
+# location of people
+(sam 				in 					chair_1)
+(valerie 			in 					sofa_1)
+(justina 			in 					kitchen_1)
+(justina 			near 				fridge_1)
+
+
+# alias and also known as 
+
+(coke 			aka 			coke_1)
+(cola 			aka 			coke)
+(coke 			aka 			coca_cola)
+(coke 			aka 			pepsi)
+(fruta			aka				fruit)
+
+(coca_cola 		color			black)
+
+(valerie 		aka				val)
+
+(coca_cola 		temperature 	cold)

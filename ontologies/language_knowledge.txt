@@ -1,16 +1,18 @@
 
 # language knowledge
 
-# determiner
+# determiner and quantifiers
 (the			tag			det)
-
-# quantifiers
 (all			tag			universal)
 (every			tag			universal)
 (any			tag			existencial)
 (a				tag			existencial)
 (an				tag			existencial)
 (some 			tag 		existencial)
+
+# general way to refer to anything
+(something		tag			idf_pro)
+(anything		tag			idf_pro)
 
 # adverb
 (where			tag			adv_loc)
@@ -60,16 +62,16 @@
 (ago 			tag	 		prep_time)
 (before 		tag	 		prep_time)
 (of 			tag	 		prep_own)
-
+(from 			tag	 		prep_time)
+(to 			tag 		prep_time)
 # punctuation
 (?				tag			qmark)
 
 # pronouns
 
-(something		tag			pro)
-(anything		tag			pro)
+
 (someone		tag			pro)
-(somedoby		tag			pro)
+(somebody		tag			pro)
 (anyone			tag			pro)
 (me  			tag			pro)
 (it 			tag			pro)
@@ -87,6 +89,13 @@
 
 (that 			tag 		rel_pro)
 (which 			tag 		rel_pro)
+
+
+(now 			tag 		time)
+(yesterday 		tag 		time)
+(tomorrow 		tag 		time)
+(later 			tag 		time)
+(ago 			tag 		time)
 
 
 # verbs

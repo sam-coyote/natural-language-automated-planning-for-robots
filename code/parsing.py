@@ -43,21 +43,10 @@ grammar_np_complex = [
 	['A1'			,'particule'			,'vrb']]
 
 
-grammar_ap = [
-	['AP'			,'prep_loc'				,'NP'],
-	['AP'			,'prep_loc'				,'NP'],
-	['NP'			,'existencial'			,'noun'],
-	['NP'			,'existencial'			,'NP'],
-	['NP'			,'universal'			,'noun'],
-	['NP'			,'universal'			,'NP'],
-	['NP'			,'det'					,'noun'],
-	['NP'			,'det'					,'NP'],
-	['NP'			,'pro'					,'adjetive'],
-	['NP'			,'pos_pro'				,'NP'],
-	['NP'			,'pos_pro'				,'noun'],
-	['NP'			,'adjetive'				,'noun'],
-	['NP'			,'pro'					,'A1'],
-	['A1'			,'particule'			,'vrb']
+grammar_pp = [
+	['PP'			,'prep_loc'				,'noun'],
+	['PP'			,'prep_time'			,'noun'],
+	['PP'			,'prep_time'			,'time'],	
 ]
 
 # POS tagging rules
@@ -287,7 +276,7 @@ def constituent_chunker(grammar, list_words, pos_tags):
 				words[i] = "NOUN_PHRASE_" + str(np_counter)
 			np_list = np_list + [[test_words, test_tags]]
 			current_start = best_chunk[1] -1
-			pos.append("object")
+			pos.append("noun")
 			best_chunk = [0,0]
 		else:
 			pos.append(pos_tags[current_start])
@@ -296,7 +285,46 @@ def constituent_chunker(grammar, list_words, pos_tags):
 	for each in words:
 		if each not in no_duplicates_words:
 			no_duplicates_words = no_duplicates_words + [each]
-	return pos, no_duplicates_words, np_list
+	return [pos, no_duplicates_words, np_list]
+
+
+def pp_chunker(grammar, list_words, pos_tags, np_list):
+	lenght = len(list_words)
+	words = list_words[:]
+	pos = []
+	pp_list = []
+	np_counter = 0
+	current_start = 0
+	best_chunk = [0,0]
+	while current_start	< lenght:
+		current_end = current_start + 1
+		while current_end < lenght+1:
+			test_tags = pos_tags[current_start:current_end]
+			test_words = list_words[current_start:current_end]
+			#print "trying parsing: ", test_tags, test_words
+			check_np = parser_cyk(grammar, test_tags)
+			if check_np:
+				best_chunk = [current_start, current_end]
+			current_end = current_end + 1
+		if best_chunk != [0,0]:	
+			test_tags = pos_tags[best_chunk[0]:best_chunk[1]]
+			test_words = list_words[best_chunk[0]:best_chunk[1]]
+			np_counter = np_counter + 1
+			#print "Positive match: ", test_words
+			for i in range(best_chunk[0], best_chunk[1]):
+				words[i] = "PREP_PHRASE_" + str(np_counter)
+			pp_list = pp_list + [[test_words, test_tags]]
+			current_start = best_chunk[1] -1
+			pos.append("prep_noun")
+			best_chunk = [0,0]
+		else:
+			pos.append(pos_tags[current_start])
+		current_start = current_start + 1
+	no_duplicates_words = []
+	for each in words:
+		if each not in no_duplicates_words:
+			no_duplicates_words = no_duplicates_words + [each]
+	return [pos, no_duplicates_words, np_list, pp_list]
 
 
 

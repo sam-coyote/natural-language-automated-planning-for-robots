@@ -11,7 +11,7 @@ import networkx.drawing
 import matplotlib.pyplot as plt
 
 G = kb_services.load_semantic_network()
-sentence = "bring valerie something to eat"
+sentence = "bring me all beers from the fridge"
 
 # high-level, system-level tests
 
@@ -22,7 +22,7 @@ sentence = "bring valerie something to eat"
 
 
 # low-level tests
-pos, words, sem, nps, solved = interpretation.sentence_grounder(G, sentence)	
-print pos, words, sem, nps, solved
+pos, words, solved = interpretation.sentence_grounder(G, sentence)	
+#print pos, words, sem, nps, solved
 # knowledge base
 #print 'get all attributes and values: ', kb_services.get_attribute(G, 'sam', 'shape')

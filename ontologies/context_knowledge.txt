@@ -207,7 +207,7 @@
 
 
 # location of people
-(sam 				in 					chair_1)
+(sam 				in 					chair_2)
 (valerie 			in 					sofa_1)
 (justina 			in 					kitchen_1)
 (justina 			near 				fridge_1)

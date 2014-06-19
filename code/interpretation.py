@@ -1,8 +1,6 @@
 # code dependencies
 import kb_services
 import parsing
-import verbalization
-import planner
 # network toolkit
 import networkx as nx
 # regular expressions 
@@ -19,35 +17,79 @@ def diff(a, b):
 
 #######################
 # grounds every np from the sentence
+# 1) mapping words to ontology vocabulary
+# 2) sintactical analisys
+# 3) solve syntactical well formed noun phrases
 def sentence_grounder(G, sentence):
 	sentence = parsing.ontology_words_mapping(sentence)
 	print "key words substitution: ", sentence
+	
 	words, ranked_tags = parsing.pos_tagger(G, sentence)	
 	print "part-of-speech tags: ", ranked_tags[0]
-	chunked_pos, chunked_words, noun_phrases = parsing.constituent_chunker(parsing.grammar_np_simple, words, ranked_tags[0])
 	
-	print "chunked pos: ", chunked_pos
-	print "chunked words: ", chunked_words
-	print "noun phrases: ", noun_phrases
+	np_interpretation = parsing.constituent_chunker(parsing.grammar_np_simple, words, ranked_tags[0])
+	print "chunked pos: ", np_interpretation[0]
+	print "chunked words: ", np_interpretation[1]
+	print "noun phrases: ", np_interpretation[2]
 
 	solved_nps = []
 	solved = True
-	for each in noun_phrases:
+	for each in np_interpretation[2]:
 		names = noun_phrase_grounder(G, each[0], each[1]) 
 		if names == []:
 			solved = False
 			print "noun phrase: ", each, " can not be grounded"
 		solved_nps.append(names)
-	print "solved noun phrases: ", solved_nps
+	print "-----> solved noun phrases: ", solved_nps
 
 	if solved: 
-		sem_types = semantic_type_of_nps(G, chunked_pos, chunked_words, solved_nps)
-		print "semantic types: ", sem_types
+		# obtain all combinations using solved noun phrases
+		# subtitutes solved noun phrases into the sentence
+		words_np_solved = []
+		i = 0
+		for each_word in np_interpretation[1]:
+			if re.match('NOUN_PHRASE_[0-9]+', each_word):
+				words_np_solved.append(solved_nps[i])
+				i += 1
+			else:
+				words_np_solved.append(each_word)
+		#print "substituted solved nps: ", words_np_solved
+		packed_words = []
+		for each_word in words_np_solved:
+			if not isinstance(each_word, list):
+				packed_words.append([each_word])
+			else:
+				packed_words.append(each_word)
+
+		#print "packed in lists:::: ", packed_words
+		all_words = parsing.all_combinations(packed_words)
+		print "-----> all combinations: ", all_words
+		
+		# up to here all direct grounded commands are contructed therefore
+		# they can be further separated in NPs and PPs for verb pattern matching
+		
+		for each_utterance in all_words:
+			pp_interpretation = parsing.pp_chunker(parsing.grammar_pp, each_utterance, np_interpretation[0], [])
+			print "------------"
+			print "chunked pos: ", pp_interpretation[0]
+			print "chunked words: ", pp_interpretation[1]
+			#print "noun phrases: ", pp_interpretation[2]
+			print "prepositional phrases: ", pp_interpretation[3]
+			print "------------"
+			
+		
+		#sem_types = semantic_type_of_nps(G, np_interpretation[0], np_interpretation[1], solved_nps)
+		#print "semantic types: ", sem_types
 	else:
 		print "SOMETHING WRONG! no object matched with the noun phrase"
 		sem_types = []
-	return chunked_pos, chunked_words, sem_types, solved_nps, solved
+	return np_interpretation[0], np_interpretation[1], solved
 
+
+def verb_pattern_matching(G, pos, words):
+	return False
+
+# solve noun phrases
 def noun_phrase_grounder(G, words, pos):	
 	# case if it is a simple or complex noun phrase
 	is_simple = parsing.parser_cyk(parsing.grammar_np_simple, pos)
@@ -113,7 +155,7 @@ def solve_simple_np(G, words, pos):
 
 
 
-
+# pack information for interpretation
 def semantic_type_of_nps(G, pos, words, nps):
 	np_count = 0
 	semantic_types = words[:]
@@ -128,34 +170,7 @@ def semantic_type_of_nps(G, pos, words, nps):
 
 
 
-def test_solver(sentence):
-	G = kb_services.load_semantic_network()
-	pos, words, sem, nps, solved = sentence_grounder(G, sentence)	
-	print pos, words, sem, nps, solved
-	
-
-
-def test_np_grounding(sentence):
-	G = kb_services.load_semantic_network()
-
-	sentence = parsing.ontology_words_mapping(sentence)
-	print "key words substitution: ", sentence
-	words, ranked_tags = parsing.pos_tagger(G, sentence)	
-	print "part-of-speech tags: ", ranked_tags[0]
-	chunked_pos, chunked_words, noun_phrases = parsing.constituent_chunker(parsing.grammar_np_simple, words, ranked_tags[0])
-	
-	print "chunked pos: ", chunked_pos
-	print "chunked words: ", chunked_words
-	print "noun phrases: ", noun_phrases
-	print 'now solving nps::::::::::::'
-	solved_nps = []
-	solved = True
-	for each in noun_phrases:
-		print 'grounded objects! ', noun_phrase_grounder(G, each[0], each[1]) 
-		
-
-
-test_solver("bring valerie something to eat")
+#test_solver("bring valerie something to eat")
 
 
 #test_solver()

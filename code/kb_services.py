@@ -14,10 +14,10 @@ import matplotlib.pyplot as plt
 
 def load_semantic_network():
 	# load several files into a single nx graph
-	S = load_file_to_graph("stuff_ontology.txt")
-	A = load_file_to_graph("attribute_ontology.txt")
-	C = load_file_to_graph("context_knowledge.txt")
-	X = load_file_to_graph("activity_ontology.txt")
+	S = load_file_to_graph("../ontologies/stuff_ontology.txt")
+	A = load_file_to_graph("../ontologies/attribute_ontology.txt")
+	C = load_file_to_graph("../ontologies/context_knowledge.txt")
+	X = load_file_to_graph("../ontologies/activity_ontology.txt")
 	
 	G = nx.compose(S,A)
 	G = nx.compose(G,C)
@@ -192,7 +192,7 @@ def all_aka(G, objclss):
 def language_info():
 	# look in the language_pos.txt file and load categories of
 	# POS in a dictionary
-	L = load_file_to_graph('language_pos.txt')
+	L = load_file_to_graph('../ontologies/language_knowledge.txt')
 	language_tags = {}
 	for nA, nbrs in L.adjacency_iter():
 		for nB, att in nbrs.items():
@@ -433,24 +433,3 @@ def list_diff(A,B):
 		return diff
 
 
-
-#########################
-# testing
-
-def test_accessing_fast():
-	G = load_semantic_network()
-	#draw_graph(G)
-	#print 'superclases of ', explore, all_superclasses(G, explore)
-	#print 'subclases of ', explore, all_subclasses(G, explore)
-	#print 'objects of ', explore, all_objects(G, explore)
-	#print 'language info: ', language_info()
-	#print 'is type? ', is_type(G, 'person', 'val')
-	#print 'compound_words: ', compound_words(G)
-
-	print 'get all attributes and values: ', get_attribute(G, 'sam', 'attribute')
-	semantic_type(G, 'sam') 
-	#print 'verify if satisfies: ', verify_satisfability_of_objclss(G, 'banana_1', ['round', 'small', 'red', 'blue', 'small'])
-
-
-
-test_accessing_fast()

@@ -52,7 +52,7 @@
 
 
 # describig eat activity
-(edible 				is_object_of_action		eat)
+(food 				is_object_of_action		eat)
 
 
 

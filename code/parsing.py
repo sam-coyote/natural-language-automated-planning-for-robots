@@ -46,7 +46,23 @@ grammar_np_complex = [
 grammar_pp = [
 	['PP'			,'prep_loc'				,'noun'],
 	['PP'			,'prep_time'			,'noun'],
-	['PP'			,'prep_time'			,'time'],	
+	['PP'			,'prep_time'			,'time'],
+	['PP'			,'prep_loc'				,'NP'],
+	['PP'			,'prep_time'			,'NP'],
+	['NP',			'existencial',			'noun'],
+	['NP',			'universal',			'noun'],
+	['NP',			'number',				'noun'],
+	['NP',			'det',					'noun'],
+	['NP',			'existencial',			'NP'],
+	['NP',			'universal',			'NP'],
+	['NP',			'number',				'NP'],
+	['NP',			'det',					'NP'],
+	['NP',			'adj',					'noun'],
+	['NP',			'ADJS',					'noun'],
+	['ADJS',		'adj',					'adj'],
+	['ADJS',		'ADJS',					'adj'],
+	['NP',			'idf_pro',				'TOVERB'],
+	['TOVERB',		'particule',			'vrb']	
 ]
 
 # POS tagging rules
@@ -88,7 +104,7 @@ def ontology_words_mapping(sentence):
 	sentence = re.sub('\?', ' ?', sentence)
 	# declaration of classes and objects
 	sentence = re.sub('((is)|(are)) ((an object of)|(an instance of)|(an adjetive of))( a)? ', 'is is_object_of ', sentence)
-	sentence = re.sub('((is)|(are)) ((a kind of)|(a sort of)|(a)|(an)) (a )?', 'is is_kind_of ', sentence)
+	sentence = re.sub('((is)|(are)) ((a kind of)|(a sort of)) ', 'is is_kind_of ', sentence)
 	# simple from of verbs
 	sentence = re.sub('((is)|(are)) ', 'is ', sentence)
 	# transform plural into singular
@@ -315,7 +331,7 @@ def pp_chunker(grammar, list_words, pos_tags, np_list):
 				words[i] = "PREP_PHRASE_" + str(np_counter)
 			pp_list = pp_list + [[test_words, test_tags]]
 			current_start = best_chunk[1] -1
-			pos.append("prep_noun")
+			pos.append("prep_phrase")
 			best_chunk = [0,0]
 		else:
 			pos.append(pos_tags[current_start])
@@ -364,16 +380,16 @@ def test_cyk():
 def test_chunker():
 	G = kb_services.load_semantic_network()
 	#print G.nodes()
-	words, ranked_tags = pos_tagger(G, "3 cold drink lol")	
+	words, ranked_tags = pos_tagger(G, "3 cold drink lol from the fridge")	
 
 	print words
 	print ranked_tags[0]
 
-	chunked_pos, chunked_words, noun_phrases = constituent_chunker(grammar_np_simple, words, ranked_tags[0])
+	pp_interpretation = pp_chunker(grammar_pp, words, ranked_tags[0], [])
 
-	print "chunked words: ", chunked_words
+	print "chunked words: ", pp_interpretation[1]
 
-	print "noun phrases: ", noun_phrases
+	print "noun phrases: ", pp_interpretation[3]
 
 #test_ontology_word_mapping()
 #test_pos()

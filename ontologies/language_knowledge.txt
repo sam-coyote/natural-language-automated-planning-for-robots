@@ -61,7 +61,7 @@
 (for 			tag	 		prep_time)
 (ago 			tag	 		prep_time)
 (before 		tag	 		prep_time)
-(of 			tag	 		prep_own)
+(of 			tag	 		prep)
 (from 			tag	 		prep_time)
 (to 			tag 		prep_time)
 # punctuation
@@ -79,7 +79,7 @@
 (you			tag			pro)
 (he 			tag			pro)
 (she			tag			pro)
-(speaker		tag			pro)
+(speaker		tag			noun)
 
 (your 			tag			pos_pro)
 (mine 			tag			pos_pro)

@@ -203,6 +203,7 @@ def language_info():
 	G = load_semantic_network()
 	language_tags.update({ 'noun': all_subclasses(G, 'stuff') + all_objects(G, 'stuff')})
 	language_tags.update({'adj' : list_diff(all_objects(G, 'attribute'), all_objects(G, 'location'))})
+	language_tags.update({'att' : all_subclasses(G, 'attribute')})
 	return language_tags
 
 def is_type(G, semantic_type, objclss):

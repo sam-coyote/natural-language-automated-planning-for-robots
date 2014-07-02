@@ -196,6 +196,8 @@
 (person 			attitud 			friendly)
 (sam 				is_object_of 		man)
 (valerie 			is_object_of 		woman)
+(marie 			is_object_of 		woman)
+(lourdes 			is_object_of 		woman)
 (justina 			is_object_of 		humanoid)
 
 (sam 				social_status 		single)

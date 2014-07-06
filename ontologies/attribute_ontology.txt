@@ -62,6 +62,7 @@
 (brown 			is_object_of 	color)
 (white  		is_object_of  	color)
 (black  		is_object_of  	color)
+(dark  			is_object_of  	color)
 
 (heavy 			is_object_of 	weight)
 (light 			is_object_of 	weight)

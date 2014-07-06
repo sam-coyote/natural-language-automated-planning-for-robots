@@ -14,6 +14,9 @@ grammar_np_simple = [
 	['NP',			'universal',			'noun'],
 	['NP',			'number',				'noun'],
 	['NP',			'det',					'noun'],
+	['NP',			'att',					'adj'],
+	['NP',			'noun',					'NP1'],
+	['NP1',			'prep_loc',				'noun'],
 	['NP',			'existencial',			'NP'],
 	['NP',			'universal',			'NP'],
 	['NP',			'number',				'NP'],
@@ -370,12 +373,12 @@ def test_disambiguity():
 
 
 def test_cyk():
-	G = kb.load_semantic_network()
+	G = kb_services.load_semantic_network()
 	#print G.nodes()
-	words, ranked_tags = pos_tagger(G, "the fruit that is inside the big fridge")
+	words, ranked_tags = pos_tagger(G, "a beer in sam")
 	print  "words: ", words, "  tags: ", ranked_tags
 
-	print "NP? ", parser_cyk(grammar_np, ranked_tags[0])
+	print "NP? ", parser_cyk(grammar_np_simple, ranked_tags[0])
 
 def test_chunker():
 	G = kb_services.load_semantic_network()
@@ -395,3 +398,4 @@ def test_chunker():
 #test_pos()
 #test_disambiguity()
 #test_chunker()
+test_cyk()

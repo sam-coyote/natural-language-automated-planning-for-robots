@@ -142,15 +142,16 @@ interpreted_verbs = [
 	"solve": ["destination", "object"],
 	"destination": [[], ["prep_phrase", "noun"], ["place", "person"], []],
 	"object": [[], ["noun"], ["item"], []],
-	"dependency": "( move A: robot O: object D: destination )"
+	"dependency": "( move A: robot O: -object- D: -destination- )"
 	},
+
 
 	{"arity": 3,
 	"action": ["bring", "brings", "fetch", "fetches"],
 	"solve": ["destination", "object"],
 	"destination": [[], ["noun"], ["place", "person"], ["here"]],
 	"object": [[], ["noun"], ["item"], []],
-	"dependency": "( PTRANS A: robot O: object D: destination )"
+	"dependency": "( PTRANS A: robot O: -object- D: -destination- )"
 	},
 
 	{"arity": 4,
@@ -158,8 +159,8 @@ interpreted_verbs = [
 	"solve": ["destination", "object", "source"],
 	"destination": [[], ["noun"], ["place", "person"], ["here"]],
 	"object": [[], ["noun"], ["item"], []],
-	"source": [["from"], ["prep_phrase"], ["place", "container", "item"], []],
-	"dependency": "( PTRANS A: robot O: object D: destination S: source )"
+	"source": [["from", "in"], ["prep_phrase"], ["place", "container", "item"], []],
+	"dependency": "( PTRANS A: robot O: -object- D: -destination- S: -source- )"
 	}
 ]
 
@@ -222,6 +223,7 @@ def generate_dependency(G, sentence_dict):
 					else:
 						join_list.append(each)
 
+				solved_dependency = " ".join(join_list)
 				print "solved_final_hiper_dependency: ", join_list
 
 							
@@ -285,7 +287,8 @@ def sentence_grounder(G, sentence):
 
 		#print "packed in lists:::: ", packed_words
 		all_words = parsing.all_combinations(packed_words)
-		#print "-----> all combinations: ", all_words
+		print "-----> all combinations: ", all_words
+		print "-----> all combinations POS: ", np_interpretation[0]
 		
 		# up to here all direct grounded commands are contructed therefore
 		# they can be further separated in NPs and PPs for verb pattern matching
@@ -298,11 +301,11 @@ def sentence_grounder(G, sentence):
 			words_pp = pp_interpretation[1]
 
 
-			#print "------------"
-			#print "constituent_level: ", pp_interpretation[0]
-			#print "chunked words: ", pp_interpretation[1]
-			#print "noun phrases: ", pp_interpretation[2]
-			#print "prepositional phrases: ", pp_interpretation[3]
+			print "------------"
+			print "constituent_level: ", pp_interpretation[0]
+			print "chunked words: ", pp_interpretation[1]
+			print "noun phrases: ", pp_interpretation[2]
+			print "prepositional phrases: ", pp_interpretation[3]
 
 			object_level = []
 			# solving prepositional phrases
@@ -328,22 +331,24 @@ def sentence_grounder(G, sentence):
 			# semantic classes
 			semantic_types = [kb_services.all_superclasses(G, each) for each in object_level]
 			
-			#print "----->  object_level: ", object_level
-			#print "----->  constituent_level: ", pp_interpretation[0] 
-			#print "----->  semantic types: ", semantic_types
+			print "----->  object_level: ", object_level
+			print "----->  constituent_level: ", pp_interpretation[0] 
+			print "----->  semantic types: ", semantic_types
 
-			# dividing words from constituents
+			## cut
+			# packing words into constituents
 			i=0
 			#print "original words:", words
-			pp_chunked = parsing.pp_chunker(parsing.grammar_pp, words, ranked_tags[0], [])
+			pp_chunked = parsing.pp_chunker(parsing.grammar_pp, each_utterance, np_interpretation[0], [])
 			chunked_final_words = []
+			print "....", pp_chunked[1]
 			for each_word in pp_chunked[1]:
 					if re.match('PREP_PHRASE_[0-9]+', each_word):
 						chunked_final_words.append(pp_chunked[3][i][0])
 						i += 1
 					else:
 						chunked_final_words.append(each_word)
-			
+			print "------------chunked pp final words", chunked_final_words
 			np_chunked = parsing.constituent_chunker(parsing.grammar_np_simple, chunked_final_words, pp_chunked[0])
 			chunked_final_words = []
 			i=0
@@ -355,6 +360,9 @@ def sentence_grounder(G, sentence):
 						chunked_final_words.append(each_word)
 			
 			constituent_level = np_chunked[0][:]
+
+
+			## cut
 			print "sentence ", sentence, " features:"
 			print "--> ", chunked_final_words
 			print "--> ", constituent_level
@@ -373,6 +381,7 @@ def noun_phrase_grounder(G, words, pos):
 	# case if it is a simple or complex noun phrase
 	is_simple = parsing.parser_cyk(parsing.grammar_np_simple, pos)
 	if is_simple:
+		print "solving simple noun phrase..."
 		grounded_objs = solve_simple_np(G, words, pos)
 	else:
 		grounded_objs = solve_complex_np(G, words, pos)
@@ -406,20 +415,27 @@ def prepositional_phrase_grounder(G, words, pos):
 		
 
 def solve_simple_np(G, words, pos):
+	print "solving np: ", words
 	nouns = []
 	adjs = []
+	atts = []
 	vrbs = []
 	objs = []
 	for i in range(len(words)):
 		if pos[i] == 'noun':
-			nouns.append(words[i])
+			if  len(nouns) == 0:
+				nouns.append(words[i])
+			else:
+				adjs.append(words[i])
 		elif pos[i] == 'adj':
 			adjs.append(words[i])
+		elif pos[i] == 'att' or pos[i] == 'prep_loc':
+			atts.append(words[i])
 		elif pos[i] == 'vrb':
 			vrbs.append(words[i])
 		elif pos[i] == 'idf_pro':
 			nouns.append('stuff')
-	#print 'nouns: ', nouns, '   adjs: ', adjs, '   vrbs: ', vrbs
+	print 'nouns: ', nouns, '   adjs: ', adjs, '   vrbs: ', vrbs, '   atts: ', atts
 	# collect all objects of class
 	if len(nouns) > 0:
 		obj_candidates = kb_services.all_objects(G, nouns[0])
@@ -438,6 +454,7 @@ def solve_simple_np(G, words, pos):
 					
 		else:
 			objs = obj_candidates[:]
+	print "solved np:", objs
 	return objs
 
 

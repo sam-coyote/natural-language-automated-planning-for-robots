@@ -53,6 +53,7 @@
 
 # describig eat activity
 (food 				is_object_of_action		eat)
+(drink 				is_object_of_action		drink)
 
 
 

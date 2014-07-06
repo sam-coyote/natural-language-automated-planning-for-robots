@@ -11,7 +11,7 @@ import networkx.drawing
 import matplotlib.pyplot as plt
 
 G = kb_services.load_semantic_network()
-sentence = "sam is round"
+sentence = "move a beer in kitchen_table to the table in bedroom 2"
 
 # high-level, system-level tests
 
@@ -33,4 +33,3 @@ for each in commands:
 	print each
 	
 # knowledge base
-#print 'get all attributes and values: ', kb_services.get_attribute(G, 'sam', 'shape')

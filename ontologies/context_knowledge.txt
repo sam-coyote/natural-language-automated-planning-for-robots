@@ -170,6 +170,8 @@
 
 (drink 				in 					fridge_1)
 
+(alt_bier_1 		in 					kitchen_table)
+
 # properties of edible
 # color 
 
@@ -180,6 +182,7 @@
 (carrot 			color 				orange)
 (potato 			color 				brown)
 (banana 			color 				yellow)
+(beer 				color 				dark)
 
 # shape
 (edible 			shape 				round)
@@ -190,6 +193,10 @@
 (friut				taste				sweet)
 (drink 				taste 				sweet)
 (beer 				taste 				sour)
+
+#temperature
+(pils_1 			temperature			cold)
+(alt_bier_1 		temperature 		warm)
 
 
 # people

@@ -48,6 +48,7 @@ grammar_np_complex = [
 
 grammar_pp = [
 	['PP'			,'prep_loc'				,'noun'],
+	['PP'			,'prep'					,'noun'],
 	['PP'			,'prep_time'			,'noun'],
 	['PP'			,'prep_time'			,'time'],
 	['PP'			,'prep_loc'				,'NP'],
@@ -73,6 +74,8 @@ grammar_pp = [
 pos_ngrams = [
 	['particule', 'vrb'], 
 	['prep_loc', 'det'], 
+	['prep', 'det'], 
+	['prep', 'noun'], 
 	['prep_loc', 'pro'], 
 	['prep_loc', 'pos_pro'], 
 	['prep_loc', 'universal'],
@@ -398,4 +401,4 @@ def test_chunker():
 #test_pos()
 #test_disambiguity()
 #test_chunker()
-test_cyk()
+#test_cyk()

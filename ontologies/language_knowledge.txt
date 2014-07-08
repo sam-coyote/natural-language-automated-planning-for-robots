@@ -51,8 +51,8 @@
 (into 			tag	 		prep_loc)
 (towards 		tag	 		prep_loc)
 (onto 			tag	 		prep_loc)
-(from 			tag	 		prep_loc)
-(to 			tag 		prep_loc)
+(from 			tag	 		prep)
+(to 			tag 		prep)
 (in_front_of 	tag 		prep_loc)
 
 (to 			tag 		particule)
@@ -62,8 +62,8 @@
 (ago 			tag	 		prep_time)
 (before 		tag	 		prep_time)
 (of 			tag	 		prep)
-(from 			tag	 		prep_time)
-(to 			tag 		prep_time)
+(from 			tag	 		prep)
+(to 			tag 		prep)
 # punctuation
 (?				tag			qmark)
 

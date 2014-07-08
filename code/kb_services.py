@@ -434,4 +434,4 @@ def list_diff(A,B):
 		return diff
 
 #G = load_semantic_network()
-#print 'get all attributes and values: ', get_attribute(G, 'sam', 'attribute')
+#print 'get all attributes and values: ', get_attribute(G, 'pils_1', 'in')

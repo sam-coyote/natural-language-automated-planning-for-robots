@@ -19,7 +19,9 @@ def intersection(a,b):
 	return [aa for aa in a if aa in b]
 # 
 interpreted_verbs = [
-
+	#
+	# Assertions
+	#
 	# assertion object is attribute value
 	# arity 6: 1 adv_class, 1 verb is, 1 "the", 1 attribute, 1 "of", 1 object 
 	{"arity": 4,
@@ -46,6 +48,10 @@ interpreted_verbs = [
 	"value": [[], ["adj"], ["attribute"], []],
 	"dependency": "( ASSERT O: -object- ATT: =kb_services.all_superclasses(G,'-value-')[0] VALUE: -value- )"
 	},
+
+	#
+	# Questions
+	#
 
 	# question what is the attribute of object
 	# arity 6: 1 adv_class, 1 verb is, 1 "the", 1 attribute, 1 "of", 1 object 
@@ -92,18 +98,88 @@ interpreted_verbs = [
 	"dependency": "( CONSULT location_of object: object )"
 	},
 
-	# arity 3: 1 verb, 1 actor, 1 object
+	#
+	# Commands
+	#
+	{"arity": 2,
+	# bring a drink
+	"action": ["align", "arrange", "orient"],
+	"solve": ["object"],
+	"object": [[], ["prep_phrase"], ["item", "person"], []],
+	# (get ACTOR OBJECT_TO_ALIGN DESTINATION)
+	"dependency": "( align justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] )"
+	},
+
+	{"arity": 2,
+	# bring a drink
+	"action": ["bring", "fetch", "get"],
+	"solve": ["object"],
+	"object": [[], ["noun"], ["item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] =kb_services.get_attribute(G,'justina','in')['in'][0] )"
+	},
+
 	{"arity": 3,
-	# sintactical forms of the verb
-	"action": ["go", "goes", "navigate", "navigates"],
-	# objects to solved (find grounded reference)
-	"solve": ["actor", "destination"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"actor": [[], ["noun"], ["person", "robot"], ["robot"]],
-	#[to]: special keyword, [noun]: constituent, [place]: sem type, [exit]: default 
-	"destination": [["to"], ["prep_phrase"], ["place"], ["exit"]],
-	"dependency": "( PTRANS  A: actor D: destination )"
+	# get a drink to sam / get me a coke
+	"action": ["bring", "fetch", "get"],
+	"solve": ["destination", "object"],
+	"destination": [[], ["noun", "prep_phrase"], ["person"], []],
+	"object": [[], ["noun"], ["item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
+	},
+
+	{"arity": 3,
+	# get a drink to the livingroom
+	"action": ["bring", "fetch", "get"],
+	"solve": ["destination", "object"],
+	"destination": [["to"], ["prep_phrase"], ["place"], []],
+	"object": [[], ["noun"], ["item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] -destination- )"
+	},
+
+	{"arity": 3,
+	# get a drink from the livingroom
+	"action": ["bring", "fetch", "get"],
+	"solve": ["source", "object"],
+	"source": [["from"], ["prep_phrase"], ["place"], []],
+	"object": [[], ["noun"], ["item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( get justina -object- -source- =kb_services.get_attribute(G,'justina','in')['in'][0] )"
+	},
+
+	{"arity": 3,
+	# get a drink to the livingroom
+	"action": ["bring", "fetch", "get"],
+	"solve": ["destination", "object"],
+	"destination": [["to"], ["prep_phrase"], ["place"], []],
+	"object": [[], ["noun"], ["item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] -destination- )"
+	},
+
+	{"arity": 4,
+	# get sam a drink from the kitchen
+	"action": ["bring", "fetch", "get"],
+	"solve": ["destination", "object", "source"],
+	"destination": [[], ["noun"], ["person"], []],
+	"object": [[], ["noun"], ["item"], []],
+	"source": [["from"], ["prep_phrase"], ["place", "container", "item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( get justina -object- -source- =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
+	},
+
+
+
+
+
+	{"arity": 2,
+	"action": ["go", "walk", "navigate"],
+	"solve": ["destination"],
+	"destination": [["to"], ["prep_phrase"], ["place"], []],
+	# (go ACTOR DESTINATION)
+	"dependency": "( go -destination- )"
 	},
 
 	{"arity": 4,
@@ -113,13 +189,6 @@ interpreted_verbs = [
 	"actor": [[], ["noun"], ["person", "robot"], ["robot"]],
 	"source": [["from"], ["prep_phrase"], ["place"], ["here"]],
 	"dependency": "( PTRANS A: robot S: source D: destination )"
-	},
-
-	{"arity": 2,
-	"action": ["go", "goes", "navigate", "navigates"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["place"], ["exit"]],
-	"dependency": "( PTRANS A: robot B: destination )"
 	},
 
 	{"arity": 3,
@@ -146,22 +215,7 @@ interpreted_verbs = [
 	},
 
 
-	{"arity": 3,
-	"action": ["bring", "brings", "fetch", "fetches"],
-	"solve": ["destination", "object"],
-	"destination": [[], ["noun"], ["place", "person"], ["here"]],
-	"object": [[], ["noun"], ["item"], []],
-	"dependency": "( PTRANS A: robot O: -object- D: -destination- )"
-	},
-
-	{"arity": 4,
-	"action": ["bring", "brings", "fetch", "fetches"],
-	"solve": ["destination", "object", "source"],
-	"destination": [[], ["noun"], ["place", "person"], ["here"]],
-	"object": [[], ["noun"], ["item"], []],
-	"source": [["from", "in"], ["prep_phrase"], ["place", "container", "item"], []],
-	"dependency": "( PTRANS A: robot O: -object- D: -destination- S: -source- )"
-	}
+	
 ]
 
 
@@ -201,30 +255,41 @@ def generate_dependency(G, sentence_dict):
 							condition_of_match = condition_of_match and (sentence_dict["constituents"][inx] in each_verb[each_to_solve][1] or each_verb[each_to_solve][1] == [])
 							condition_of_match = condition_of_match and (len(intersection(sentence_dict["types"][inx], each_verb[each_to_solve][2])) > 0 or each_verb[each_to_solve][2] == [])
 							if condition_of_match:
-								#print "-------> hey! ", each_object, " can solve ", each_to_solve
+								print "-------> ", each_object, " can solve ", each_to_solve
 								solved_elements[each_to_solve] = each_object
 								used_objects.append(each_object)
 
-				# substituting solved objects to dependency
-				solved_dependency = each_verb["dependency"]
-				for each in solved_elements:
-					solved_dependency = re.sub('-'+each+'-', solved_elements[each], solved_dependency)
-
-				print "---- final planner primitive: ", solved_dependency
+				# checking if all elements match to something
 				solved = True
+				print "elements solved: ", solved_elements
+				for each_element in solved_elements:
+					if solved_elements[each_element] == "":
+						solved = False
+						used_objects = []
+						print "matching verb pattern failed, will try another"
 
-				print "evaluating expressions: "
-				terms = solved_dependency.split(' ')
-				print "terms are: ", terms
-				join_list = []
-				for each in terms:
-					if each[0] == "=":
-						join_list.append(eval(each[1:]))
-					else:
-						join_list.append(each)
+				if solved:
+					# substituting solved objects to dependency
+					solved_dependency = each_verb["dependency"]
+					for each in solved_elements:
+						solved_dependency = re.sub('-'+each+'-', solved_elements[each], solved_dependency)
 
-				solved_dependency = " ".join(join_list)
-				print "solved_final_hiper_dependency: ", join_list
+					print "-----> planner primitive before evaluation of code: ", solved_dependency
+					
+
+					#print "evaluating expressions: "
+					terms = solved_dependency.split(' ')
+					#print "terms are: ", terms
+					join_list = []
+					for each in terms:
+						if each[0] == "=":
+							print "trying evaluation of: ", each[1:]
+							join_list.append(eval(each[1:]))
+						else:
+							join_list.append(each)
+
+					solved_dependency = " ".join(join_list)
+					#print "solved_final_hiper_dependency: ", join_list
 
 							
 	if solved_dependency == '':
@@ -288,7 +353,7 @@ def sentence_grounder(G, sentence):
 		#print "packed in lists:::: ", packed_words
 		all_words = parsing.all_combinations(packed_words)
 		print "-----> all combinations: ", all_words
-		print "-----> all combinations POS: ", np_interpretation[0]
+		#print "-----> all combinations POS: ", np_interpretation[0]
 		
 		# up to here all direct grounded commands are contructed therefore
 		# they can be further separated in NPs and PPs for verb pattern matching
@@ -301,11 +366,11 @@ def sentence_grounder(G, sentence):
 			words_pp = pp_interpretation[1]
 
 
-			print "------------"
-			print "constituent_level: ", pp_interpretation[0]
-			print "chunked words: ", pp_interpretation[1]
-			print "noun phrases: ", pp_interpretation[2]
-			print "prepositional phrases: ", pp_interpretation[3]
+			#print "------------"
+			#print "constituent_level: ", pp_interpretation[0]
+			#print "chunked words: ", pp_interpretation[1]
+			#print "noun phrases: ", pp_interpretation[2]
+			#print "prepositional phrases: ", pp_interpretation[3]
 
 			object_level = []
 			# solving prepositional phrases
@@ -331,9 +396,9 @@ def sentence_grounder(G, sentence):
 			# semantic classes
 			semantic_types = [kb_services.all_superclasses(G, each) for each in object_level]
 			
-			print "----->  object_level: ", object_level
-			print "----->  constituent_level: ", pp_interpretation[0] 
-			print "----->  semantic types: ", semantic_types
+			#print "----->  object_level: ", object_level
+			#print "----->  constituent_level: ", pp_interpretation[0] 
+			#print "----->  semantic types: ", semantic_types
 
 			## cut
 			# packing words into constituents
@@ -341,14 +406,14 @@ def sentence_grounder(G, sentence):
 			#print "original words:", words
 			pp_chunked = parsing.pp_chunker(parsing.grammar_pp, each_utterance, np_interpretation[0], [])
 			chunked_final_words = []
-			print "....", pp_chunked[1]
+			#print "....", pp_chunked[1]
 			for each_word in pp_chunked[1]:
 					if re.match('PREP_PHRASE_[0-9]+', each_word):
 						chunked_final_words.append(pp_chunked[3][i][0])
 						i += 1
 					else:
 						chunked_final_words.append(each_word)
-			print "------------chunked pp final words", chunked_final_words
+			#print "------------chunked pp final words", chunked_final_words
 			np_chunked = parsing.constituent_chunker(parsing.grammar_np_simple, chunked_final_words, pp_chunked[0])
 			chunked_final_words = []
 			i=0
@@ -381,7 +446,7 @@ def noun_phrase_grounder(G, words, pos):
 	# case if it is a simple or complex noun phrase
 	is_simple = parsing.parser_cyk(parsing.grammar_np_simple, pos)
 	if is_simple:
-		print "solving simple noun phrase..."
+		#print "solving simple noun phrase..."
 		grounded_objs = solve_simple_np(G, words, pos)
 	else:
 		grounded_objs = solve_complex_np(G, words, pos)

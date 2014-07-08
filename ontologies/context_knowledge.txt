@@ -1,4 +1,6 @@
 # test apartment
+(justina 			is_object_of 		robot)
+(speaker 			aka 				sam)
 
 (arena 				is_object_of 		house)
 (main_door 			is_object_of 		door)
@@ -53,6 +55,8 @@
 (box_3 				is_object_of 		box)
 
 # topological information about furniture
+(justina 			in 				livingroom_1)
+
 (kitchen_1 			in 				arena)
 (livingroom_1 		in 				arena)
 (bedroom_1 			in 				arena)

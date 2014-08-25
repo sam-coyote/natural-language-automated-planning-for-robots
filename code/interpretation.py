@@ -15,8 +15,10 @@ def diff(a, b):
     return [aa for aa in a if aa not in b]
 
 def intersection(a,b):
-	b = set(b)
-	return [aa for aa in a if aa in b]
+	if isinstance(a, str):
+		a = [a]
+	a = set(a)
+	return [bb for bb in b if bb in a]
 # 
 interpreted_verbs = [
 	#
@@ -67,7 +69,7 @@ interpreted_verbs = [
 	"adv_what": [["what"], ["adv_class"], [], []],
 	#[to]: special keyword, [noun]: constituent, [place]: sem type, [exit]: default 
 	"object": [[], ["noun"], ["stuff"], []],
-	"dependency": "( CONSULT adv_what O: object ATT: attribute )"
+	"dependency": "( action SAY message -object- -attribute- =kb_services.get_attribute(G,'-object-','-attribute-') )"
 	},
 
 	# what is att_value
@@ -89,7 +91,7 @@ interpreted_verbs = [
 	"dependency": "( CONSULT all_objects_with: ATT: attribute VALUE: value )"
 	},
 
-	# what is attribute att_value
+	# where is object?
 	{"arity": 3,
 	"solve": ["adv_where", "object"],
 	"action": ["is", "are"],
@@ -289,7 +291,7 @@ def generate_dependency(G, sentence_dict):
 	used_objects = []
 	solved_dependency = ''
 	solved = False
-	#print "--------->   recibe esto: ", sentence_dict
+	print "--------->   recibe esto: ", sentence_dict
 	# sentence_dict dict keys: words, constituents, objects, types
 	for each_verb in interpreted_verbs:
 		for each_action_paraphrasis in each_verb["action"]:
@@ -302,11 +304,11 @@ def generate_dependency(G, sentence_dict):
 						solved_elements[each] = each_verb[each][3][0]
 				# overwriting defaults if an element match
 				for each_to_solve in each_verb["solve"]:
-					#print "trying to solve :", each_to_solve
+					print "trying to solve :", each_to_solve
 					# need to check 4 things:
-					#print "contains the keywords: ", each_verb[each_to_solve][0]
-					#print "is from constituent: ", each_verb[each_to_solve][1]
-					#print "is semantic type: ", each_verb[each_to_solve][2]
+					#print "should contain the keywords: ", each_verb[each_to_solve][0]
+					#print "should be from constituent: ", each_verb[each_to_solve][1]
+					#print "should be semantic type: ", each_verb[each_to_solve][2]
 					#print "default: ", each_verb[each_to_solve][3]
 					for each_object in sentence_dict["objects"]:
 						if each_object not in used_objects:
@@ -315,9 +317,17 @@ def generate_dependency(G, sentence_dict):
 							#print "is from constituent: ", sentence_dict["constituents"][inx]
 							#print "is semantic type: ", sentence_dict["types"][inx]
 							#print "default: ", "naaat"
+							#check palabras clave
+							#print 'for gods sake: ',sentence_dict["words"][inx], each_verb[each_to_solve][0]
 							condition_of_match = len(intersection(sentence_dict["words"][inx], each_verb[each_to_solve][0])) > 0 or each_verb[each_to_solve][0] == []
+							#print 'palabras clave: ', condition_of_match
+							#check constituyente
 							condition_of_match = condition_of_match and (sentence_dict["constituents"][inx] in each_verb[each_to_solve][1] or each_verb[each_to_solve][1] == [])
+							#print 'contituyente: ', condition_of_match
+							#check semantic type
 							condition_of_match = condition_of_match and (len(intersection(sentence_dict["types"][inx], each_verb[each_to_solve][2])) > 0 or each_verb[each_to_solve][2] == [])
+							#print 'tipos semanticos: ', condition_of_match
+
 							if condition_of_match:
 								print "-------> ", each_object, " can solve ", each_to_solve
 								solved_elements[each_to_solve] = each_object

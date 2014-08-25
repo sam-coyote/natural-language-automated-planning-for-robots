@@ -4,24 +4,21 @@
 (is_kind_of   	is_kind_of 		attribute)
 (is_object_of   is_kind_of 		attribute)
 
+(is_object_of_action 	is_kind_of 		attribute)
+
 (physical_status 	  	is_kind_of 		attribute)
 (functional_status 		is_kind_of 		attribute)
 (location   			is_kind_of 		attribute)
 (social_status 		 	is_kind_of  	attribute)
-(attitud 			 	is_kind_of  	attribute)
-(happiness 				is_kind_of 		attribute)
+
 
 # # # #
 
 # social status
-(single  		is_object_of 	 	social_status)
-(married  		is_object_of 	 	social_status)
+(marriage 		is_kind_of 			social_status)
+(single  		is_object_of 	 	marriage)
+(married  		is_object_of 	 	marriage)
 
-(friendly 		is_object_of 		attitud)
-(unfriendly		is_object_of  		attitud)
-
-(happy 			is_object_of 		happiness)
-(unhappy 		is_object_of 		happiness)
 
 # physical
 
@@ -31,7 +28,7 @@
 (weight 		is_kind_of 		physical_status)
 (temperature 	is_kind_of 		physical_status)
 (taste 			is_kind_of  	physical_status)
-(age 			is_kind_of  	physical_status)
+
 
 (sweet  	 	is_object_of  	taste)
 (salty  	 	is_object_of  	taste)
@@ -106,5 +103,6 @@
 (married 		algebraic_property		has_unique_value)
 (weight 		algebraic_property		has_unique_value)
 (in 			algebraic_property		has_unique_value)
+(temperature 	algebraic_property 		has_unique_value)
 
 

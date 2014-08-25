@@ -5,6 +5,7 @@
 (the			tag			det)
 (all			tag			universal)
 (every			tag			universal)
+(each 			tag 		universal)
 (any			tag			existencial)
 (a				tag			existencial)
 (an				tag			existencial)
@@ -61,7 +62,7 @@
 (for 			tag	 		prep_time)
 (ago 			tag	 		prep_time)
 (before 		tag	 		prep_time)
-(of 			tag	 		prep)
+#(of 			tag	 		prep)
 (from 			tag	 		prep)
 (to 			tag 		prep)
 # punctuation

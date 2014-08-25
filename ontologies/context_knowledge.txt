@@ -201,6 +201,7 @@
 #temperature
 (pils_1 			temperature			cold)
 (alt_bier_1 		temperature 		warm)
+(beer 				temperature 		cold)
 
 
 # people

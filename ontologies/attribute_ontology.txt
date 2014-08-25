@@ -81,7 +81,7 @@
 (near			is_object_of 			location)
 (under	 		is_object_of 			location)
 (in 			is_object_of 			location)
-(connected 		is_object_of 			location)
+(connected_to 	is_object_of 			location)
 
 
 
@@ -92,10 +92,11 @@
 (under 			algebraic_property 			transitive)
 (location 		algebraic_property 			transitive)
 (aka 			algebraic_property 			transitive)
+(connected_to 	algebraic_property 			transitive)
 
 (near 			algebraic_property 			symmetric)
 (married 		algebraic_property 			symmetric)
-(connected 		algebraic_property 			symmetric)
+(connected_to 	algebraic_property 			symmetric)
 (aka 			algebraic_property 			symmetric)
 
 (aka 			algebraic_property 			locally_defined)

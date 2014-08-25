@@ -5,12 +5,12 @@
 (arena 				is_object_of 		house)
 (main_door 			is_object_of 		door)
 
-(livingroom_1  		is_object_of 		livingroom)
-(kitchen_1  		is_object_of 		kitchen)
-(bedroom_1  		is_object_of  		bedroom)
-(bedroom_2  		is_object_of  		bedroom)
-(bathroom_1 	 	is_object_of  		bathroom)
-(bathroom_2 	 	is_object_of  		bathroom)
+(livingroom_1  		is_object_of 		room)
+(kitchen_1  		is_object_of 		room)
+(bedroom_1  		is_object_of  		room)
+(bedroom_2  		is_object_of  		room)
+(bathroom_1 	 	is_object_of  		room)
+(bathroom_2 	 	is_object_of  		room)
 
 # kitchen
 (kitchen_door 		is_object_of 		door)
@@ -75,7 +75,6 @@
 # bedroom 1
 (bedroom_1_door 	in 				bedroom_1)
 (bed_1 				in 				bedroom_1)
-(bathroom_2 		in 				bedroom_1)
 (chair_1 			in 				bedroom_1)
 (desk_1 			in 				bedroom_1)
 (box_1 				in 				bedroom_1)
@@ -134,11 +133,11 @@
 (furnite 			physical_status clean)
 (table_2 			physical_status dirty)
 
-(livingroom_1 		connected 			kitchen_1)
-(livingroom_1 		connected 			bathroom_2)
-(livingroom_1 		connected 			bedroom_1)
-(livingroom_1 		connected 			bedroom_2)
-(bathroom_1 		connected 			bedroom_1)
+(livingroom_1 		connected_to 		kitchen_1)
+(livingroom_1 		connected_to 			bathroom_2)
+(livingroom_1 		connected_to 			bedroom_1)
+(livingroom_1 		connected_to 			bedroom_2)
+(bathroom_1 		connected_to 			bedroom_1)
 
 #functional status
 (furniture 			functional_status 	good)
@@ -148,15 +147,15 @@
 (bedroom_2_door		functional_status 	closed)
 
 # food and drinks
-(carrot_1 			is_object_of 		carrot)
-(tomato_1 			is_object_of 		tomato)
-(potato_1 			is_object_of 		potato)
+(carrot_1 			is_object_of 		vegetable)
+(tomato_1 			is_object_of 		vegetable)
+(potato_1 			is_object_of 		vegetable)
 
-(banana_1 			is_object_of 		banana)
-(banana_2 			is_object_of 		banana)
-(apple_1 			is_object_of 		apple)
-(apple_2 			is_object_of 		apple)
-(kiwi_1 			is_object_of 		kiwi)
+(banana_1 			is_object_of 		fruit)
+(banana_2 			is_object_of 		fruit)
+(apple_1 			is_object_of 		fruit)
+(apple_2 			is_object_of 		fruit)
+(kiwi_1 			is_object_of 		fruit)
 
 (vegetable 			in 					fridge_1)
 (fruit				in 					kitchen_table)
@@ -174,17 +173,18 @@
 
 (drink 				in 					fridge_1)
 
-(alt_bier_1 		in 					kitchen_table)
+(beer 				on 					table_1)
+(beer 				in 					livingroom_1)
 
 # properties of edible
 # color 
 
-(kiwi 				color 				green)
-(apple 				color 				green)
+(kiwi_1 				color 				green)
+(apple_1 				color 				green)
 (drink 				color 				black)
-(tomato 			color 				red)
-(carrot 			color 				orange)
-(potato 			color 				brown)
+(tomato_1 			color 				red)
+(carrot_1 			color 				orange)
+(potato_1 			color 				brown)
 (banana 			color 				yellow)
 (beer 				color 				dark)
 

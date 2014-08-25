@@ -37,7 +37,7 @@
 
 # prepositions
 (on 			tag	 		prep_loc)
-(in 			tag	 		prep_loc)
+#(in 			tag	 		prep_loc)
 (at 			tag	 		prep_loc)
 (near 			tag  		prep_loc)
 (next 			tag	 		prep_loc)

@@ -51,11 +51,19 @@ interpreted_verbs = [
 	"dependency": "( ASSERT O: -object- ATT: =kb_services.all_superclasses(G,'-value-')[0] VALUE: -value- )"
 	},
 
+
+
+
+
+
+
+
 	#
 	# Questions
 	#
 
 	# question what is the attribute of object
+	# ex: what is the temperature of each drink, what is the color of a cold beer, what is the location of each drink, what is the location of drinks
 	# arity 6: 1 adv_class, 1 verb is, 1 "the", 1 attribute, 1 "of", 1 object 
 	{"arity": 6,
 	# objects to solved (find grounded reference)
@@ -69,7 +77,7 @@ interpreted_verbs = [
 	"adv_what": [["what"], ["adv_class"], [], []],
 	#[to]: special keyword, [noun]: constituent, [place]: sem type, [exit]: default 
 	"object": [[], ["noun"], ["stuff"], []],
-	"dependency": "( action SAY message -object- -attribute- =kb_services.get_attribute(G,'-object-','-attribute-') )"
+	"dependency": "( action SAY message ( -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,'-object-','-attribute-')) ) )"
 	},
 
 	# what is att_value
@@ -77,28 +85,45 @@ interpreted_verbs = [
 	"solve": ["adv_what", "attribute"],
 	"action": ["is", "are"],
 	"attribute": [[], ["adj"], ["attribute"], []],
-	"adv_what": [["what", "who"], ["adv_class"], [], []],
-	"dependency": "( CONSULT all_objects_with: VALUE: attribute )"
+	"adv_what": [["what"], ["adv_class"], [], []],
+	"dependency": "( action SAY message ( =generate_nl_response_from_list(kb_services.get_objects_that_match(G,'stuff',['-attribute-'])) ) )"
+	},
+
+	{"arity": 3, 
+	"solve": ["adv_what", "attribute"],
+	"action": ["is", "are"],
+	"attribute": [[], ["adj"], ["attribute"], []],
+	"adv_what": [["who"], ["adv_person"], [], []],
+	"dependency": "( action SAY message ( =generate_nl_response_from_list(kb_services.get_objects_that_match(G,'person',['-attribute-'])) ) )"
 	},
 
 	# what is attribute att_value
+	# ex what is in table_1?, what is connected to livigroom_1
 	{"arity": 4,
-	"solve": ["adv_what", "attribute", "value"],
+	"solve": ["adv_what", "attribute", "noun_value"],
 	"action": ["is", "are"],
-	"value": [[], ["adj"], ["attribute"], []],
-	"attribute": [[], ["att"], ["attribute"], []],
-	"adv_what": [["what", "who"], ["adv_class"], [], []],
-	"dependency": "( CONSULT all_objects_with: ATT: attribute VALUE: value )"
+	"noun_value": [[], ["noun"], ["stuff"], []],
+	"attribute": [[], ["adj"], ["attribute"], []],
+	"adv_what": [["what"], ["adv_class"], [], []],
+	"dependency": "( action SAY message ( =generate_nl_response_from_list(kb_services.get_objects_that_match2(G,'stuff','-attribute-',['-noun_value-'])) ) )"
 	},
 
-	# where is object?
+	# where is object? ex where is sam? where is a red vegetable?
 	{"arity": 3,
 	"solve": ["adv_where", "object"],
 	"action": ["is", "are"],
 	"object": [[], ["noun"], ["stuff", "person"], []],
 	"adv_where": [["where"], ["adv_loc"], [], []],
-	"dependency": "( CONSULT location_of object: object )"
+	"dependency": "( action SAY message ( -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,'-object-','location')) ) )"
 	},
+
+
+
+
+
+
+
+
 
 	#
 	# Commands
@@ -613,8 +638,30 @@ def semantic_type_of_nps(G, pos, words, nps):
 	return semantic_types
 
 
+# generate message from dictionary
+def generate_nl_response_from_dict(dictio):
+	response = ""
+	if dictio == {}:
+		response = "not information about that, sorry"
+	else:
+		for each in dictio:
+			print "HEY ", each, "  ", dictio[each]
+			response +=" is " + each + " " + " and ".join(dictio[each])
+	return response
 
+def generate_nl_response_from_list(ls):
+	response = ""
+	if ls == []:
+		response = "not any known object, sorry"
+	else:
+		if len(ls) == 1:
+			response = ls.pop() + " is "
+		else:
+			for i in range(0, len(ls) - 1):
+				response += ls.pop() + ", "
+			response += "and " + ls.pop() + " are "
+	return response
 #test_solver("bring valerie something to eat")
 
-
+print generate_nl_response_from_list([])
 #test_solver()

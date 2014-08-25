@@ -11,7 +11,7 @@ import networkx.drawing
 import matplotlib.pyplot as plt
 
 G = kb_services.load_semantic_network()
-sentence = "what is the location of each drink"
+sentence = "where is all green fruit"
 
 
 

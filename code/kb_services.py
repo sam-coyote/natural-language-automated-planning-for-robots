@@ -202,7 +202,7 @@ def language_info():
 	
 	G = load_semantic_network()
 	language_tags.update({ 'noun': all_subclasses(G, 'stuff') + all_objects(G, 'stuff')})
-	language_tags.update({'adj' : list_diff(all_objects(G, 'attribute'), all_objects(G, 'location'))})
+	language_tags.update({'adj' : all_objects(G, 'attribute') })
 	language_tags.update({'att' : all_subclasses(G, 'attribute')})
 	return language_tags
 
@@ -433,5 +433,39 @@ def list_diff(A,B):
 				diff.append(a)  
 		return diff
 
+
+def intersection(a,b):
+	if isinstance(a, str):
+		a = [a]
+	a = set(a)
+	return [bb for bb in b if bb in a]
+
+
+def get_objects_that_match(G, objclss, values_list):
+	return [o for o in all_objects(G, objclss) if verify_satisfability_of_objclss(G, o, values_list)]
+
+
+def get_objects_that_match2(G, objclss, attribute, values_list):
+	o_final = []
+	o_list = all_objects(G, objclss)
+	for o in o_list:
+		dic = get_attribute(G, o, attribute)
+		if not dic == {} and len(intersection(dic[attribute], values_list)) > 0:
+			#print "dictionary: ", dic, "       values_list: ", values_list, "    inter:", intersection(dic[attribute], values_list)
+			o_final.append(o)
+	
+	return o_final
+
+
+
+
 G = load_semantic_network()
-print 'get all attributes and values: ', get_attribute(G, 'alt_bier_1', 'temperature')
+#print 'get all attributes and values: ', get_attribute(G, 'fanta_1', 'temperature')
+#print "what is cold? ", verify_satisfability_of_objclss(G, "beer", ["cold"])
+
+#print "lolcat", get_objects_that_match(G, "stuff", ["cold"])
+
+
+#print "lolcat", get_objects_that_match2(G, "stuff", "in", ["livingroom_1"])
+
+#print "lolcat", all_objects(G, "stuff")

@@ -81,5 +81,3 @@
 (juice 			is_kind_of 		drink)
 (soda 			is_kind_of 		drink)
 (beer 			is_kind_of 		drink)
-
-

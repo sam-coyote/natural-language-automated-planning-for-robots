@@ -240,3 +240,8 @@
 (valerie 		aka				val)
 
 (coca_cola 		temperature 	cold)
+
+
+(canddy    is_kind_of    food) 
+(handsomeness    is_kind_of    physical_status) 
+(handsome    is_object_of    handsomeness) 

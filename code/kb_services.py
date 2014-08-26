@@ -71,6 +71,7 @@ def add_edges_from_list(facts_list, file_name):
 			if len(each_fact) == 3:
 				file.write("(" + each_fact[0] + "    " + each_fact[1] + "    " + each_fact[2] +") \n")
 	file.close()
+	return "done"
 
 def delete_edges_from_list(facts_list, file_name):
 	# delete a list of triads in a file
@@ -469,3 +470,5 @@ G = load_semantic_network()
 #print "lolcat", get_objects_that_match2(G, "stuff", "in", ["livingroom_1"])
 
 #print "lolcat", all_objects(G, "stuff")
+
+print "subclases", all_subclasses(G,"food")

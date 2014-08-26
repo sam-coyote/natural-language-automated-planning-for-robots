@@ -12,6 +12,7 @@
 (social_status 		 	is_kind_of  	attribute)
 
 
+
 # # # #
 
 # social status

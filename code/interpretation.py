@@ -24,8 +24,39 @@ interpreted_verbs = [
 	#
 	# Assertions
 	#
-	# assertion object is attribute value
-	# arity 6: 1 adv_class, 1 verb is, 1 "the", 1 attribute, 1 "of", 1 object 
+	# assertion of a new class of object or attribute 
+	# candy is a kind of food --> candy is is_kinf_of food
+	{"arity": 4,
+	# objects to solved (find grounded reference)
+	"solve": ["object", "parentclass", "declareclass"],
+	# sintactical forms of the verb
+	"action": ["is", "are"],
+	# description of element actor: 
+	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
+	"object": [[], ["unknown"], [], []],
+	"declareclass": [[], ["declare_clss"], [], []], 
+	"parentclass": [[], ["att", "noun"], ["attribute", "stuff"], []],
+	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-','is_kind_of','-parentclass-']],'../ontologies/context_knowledge.txt') ) )"
+	},
+
+	# assertion of a new instance of object or attribute 
+	# handsome is an adjetive of handsomeness
+	{"arity": 4,
+	# objects to solved (find grounded reference)
+	"solve": ["object", "parentclass", "declareobj"],
+	# sintactical forms of the verb
+	"action": ["is", "are"],
+	# description of element actor: 
+	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
+	"object": [[], ["unknown"], [], []],
+	"declareobj": [[], ["declare_obj"], [], []], 
+	"parentclass": [[], ["att", "noun"], ["attribute", "stuff"], []],
+	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-','is_object_of','-parentclass-']],'../ontologies/context_knowledge.txt') ) )"
+	},
+
+
+	# assertion of a value of atribute in an object or class
+	# all drinks are on kitchen table
 	{"arity": 4,
 	# objects to solved (find grounded reference)
 	"solve": ["object", "attribute", "value"],
@@ -33,22 +64,10 @@ interpreted_verbs = [
 	"action": ["is", "are"],
 	# description of element actor: 
 	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"object": [[], ["noun"], ["stuff", "person"], []],
-	"attribute": [[], ["att"], ["attribute"], []],
-	"value": [[], ["adj"], ["attribute"], []],
-	"dependency": "( ASSERT O: object ATT: attribute VALUE: value )"
-	},
-
-	{"arity": 3,
-	# objects to solved (find grounded reference)
-	"solve": ["object",  "value"],
-	# sintactical forms of the verb
-	"action": ["is", "are"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"object": [[], ["noun"], ["stuff", "person"], []],
-	"value": [[], ["adj"], ["attribute"], []],
-	"dependency": "( ASSERT O: -object- ATT: =kb_services.all_superclasses(G,'-value-')[0] VALUE: -value- )"
+	"object": [[], ["noun"], ["stuff"], []],
+	"attribute": [[], ["adj", "att"], ["attribute"], []],
+	"value": [[], ["adj", "noun"], [], []],
+	"dependency": "( ASSERT O: -object- ATT: -attribute- VALUE: -value- )"
 	},
 
 
@@ -357,6 +376,7 @@ def generate_dependency(G, sentence_dict):
 								print "-------> ", each_object, " can solve ", each_to_solve
 								solved_elements[each_to_solve] = each_object
 								used_objects.append(each_object)
+								break
 
 				# checking if all elements match to something
 				solved = True

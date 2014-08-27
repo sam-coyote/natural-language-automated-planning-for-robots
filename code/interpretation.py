@@ -55,7 +55,7 @@ interpreted_verbs = [
 	},
 
 
-	# assertion of a value of atribute in an object or class
+	# assertion of a relation between two nouns
 	# all drinks are on kitchen table
 	{"arity": 4,
 	# objects to solved (find grounded reference)
@@ -66,11 +66,23 @@ interpreted_verbs = [
 	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
 	"object": [[], ["noun"], ["stuff"], []],
 	"attribute": [[], ["adj", "att"], ["attribute"], []],
-	"value": [[], ["adj", "noun"], [], []],
-	"dependency": "( ASSERT O: -object- ATT: -attribute- VALUE: -value- )"
+	"value": [[], ["noun"], [], []],
+	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-','-attribute-','-value-']],'../ontologies/context_knowledge.txt') ) )"
 	},
 
-
+	# assertion of a value of atribute in an object or class
+	# all drinks are on kitchen table
+	{"arity": 3,
+	# objects to solved (find grounded reference)
+	"solve": ["object", "value"],
+	# sintactical forms of the verb
+	"action": ["is", "are"],
+	# description of element actor: 
+	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
+	"object": [[], ["noun"], ["stuff"], []],
+	"value": [[], ["adj"], ["attribute"], []],
+	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-',kb_services.all_superclasses(G,'-value-')[0],'-value-']],'../ontologies/context_knowledge.txt') ) )"
+	},
 
 
 

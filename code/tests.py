@@ -11,7 +11,7 @@ import networkx.drawing
 import matplotlib.pyplot as plt
 
 G = kb_services.load_semantic_network()
-sentence = "all drinks are color kitchen table"
+sentence = "what is the shape of sam"
 
 
 

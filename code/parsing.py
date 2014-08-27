@@ -94,6 +94,7 @@ pos_ngrams = [
 	['universal', 'noun'],
 	['unknown', 'noun'],
 	['number', 'noun'],
+	['noun', 'vrb'],
 	['number', 'adj'],
 	['universal', 'adj', 'noun'],
 	['existencial', 'adj', 'noun'],

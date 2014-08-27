@@ -71,7 +71,7 @@ def add_edges_from_list(facts_list, file_name):
 			if len(each_fact) == 3:
 				file.write("(" + each_fact[0] + "    " + each_fact[1] + "    " + each_fact[2] +") \n")
 	file.close()
-	return "done"
+	return "understood"
 
 def delete_edges_from_list(facts_list, file_name):
 	# delete a list of triads in a file

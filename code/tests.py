@@ -2,6 +2,7 @@
 import kb_services
 import parsing
 import interpretation
+import planner_bridge
 # network toolkit
 import networkx as nx
 # regular expressions 
@@ -11,7 +12,7 @@ import networkx.drawing
 import matplotlib.pyplot as plt
 
 G = kb_services.load_semantic_network()
-sentence = "what is the shape of sam"
+sentence = "sam is tall"
 
 
 
@@ -24,6 +25,9 @@ for each_caracterized_sentence in analized_sentences:
 
 print "commands to planner..."	
 for each in commands:
-	print each
+	print "sent to planner: ", each
+	print "planner response:"
+	planner_bridge.launch_planner(each)
+	
 	
 # knowledge basesolved_elements[each_element]

@@ -471,4 +471,4 @@ G = load_semantic_network()
 
 #print "lolcat", all_objects(G, "stuff")
 
-print "subclases", all_subclasses(G,"food")
+#print "subclases", all_subclasses(G,"food")

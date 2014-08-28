@@ -36,7 +36,7 @@ interpreted_verbs = [
 	"object": [[], ["unknown"], [], []],
 	"declareclass": [[], ["declare_clss"], [], []], 
 	"parentclass": [[], ["att", "noun"], ["attribute", "stuff"], []],
-	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-','is_kind_of','-parentclass-']],'../ontologies/context_knowledge.txt') ) )"
+	"dependency": '(action SAY message "ok =kb_services.add_edges_from_list([["-object-","is_kind_of","-parentclass-"]],"../ontologies/context_knowledge.txt") " 0 0)'
 	},
 
 	# assertion of a new instance of object or attribute 
@@ -51,7 +51,7 @@ interpreted_verbs = [
 	"object": [[], ["unknown"], [], []],
 	"declareobj": [[], ["declare_obj"], [], []], 
 	"parentclass": [[], ["att", "noun"], ["attribute", "stuff"], []],
-	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-','is_object_of','-parentclass-']],'../ontologies/context_knowledge.txt') ) )"
+	"dependency": '(action SAY message "ok =kb_services.add_edges_from_list([["-object-","is_object_of","-parentclass-"]],"../ontologies/context_knowledge.txt") " 0 0)'
 	},
 
 
@@ -67,7 +67,7 @@ interpreted_verbs = [
 	"object": [[], ["noun"], ["stuff"], []],
 	"attribute": [[], ["adj", "att"], ["attribute"], []],
 	"value": [[], ["noun"], [], []],
-	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-','-attribute-','-value-']],'../ontologies/context_knowledge.txt') ) )"
+	"dependency": '(action SAY message "ok =kb_services.add_edges_from_list([["-object-","-attribute-","-value-"]],"../ontologies/context_knowledge.txt") " 0 0)'
 	},
 
 	# assertion of a value of atribute in an object or class
@@ -81,7 +81,7 @@ interpreted_verbs = [
 	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
 	"object": [[], ["noun"], ["stuff"], []],
 	"value": [[], ["adj"], ["attribute"], []],
-	"dependency": "( action SAY message ( ok =kb_services.add_edges_from_list([['-object-',kb_services.all_superclasses(G,'-value-')[0],'-value-']],'../ontologies/context_knowledge.txt') ) )"
+	"dependency": '(action SAY message " ok =kb_services.add_edges_from_list([["-object-",kb_services.all_superclasses(G,"-value-")[0],"-value-"]],"../ontologies/context_knowledge.txt") " 0 0)'
 	},
 
 

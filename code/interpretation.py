@@ -159,14 +159,64 @@ interpreted_verbs = [
 	#
 	# Commands
 	#
+
+	#  GO
 	{"arity": 2,
-	# bring a drink
-	"action": ["align", "arrange", "orient"],
-	"solve": ["object"],
-	"object": [[], ["prep_phrase"], ["item", "person"], []],
-	# (get ACTOR OBJECT_TO_ALIGN DESTINATION)
-	"dependency": "( align justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] )"
+	"action": ["go", "walk", "navigate"],
+	"solve": ["destination"],
+	"destination": [["to"], ["prep_phrase"], ["place"], []],
+	"dependency": "( action GO location -destination- 0 0 )"
 	},
+
+	{"arity": 2,
+	"action": ["go", "walk", "navigate"],
+	"solve": ["destination"],
+	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
+	# (go SOURCE DESTINATION)
+	"dependency": "( action GO location =kb_services.get_attribute(G,'-destination-','in')['in'][0] 0 0)"
+	},
+
+
+
+
+	# APROACH
+	{"arity": 2,
+	# 
+	"action": ["align", "arrange", "orient", "aproach"],
+	"solve": ["object"],
+	"object": [[], ["prep_phrase", "noun"], ["item", "person"], []],
+	"dependency": "( action APROACH object -object- 0 0 )"
+	},
+
+
+	# RECOGNIZE
+	{"arity": 2,
+	# 
+	"action": ["recognize"],
+	"solve": ["object"],
+	"object": [[], ["noun"], ["item", "person"], []],
+	"dependency": "( action RECOGNIZE object -object- 0 0 )"
+	},
+
+
+	# GRASP
+	{"arity": 2,
+	# 
+	"action": ["grasp"],
+	"solve": ["object"],
+	"object": [[], ["noun"], ["item"], []],
+	"dependency": "( action GRASP object -object- 0 0 )"
+	},
+
+
+	# HAND OVER
+	{"arity": 1,
+	# 
+	"action": ["hand_over", "drop"],
+	"solve": [],
+	"dependency": "( action DROP 0 0 )"
+	},
+
 
 	{"arity": 2,
 	# bring a drink
@@ -227,69 +277,6 @@ interpreted_verbs = [
 	# (get ACTOR OBJECT SOURCE DESTINATION)
 	"dependency": "( get justina -object- -source- =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
 	},
-
-
-	{"arity": 2,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["place"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go here -destination- )"
-	},
-
-	{"arity": 2,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go here =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
-
-	{"arity": 3,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination", "source"],
-	"destination": [["to"], ["prep_phrase"], ["place"], []],
-	"source": [["from"], ["prep_phrase"], ["place"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go -source- -destination- )"
-	},
-
-	{"arity": 3,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination", "source"],
-	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
-	"source": [["from"], ["prep_phrase"], ["place"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go -source- =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
-	{"arity": 3,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination", "source"],
-	"destination": [["to"], ["prep_phrase"], ["place"], []],
-	"source": [["from"], ["prep_phrase"], ["item", "person"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go =kb_services.get_attribute(G,'-source-','in')['in'][0] -destination- )"
-	},
-
-	{"arity": 3,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination", "source"],
-	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
-	"source": [["from"], ["prep_phrase"], ["item", "person"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go =kb_services.get_attribute(G,'-source-','in')['in'][0] =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
-	{"arity": 2,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( go here =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
 
 
 

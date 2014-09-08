@@ -5,12 +5,26 @@
 (arena 				is_object_of 		house)
 (main_door 			is_object_of 		door)
 
-(livingroom_1  		is_object_of 		room)
-(kitchen_1  		is_object_of 		room)
+(livingroom  		is_object_of 		room)
+(kitchen  			is_object_of 		room)
 (bedroom_1  		is_object_of  		room)
 (bedroom_2  		is_object_of  		room)
-(bathroom_1 	 	is_object_of  		room)
-(bathroom_2 	 	is_object_of  		room)
+(bathroom 	 		is_object_of  		room)
+(outside 			is_object_of 		room)
+
+
+(rest_area_1 		is_object_of 		zone)
+(back_of_bedroom_1 	is_object_of 		zone)
+(bed_zone_1 		is_object_of 		zone)
+(rest_area_2 		is_object_of 		zone)
+(back_of_bedroom_2 	is_object_of 		zone)
+(bed_zone_2 		is_object_of 		zone)
+(front_of_kitchen 	is_object_of 		zone)
+(back_of_kitchen 	is_object_of 		zone)
+(livingroom_se 		is_object_of 		zone)
+(livingroom_sw 		is_object_of 		zone)
+(livingroom_nw 		is_object_of 		zone)
+(corridor 			is_object_of 		zone)
 
 # kitchen
 (kitchen_door 		is_object_of 		door)
@@ -45,6 +59,7 @@
 (bag_2 				is_object_of 		bag)
 
 # livingroom 1
+(front_door 		is_object_of 		door)
 (table_1 			is_object_of 		table)
 (chair_4 			is_object_of 		chair)
 (chair_5 			is_object_of 		chair)
@@ -55,25 +70,31 @@
 (box_3 				is_object_of 		box)
 
 # topological information about furniture
-(justina 			in 				livingroom_1)
 
-(kitchen_1 			in 				arena)
-(livingroom_1 		in 				arena)
+(kitchen 			in 				arena)
+(livingroom 		in 				arena)
 (bedroom_1 			in 				arena)
 (bedroom_2 			in 				arena)
 
 # kitchen
-(kitchen_door 		in 				kitchen_1)
-(fridge_1 			in 				kitchen_1)
-(shelf_1 			in 				kitchen_1)
-(chair_8 			in 				kitchen_1)
-(chair_9 			in 				kitchen_1)
-(kitchen_table 		in 				kitchen_1)
+(back_of_kitchen 	in 				kitchen)
+(front_of_kitchen 	in 				kitchen)
+(kitchen_door 		connect 				kitchen)
+(kitchen_door 		connect 				livingroom)
+(fridge_1 			in 				kitchen)
+(shelf_1 			in 				kitchen)
+(chair_8 			in 				kitchen)
+(chair_9 			in 				kitchen)
+(kitchen_table 		in 				front_of_kitchen)
 (chair_8 			near 			chair_9)
 (chair_9 			near 			kitchen_table)
 
 # bedroom 1
-(bedroom_1_door 	in 				bedroom_1)
+(rest_area_1 		in 				bedroom_1)
+(bed_zone_1 		in 				bedroom_1)
+(back_of_bedroom_1 	in 				bedroom_1)
+(bedroom_1_door 	connect 		bedroom_1)
+(bedroom_1_door 	connect 		livingroom)
 (bed_1 				in 				bedroom_1)
 (chair_1 			in 				bedroom_1)
 (desk_1 			in 				bedroom_1)
@@ -84,7 +105,11 @@
 (box_1 				on 				desk_1)
 
 # bedroom 2
-(bedroom_2_door 	in 				bedroom_2)
+(rest_area_2 		in 				bedroom_2)
+(bed_zone_2 		in 				bedroom_2)
+(back_of_bedroom_2 	in 				bedroom_2)
+(bedroom_2_door 	connect 				bedroom_2)
+(bedroom_2_door 	connect 				livingroom)
 (bed_2 				in 				bedroom_2)
 (chair_2 			in 				bedroom_2)
 (chair_3 			in 				bedroom_2)
@@ -97,21 +122,25 @@
 (box_2 				under 			bed_2)
 
 # bathroom 1
-(bathroom_1_door  	in 				bathroom_1)
+(bathroom_1_door  	connect 				bathroom_1)
+(bathroom_1_door  	connect 				livingroom)
 
-# bathroom 2
-(bathroom_2_door 	in 				bathroom_2)
-(bag_2 				in 				bathroom_2)
 
 # livingroom 1
-(table_1 			in 				livingroom_1)
-(sofa_1 			in 				livingroom_1)
-(chair_4 			in 				livingroom_1)
-(chair_5 			in 				livingroom_1)
-(chair_6 			in 				livingroom_1)
-(chair_7 			in 				livingroom_1)
-(bag_1 				in 				livingroom_1)
-(box_3 				in 				livingroom_1)
+(livingroom_sw 		in 				livingroom)
+(livingroom_nw  	in 				livingroom)
+(livingroom_se 		in 				livingroom)
+(corridor 			in 				livingroom)
+(table_1 			in 				livingroom)
+(front_door 		connect 				livingroom)
+(front_door 		connect 				outside)
+(sofa_1 			in 				livingroom)
+(chair_4 			in 				livingroom)
+(chair_5 			in 				livingroom)
+(chair_6 			in 				livingroom)
+(chair_7 			in 				livingroom)
+(bag_1 				in 				livingroom)
+(box_3 				in 				livingroom)
 (chair_4 			near 			table_1)
 (chair_5 			near 			table_1)
 (chair_6 			near 			table_1)
@@ -133,18 +162,12 @@
 (furnite 			physical_status clean)
 (table_2 			physical_status dirty)
 
-(livingroom_1 		connected_to 		kitchen_1)
-(livingroom_1 		connected_to 			bathroom_2)
-(livingroom_1 		connected_to 			bedroom_1)
-(livingroom_1 		connected_to 			bedroom_2)
-(bathroom_1 		connected_to 			bedroom_1)
 
 #functional status
 (furniture 			functional_status 	good)
 (chair_6 			functional_status 	broken)
 (chair_1 			functional_status 	broken)
 (door 				functional_status 	open)
-(bedroom_2_door		functional_status 	closed)
 
 # food and drinks
 (carrot_1 			is_object_of 		vegetable)
@@ -157,10 +180,10 @@
 (apple_2 			is_object_of 		fruit)
 (kiwi_1 			is_object_of 		fruit)
 
-(vegetable 			in 					fridge_1)
-(fruit				in 					kitchen_table)
-(banana_2 			in 					bag_1)
-(apple_2 			in 					table_1)
+(vegetable 			on 					fridge_1)
+(fruit				on 					kitchen_table)
+(banana_2 			on 					bag_1)
+(apple_2 			on 					table_1)
 
 (apple_juice 		is_object_of 		juice)
 (orange_juice 		is_object_of 		juice)
@@ -171,10 +194,10 @@
 (fanta_1 			is_object_of 		soda)
 (sprite_1	 		is_object_of 		soda)
 
-(drink 				in 					fridge_1)
+(drink 				on 					fridge_1)
 
 (beer 				on 					table_1)
-(beer 				in 					livingroom_1)
+(beer 				on 					livingroom)
 
 # properties of edible
 # color 
@@ -221,10 +244,8 @@
 
 
 # location of people
-(sam 				in 					chair_2)
+(sam 				in 					bed_zone_2)
 (valerie 			in 					sofa_1)
-(justina 			in 					kitchen_1)
-(justina 			near 				fridge_1)
 
 
 # alias and also known as 
@@ -235,21 +256,16 @@
 (coke 			aka 			pepsi)
 (fruta			aka				fruit)
 
-(coca_cola 		color			black)
-
-(valerie 		aka				val)
-
-(coca_cola 		temperature 	cold)
 
 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
-(sam    shape    tall) 
+# state of robot
+
+(justina in front_of_kitchen)
+(justina attention kitchen_table)
+(apple_2 graspable yes)
+(justina carry apple_juice)
+
+
+
+ # interaction
+

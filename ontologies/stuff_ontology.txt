@@ -68,6 +68,7 @@
 (chair 			is_kind_of 		furniture)
 (shelf 			is_kind_of 		furniture)
 (table 			is_kind_of 		furniture)
+(door 			is_kind_of 		furniture)
 
 # cleaning_products
 (cleaning_product is_kind_of 	chemical_product)

@@ -22,15 +22,16 @@ def load_facts_file_to_clips():
 		att_dict = kb_services.get_attribute(G, each_noun, 'attribute')
 		#print att_dict
 		for each_attribute in att_dict:
-			for each_value in att_dict[each_attribute]:
-				#print "(fact " + each_noun + " " + each_attribute + " " + each_value + ")"
-				facts_to_load.append("(fact " + each_noun + " " + each_attribute + " " + each_value + ")")
+			if each_attribute == 'in':
+				facts_to_load.append("(fact " + each_noun + " " + each_attribute + " " + att_dict[each_attribute][0] + ")")
+
+			else:
+				for each_value in att_dict[each_attribute]:
+					#print "(fact " + each_noun + " " + each_attribute + " " + each_value + ")"
+					facts_to_load.append("(fact " + each_noun + " " + each_attribute + " " + each_value + ")")
 
 	for each_fact in facts_to_load:
 		fi = clips.Assert(each_fact)
-
-	fi = clips.Assert('(action SAY "  ola ke ase" 0 1  )')
-
 
 
 def load_expert_shell():
@@ -42,11 +43,26 @@ def load_expert_shell():
 
 def execute():
 	print "loaded:"
+	clips.PrintFacts()
 	clips.PrintRules()
+	clips.DebugConfig.WatchAll()
 	clips.Run()
+	t = clips.TraceStream.Read()
 	s = clips.StdoutStream.Read()
-	#clips.PrintFacts()
+	
+	
+	
+
+	
+	print "-------------------------"
+	print "ACTIVATION TRACE"
+	print t
+	
+	print "-------------------------"
+	print "PLANNING OUTPUT"
 	print s
+
+	 
 
 
 def launch_planner(com):

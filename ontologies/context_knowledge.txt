@@ -28,7 +28,7 @@
 
 # kitchen
 (kitchen_door 		is_object_of 		door)
-(fridge_1 			is_object_of 		fridge)
+(fridge1 			is_object_of 		fridge)
 (shelf_1 			is_object_of 		shelf)
 (kitchen_table 		is_object_of 		table)
 (chair_8 			is_object_of 		chair)
@@ -71,17 +71,17 @@
 
 # topological information about furniture
 
-(kitchen 			in 				arena)
-(livingroom 		in 				arena)
-(bedroom_1 			in 				arena)
-(bedroom_2 			in 				arena)
+#(kitchen 			in 				arena)
+#(livingroom 		in 				arena)
+#(bedroom_1 			in 				arena)
+#(bedroom_2 			in 				arena)
 
 # kitchen
 (back_of_kitchen 	in 				kitchen)
 (front_of_kitchen 	in 				kitchen)
 (kitchen_door 		connect 				kitchen)
 (kitchen_door 		connect 				livingroom)
-(fridge_1 			in 				kitchen)
+(fridge1 			in 				kitchen)
 (shelf_1 			in 				kitchen)
 (chair_8 			in 				kitchen)
 (chair_9 			in 				kitchen)
@@ -180,7 +180,7 @@
 (apple_2 			is_object_of 		fruit)
 (kiwi_1 			is_object_of 		fruit)
 
-(vegetable 			on 					fridge_1)
+(vegetable 			on 					fridge1)
 (fruit				on 					kitchen_table)
 (banana_2 			on 					bag_1)
 (apple_2 			on 					table_1)
@@ -194,7 +194,8 @@
 (fanta_1 			is_object_of 		soda)
 (sprite_1	 		is_object_of 		soda)
 
-(drink 				on 					fridge_1)
+(drink 				on 					fridge1)
+(drink 				in 					kitchen)
 
 (beer 				on 					table_1)
 (beer 				on 					livingroom)

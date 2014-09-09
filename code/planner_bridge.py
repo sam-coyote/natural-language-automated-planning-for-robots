@@ -22,7 +22,7 @@ def load_facts_file_to_clips():
 		att_dict = kb_services.get_attribute(G, each_noun, 'attribute')
 		#print att_dict
 		for each_attribute in att_dict:
-			if each_attribute == 'in':
+			if each_attribute == 'nop':
 				facts_to_load.append("(fact " + each_noun + " " + each_attribute + " " + att_dict[each_attribute][0] + ")")
 
 			else:
@@ -32,7 +32,7 @@ def load_facts_file_to_clips():
 
 	for each_fact in facts_to_load:
 		fi = clips.Assert(each_fact)
-
+	fi = clips.Assert("(id_count 1)")
 
 def load_expert_shell():
 	clips.BatchStar("robot_planner.clp")
@@ -43,20 +43,20 @@ def load_expert_shell():
 
 def execute():
 	print "loaded:"
-	clips.PrintFacts()
+	#clips.PrintFacts()
 	clips.PrintRules()
 	clips.DebugConfig.WatchAll()
 	clips.Run()
 	t = clips.TraceStream.Read()
 	s = clips.StdoutStream.Read()
-	
+
 	
 	
 
 	
-	print "-------------------------"
-	print "ACTIVATION TRACE"
-	print t
+	#print "-------------------------"
+	#print "ACTIVATION TRACE"
+	#print t
 	
 	print "-------------------------"
 	print "PLANNING OUTPUT"

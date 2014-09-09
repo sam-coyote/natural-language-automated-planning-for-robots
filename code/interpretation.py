@@ -108,7 +108,7 @@ interpreted_verbs = [
 	"adv_what": [["what"], ["adv_class"], [], []],
 	#[to]: special keyword, [noun]: constituent, [place]: sem type, [exit]: default 
 	"object": [[], ["noun"], ["stuff"], []],
-	"dependency": "( action SAY message ( -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,'-object-','-attribute-')) ) )"
+	"dependency": '( action SAY message " -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,"-object-","-attribute-")) " 0 1)'
 	},
 
 	# what is att_value
@@ -117,7 +117,7 @@ interpreted_verbs = [
 	"action": ["is", "are"],
 	"attribute": [[], ["adj"], ["attribute"], []],
 	"adv_what": [["what"], ["adv_class"], [], []],
-	"dependency": "( action SAY message ( =generate_nl_response_from_list(kb_services.get_objects_that_match(G,'stuff',['-attribute-'])) ) )"
+	"dependency": '( action SAY message " =generate_nl_response_from_list(kb_services.get_objects_that_match(G,"stuff",["-attribute-"])) " 0 1)'
 	},
 
 	{"arity": 3, 
@@ -125,7 +125,7 @@ interpreted_verbs = [
 	"action": ["is", "are"],
 	"attribute": [[], ["adj"], ["attribute"], []],
 	"adv_what": [["who"], ["adv_person"], [], []],
-	"dependency": "( action SAY message ( =generate_nl_response_from_list(kb_services.get_objects_that_match(G,'person',['-attribute-'])) ) )"
+	"dependency": '( action SAY message " =generate_nl_response_from_list(kb_services.get_objects_that_match(G,"person",["-attribute-"])) " 0 1)'
 	},
 
 	# what is attribute att_value
@@ -136,7 +136,7 @@ interpreted_verbs = [
 	"noun_value": [[], ["noun"], ["stuff"], []],
 	"attribute": [[], ["adj"], ["attribute"], []],
 	"adv_what": [["what"], ["adv_class"], [], []],
-	"dependency": "( action SAY message ( =generate_nl_response_from_list(kb_services.get_objects_that_match2(G,'stuff','-attribute-',['-noun_value-'])) ) )"
+	"dependency": '( action SAY message " =generate_nl_response_from_list(kb_services.get_objects_that_match2(G,"stuff","-attribute-",["-noun_value-"])) " 0 1)'
 	},
 
 	# where is object? ex where is sam? where is a red vegetable?
@@ -145,7 +145,7 @@ interpreted_verbs = [
 	"action": ["is", "are"],
 	"object": [[], ["noun"], ["stuff", "person"], []],
 	"adv_where": [["where"], ["adv_loc"], [], []],
-	"dependency": "( action SAY message ( -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,'-object-','location')) ) )"
+	"dependency": '( action SAY message " -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,"-object-","location")) " 0 1)'
 	},
 
 
@@ -162,7 +162,7 @@ interpreted_verbs = [
 
 	#  GO
 	{"arity": 2,
-	"action": ["go", "walk", "navigate"],
+	"action": ["go", "walk", "navigate", "return"],
 	"solve": ["destination"],
 	"destination": [["to"], ["prep_phrase"], ["place"], []],
 	"dependency": "( action GO location -destination- 0 0 )"
@@ -177,6 +177,20 @@ interpreted_verbs = [
 	},
 
 
+{"arity": 2,
+	"action": ["go", "walk", "navigate", "return"],
+	"solve": ["destination"],
+	"destination": [["here"], [], [], []],
+	"dependency": "( action GO location =kb_services.get_attribute(G,'justina','in')['in'][0] 0 0 )"
+	},
+
+	{"arity": 2,
+	"action": ["go", "walk", "navigate"],
+	"solve": ["destination"],
+	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
+	# (go SOURCE DESTINATION)
+	"dependency": "( action GO location =kb_services.get_attribute(G,'-destination-','in')['in'][0] 0 0)"
+	},
 
 
 	# APROACH
@@ -218,110 +232,43 @@ interpreted_verbs = [
 	},
 
 
+
+
+
+
+# medium complexity
+
+
+	{"arity": 2,
+	# take a drink
+	"action": ["take"],
+	"solve": ["object"],
+	"object": [[], ["noun"], ["item"], []],
+	# (get ACTOR OBJECT SOURCE DESTINATION)
+	"dependency": "( action TAKEOBJECT object -object- location =kb_services.get_attribute(G,'-object-','in')['in'][0] 0 0)"
+	},
+
+
+
+
+
+
+
+
 	{"arity": 2,
 	# bring a drink
 	"action": ["bring", "fetch", "get"],
 	"solve": ["object"],
 	"object": [[], ["noun"], ["item"], []],
 	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] =kb_services.get_attribute(G,'justina','in')['in'][0] )"
-	},
-
-	{"arity": 3,
-	# get a drink to sam / get me a coke
-	"action": ["bring", "fetch", "get"],
-	"solve": ["destination", "object"],
-	"destination": [[], ["noun", "prep_phrase"], ["person"], []],
-	"object": [[], ["noun"], ["item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
-	{"arity": 3,
-	# get a drink to the livingroom
-	"action": ["bring", "fetch", "get"],
-	"solve": ["destination", "object"],
-	"destination": [["to"], ["prep_phrase"], ["place"], []],
-	"object": [[], ["noun"], ["item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] -destination- )"
-	},
-
-	{"arity": 3,
-	# get a drink from the livingroom
-	"action": ["bring", "fetch", "get"],
-	"solve": ["source", "object"],
-	"source": [["from"], ["prep_phrase"], ["place"], []],
-	"object": [[], ["noun"], ["item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( get justina -object- -source- =kb_services.get_attribute(G,'justina','in')['in'][0] )"
-	},
-
-	{"arity": 3,
-	# get a drink to the livingroom
-	"action": ["bring", "fetch", "get"],
-	"solve": ["destination", "object"],
-	"destination": [["to"], ["prep_phrase"], ["place"], []],
-	"object": [[], ["noun"], ["item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( get justina -object- =kb_services.get_attribute(G,'-object-','in')['in'][0] -destination- )"
-	},
-
-	{"arity": 4,
-	# get sam a drink from the kitchen
-	"action": ["bring", "fetch", "get"],
-	"solve": ["destination", "object", "source"],
-	"destination": [[], ["noun"], ["person"], []],
-	"object": [[], ["noun"], ["item"], []],
-	"source": [["from"], ["prep_phrase"], ["place", "container", "item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( get justina -object- -source- =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
-
-
-
-	{"arity": 3,
-	"action": ["give", "hand"],
-	"solve": ["destination", "item"],
-	"destination": [[], ["noun"], ["person"], []],
-	"item": [[], ["noun"], ["item"], []],
-	# (give ITEM PERSON LOCATION)
-	"dependency": "( give -item- -destination- =kb_services.get_attribute(G,'-destination-','in')['in'][0] )"
-	},
-
-	{"arity": 4,
-	"action": ["give", "hand"],
-	"solve": ["destination", "item", "source"],
-	"destination": [[], ["noun"], ["person"], []],
-	"source": [["from"], ["prep_phrase"], ["place"], []],
-	"item": [[], ["noun"], ["item"], []],
-	# (give ITEM PERSON LOCATION)
-	"dependency": "( give -item- -destination- -source- )"
+	"dependency": "( action FETCH object -object- location =kb_services.get_attribute(G,'-object-','in')['in'][0] destination =kb_services.get_attribute(G,'justina','in')['in'][0] 0 1)"
 	},
 
 
 
 
 
-	{"arity": 2,
-	"action": ["take", "grasp"],
-	"solve": ["object"],
-	"object": [[], ["noun"], ["item"], []],
-	# (grasp OBJECT)
-	"dependency": "( grasp -object- )"
-	},
 
-
-	#falta find/lookfor, move/put, point, leave
-
-	{"arity": 3,
-	"action": ["put", "puts", "move", "moves"],
-	"solve": ["destination", "object"],
-	"destination": [[], ["prep_phrase", "noun"], ["place", "person"], []],
-	"object": [[], ["noun"], ["item"], []],
-	"dependency": "( move A: robot O: -object- D: -destination- )"
-	},
 
 
 	

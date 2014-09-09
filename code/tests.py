@@ -12,7 +12,7 @@ import networkx.drawing
 import matplotlib.pyplot as plt
 
 G = kb_services.load_semantic_network()
-sentence = "drop"
+sentence = "what is the temperature of each drink"
 
 
 

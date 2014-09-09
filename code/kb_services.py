@@ -168,6 +168,8 @@ def all_objects(G, clss):
 	# explore subclases given by relation is_object_of
 	# params nx graph, string node
 	# return set of all objects of all subclasses
+	if is_object(G, clss):
+		return [clss]
 	if clss in G:
 		fringe = [clss]
 		objects = []
@@ -408,6 +410,24 @@ def is_locally_defined(G, attribute):
 	else:
 		return False
 
+
+
+def is_object(G, obj):
+	# verify if an attribute is declared transitive
+	# return bool
+	if obj in G:
+		neighbors = G.successors(obj)
+		#print neighbors
+		for each_nei in neighbors:
+			#print "testing: ", obj, " and ", each_nei, "relation: ", G[obj][each_nei]['relation']
+			if G[obj][each_nei]['relation'] == 'is_object_of':
+				return True
+			
+		else:
+			return False
+	else:
+		return False
+
 #########################
 # utils
 
@@ -469,6 +489,6 @@ G = load_semantic_network()
 
 #print "lolcat", get_objects_that_match2(G, "stuff", "in", ["livingroom_1"])
 
-#print "lolcat", all_objects(G, "stuff")
+#print "lolcat", is_object(G, "rooooom")
 
-#print "subclases", all_subclasses(G,"food")
+#print "objs: ", all_objects(G,"sam")

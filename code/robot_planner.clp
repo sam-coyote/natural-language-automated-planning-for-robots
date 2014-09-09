@@ -22,6 +22,76 @@
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; complex activities
+
+(defrule execute_move_object
+	; head of action
+	?fact_request <- (action FETCH object ?obj location ?loc destination ?dest 0 ?idpost)
+	(id_count ?current_id)
+	
+	; preconditions
+
+	=>
+
+	; unfolding activity
+	
+	(assert (action TAKEOBJECT object ?obj location ?loc 0 (+ ?current_id 1)))
+	(assert (action GO location ?dest (+ ?current_id 1) (+ ?current_id 2)))
+	(assert (action DROP (+ ?current_id 2) (+ ?current_id 3)))
+	
+	
+	; efects +
+	
+	
+	; efects -
+	(retract ?fact_request)
+	
+	;unlock pending task
+	(assert (unlock_requests ?idpost))
+	)
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; medium complexity
+
+(defrule execute_take_object
+	; head of action
+	?fact_request <- (action TAKEOBJECT object ?obj location ?loc 0 ?idpost)
+	(id_count ?current_id)
+	(fact ?obj on ?furniture)
+	; preconditions
+
+	=>
+
+	; unfolding activity
+	(assert (action GO location ?loc 0 (+ ?current_id 1)))
+	(assert (action APROACH object ?furniture (+ ?current_id 1) (+ ?current_id 2)))
+	(assert (action RECOGNIZE object ?obj (+ ?current_id 2) (+ ?current_id 3)))
+	(assert (action GRASP object ?obj (+ ?current_id 3) (+ ?current_id 4)))
+
+
+	
+	; efects +
+	
+	
+	; efects -
+	(retract ?fact_request)
+	
+	;unlock pending task
+	(assert (unlock_requests ?idpost))
+	)
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;primitive tasks
@@ -55,7 +125,7 @@
 	
 	; preconditions
 	?fact_precond <-(fact justina in ?currentplace)
-	?fact_att <- (justina attention ?some)
+	
 
 	=>
 
@@ -64,13 +134,18 @@
 	
 	; efects -
 	(retract ?fact_precond)
-	(retract ?fact_att)
+
 	; efects +
-	(assert (justina in ?place))
-	(assert (justina attention none))
+	(assert (fact justina in ?place))
+	(assert (fact justina attention none))
 
 	;unlock pending task
 	(retract ?fact_request)
+	(assert (unlock_requests ?idpost))
+
+	
+	;?fact_att <- (fact justina attention ?some)
+	;(retract ?fact_att)
 	)
 
 
@@ -80,7 +155,6 @@
 (defrule execute_aproach
 	; head of action
 	?fact_request <- (action APROACH object ?object 0 ?idpost)
-	
 	; preconditions
 	?fact_precond1 <-(fact justina in ?currentplace)
 	?fact_precond2 <-(fact ?object in ?currentplace)
@@ -93,6 +167,7 @@
 	
 	;unlock pending task
 	(retract ?fact_request)
+	(assert (unlock_requests ?idpost))
 	
 	; efects -
 	
@@ -119,6 +194,7 @@
 	
 	;unlock pending task
 	(retract ?fact_request)
+	(assert (unlock_requests ?idpost))
 	
 	; efects -
 	
@@ -139,9 +215,11 @@
 
 	; commands to other modules
 	(printout t "Arm module - grasp item: " ?object crlf)
+	(printout t "Robot carries item: " ?object crlf)
 	
 	;unlock pending task
 	(retract ?fact_request)
+	(assert (unlock_requests ?idpost))
 	
 	; efects -
 	(retract ?fact_on)
@@ -179,4 +257,20 @@
 
 
 
+(defrule unlock_request_4
+	?blocked_req <-(unlock_requests ?id)
+	?blocked_fact <- (action ?type ?param1 ?p1 ?id ?req_id)
+	=>
+	(retract ?blocked_fact ?blocked_req)
+	(assert (action ?type ?param1 ?p1 0 ?req_id)) 
+)
+
+
+(defrule unlock_request_2
+	?blocked_req <-(unlock_requests ?id)
+	?blocked_fact <- (action ?type ?id ?req_id)
+	=>
+	(retract ?blocked_fact ?blocked_req)
+	(assert (action ?type 0 ?req_id)) 
+)
 

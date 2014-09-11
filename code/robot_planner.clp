@@ -30,7 +30,7 @@
 (defrule execute_move_object
 	; head of action
 	?fact_request <- (action FETCH object ?obj location ?loc destination ?dest 0 ?idpost)
-	(id_count ?current_id)
+	?fact_id <- (id_count ?current_id)
 	
 	; preconditions
 
@@ -40,7 +40,7 @@
 	
 	(assert (action TAKEOBJECT object ?obj location ?loc 0 (+ ?current_id 1)))
 	(assert (action GO location ?dest (+ ?current_id 1) (+ ?current_id 2)))
-	(assert (action DROP (+ ?current_id 2) (+ ?current_id 3)))
+	(assert (action DROP (+ ?current_id 2) ?idpost))
 	
 	
 	; efects +
@@ -50,7 +50,9 @@
 	(retract ?fact_request)
 	
 	;unlock pending task
-	(assert (unlock_requests ?idpost))
+	;(assert (unlock_requests ?idpost))
+	(assert (id_count (+ ?current_id 2)))
+	(retract ?fact_id)
 	)
 
 
@@ -66,7 +68,7 @@
 (defrule execute_take_object
 	; head of action
 	?fact_request <- (action TAKEOBJECT object ?obj location ?loc 0 ?idpost)
-	(id_count ?current_id)
+	?fact_id <- (id_count ?current_id)
 	(fact ?obj on ?furniture)
 	; preconditions
 
@@ -76,7 +78,7 @@
 	(assert (action GO location ?loc 0 (+ ?current_id 1)))
 	(assert (action APROACH object ?furniture (+ ?current_id 1) (+ ?current_id 2)))
 	(assert (action RECOGNIZE object ?obj (+ ?current_id 2) (+ ?current_id 3)))
-	(assert (action GRASP object ?obj (+ ?current_id 3) (+ ?current_id 4)))
+	(assert (action GRASP object ?obj (+ ?current_id 3) ?idpost))
 
 
 	
@@ -87,8 +89,14 @@
 	(retract ?fact_request)
 	
 	;unlock pending task
-	(assert (unlock_requests ?idpost))
+	;(assert (unlock_requests ?idpost))
+	(assert (id_count (+ ?current_id 3)))
+	(retract ?fact_id)
 	)
+
+
+
+
 
 
 
@@ -117,20 +125,20 @@
 	)
 
 
-
-
-(defrule execute_go
+(defrule execute_go_room
+	(declare (salience 100))
 	; head of action
 	?fact_request <- (action GO location ?place 0 ?idpost)
 	
 	; preconditions
 	?fact_precond <-(fact justina in ?currentplace)
-	
-
+	(fact ?currentplace is_object_of room)
+	(fact ?place is_object_of room)
+	(fact ?place connected_to ?currentplace)
 	=>
 
 	; commands to other modules
-	(printout t "Navegation module - move robot from: " ?currentplace " to: " ?place crlf)
+	(printout t "Navegation module - move robot from room: " ?currentplace " to room: " ?place crlf)
 	
 	; efects -
 	(retract ?fact_precond)
@@ -147,6 +155,39 @@
 	;?fact_att <- (fact justina attention ?some)
 	;(retract ?fact_att)
 	)
+
+
+
+
+
+;(defrule execute_go
+;	; head of action
+;	?fact_request <- (action GO location ?place 0 ?idpost)
+;	
+;	; preconditions
+;	?fact_precond <-(fact justina in ?currentplace)
+;	
+;
+;	=>
+;
+;	; commands to other modules
+;	(printout t "Navegation module - move robot from: " ?currentplace " to: " ?place crlf)
+;	
+;	; efects -
+;	(retract ?fact_precond)
+;
+;	; efects +
+;	(assert (fact justina in ?place))
+;	(assert (fact justina attention none))
+;
+;	;unlock pending task
+;	(retract ?fact_request)
+;	(assert (unlock_requests ?idpost))
+;
+;	
+;	;?fact_att <- (fact justina attention ?some)
+;	;(retract ?fact_att)
+;	)
 
 
 
@@ -274,3 +315,31 @@
 	(assert (action ?type 0 ?req_id)) 
 )
 
+
+(defrule execute_emergent_open_door
+	(declare (salience -100))
+	; head of action
+	?fact_request <- (action GO location ?place 0 ?idpost)
+	
+	; preconditions
+	?fact_precond <-(fact justina in ?currentplace)
+	(fact ?currentplace is_object_of room)
+	(fact ?place is_object_of room)
+	
+	(not (fact ?place connected_to ?currentplace))
+	(fact ?door connect ?place)
+	(fact ?door connect ?currentplace)
+	=>
+
+	; commands to other modules
+	(printout t "Arm module - open door in: " ?door " in: " ?place crlf)
+	
+	; efects -
+	;(retract ?fact_precond)
+
+	; efects +
+
+	;unlock pending task
+	(assert (fact ?door functional_status open))
+
+	)

@@ -82,6 +82,7 @@ pos_ngrams = [
 	['prep_loc', 'det'], 
 	['prep', 'det'], 
 	['prep', 'noun'], 
+	['prep', 'existencial'], 
 	['prep_loc', 'pro'], 
 	['prep_loc', 'pos_pro'], 
 	['prep_loc', 'universal'],
@@ -102,8 +103,8 @@ pos_ngrams = [
 	['idf_pro', 'particule', 'vrb']]
 # 2) pos tag bigrams which second element is a noun with semantic restrictions
 pos_bigrams_noun_semantics = [
-	['prep_loc', 'place'], 
-	['prep_loc', 'person']]
+	['prep', 'place'], 
+	['prep', 'person']]
 
 
 
@@ -150,6 +151,7 @@ def pos_tagger(G, sentence):
 		tags.append(look_tags(language_info, w))
 	
 	ranked_disambiguated_tags = disambiguate_pos(G, words, tags)
+	print ranked_disambiguated_tags
 	return words, ranked_disambiguated_tags
 	
 def look_tags(voc, word):
@@ -196,6 +198,7 @@ def rank_pos_combinations(G, words, combinations):
 				for each in pos_ngrams:
 					#print "testing: ",  combinations[i][j:k], " contra ", each 
 					if combinations[i][j:k] == each:
+						print "hit disambiguate rule"
 						ranks[i] = ranks[i] + 1 
 						
 	#reranking

@@ -167,7 +167,6 @@
 (furniture 			functional_status 	good)
 (chair_6 			functional_status 	broken)
 (chair_1 			functional_status 	broken)
-(door 				functional_status 	open)
 
 # food and drinks
 (carrot_1 			is_object_of 		vegetable)
@@ -224,6 +223,8 @@
 
 #temperature
 (pils_1 			temperature			cold)
+(apple_juice 		temperature			cold)
+
 (alt_bier_1 		temperature 		warm)
 (beer 				temperature 		cold)
 
@@ -261,12 +262,11 @@
 
 # state of robot
 
-(justina in front_of_kitchen)
+(justina in corridor)
 (justina attention kitchen_table)
 (apple_2 graspable yes)
 (justina carry apple_juice)
 
-
+(kitchen_door functional_status closed)
 
  # interaction
-

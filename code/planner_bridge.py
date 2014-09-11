@@ -54,9 +54,9 @@ def execute():
 	
 
 	
-	#print "-------------------------"
-	#print "ACTIVATION TRACE"
-	#print t
+	print "-------------------------"
+	print "ACTIVATION TRACE"
+	print t
 	
 	print "-------------------------"
 	print "PLANNING OUTPUT"

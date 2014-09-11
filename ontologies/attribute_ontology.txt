@@ -70,7 +70,7 @@
 
 # functionality
 (closed	  			is_object_of 		 	functional_status)
-(opened	  			is_object_of 		 	functional_status)
+(open	  			is_object_of 		 	functional_status)
 (broken	  			is_object_of 		 	functional_status)
 (good	  			is_object_of 		 	functional_status)
 (connect 			is_object_of 			functional_status)

@@ -166,6 +166,9 @@
 (request		tag			vrb)
 (requests		tag			vrb)
 
+(recieves		tag 		vrb)
+(recieve		tag 		vrb)
+
 # communicate
 
 (tell			tag			vrb)

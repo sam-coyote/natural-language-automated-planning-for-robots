@@ -15,11 +15,29 @@ grammar_np_simple = [
 	['NP',			'number',				'noun'],
 	['NP',			'det',					'noun'],
 
+	['NP',			'det',					'NP2'],
+
 	['NP',			'existencial',			'noun_q'],
 	['NP',			'universal',			'noun_q'],
 	['NP',			'number',				'noun_q'],
 	['NP',			'det',					'noun_q'],
 	
+	['noun_q',		'adj',					'noun'],
+	['noun_q',		'ADJS',					'noun'],
+	
+	['ADJS',		'adj',					'adj'],
+	['ADJS',		'ADJS',					'adj'],
+	
+	['noun_q',		'adj',					'NP2'],
+	['noun_q',		'ADJS',					'NP2'],
+
+	['NP2',			'noun',					'NPad'],
+	['NPad',		'adj',					'NP'],
+	['NPad',		'att',					'NP'],
+	
+	
+
+
 	['NP',			'att',					'adj'],
 	['NP',			'noun',					'NP1'],
 	['NP1',			'prep_loc',				'noun'],
@@ -27,10 +45,8 @@ grammar_np_simple = [
 	['NP',			'universal',			'NP'],
 	['NP',			'number',				'NP'],
 	['NP',			'det',					'NP'],
-	['noun_q',		'adj',					'noun'],
-	['noun_q',		'ADJS',					'noun'],
-	['ADJS',		'adj',					'adj'],
-	['ADJS',		'ADJS',					'adj'],
+	['ad_np',		'adj',					'NP'],
+
 	['NP',			'idf_pro',				'TOVERB'],
 	['TOVERB',		'particule',			'vrb']]
 
@@ -198,7 +214,7 @@ def rank_pos_combinations(G, words, combinations):
 				for each in pos_ngrams:
 					#print "testing: ",  combinations[i][j:k], " contra ", each 
 					if combinations[i][j:k] == each:
-						print "hit disambiguate rule"
+						#print "hit disambiguate rule"
 						ranks[i] = ranks[i] + 1 
 						
 	#reranking
@@ -390,7 +406,7 @@ def test_disambiguity():
 def test_cyk():
 	G = kb_services.load_semantic_network()
 	#print G.nodes()
-	words, ranked_tags = pos_tagger(G, "a beer in sam")
+	words, ranked_tags = pos_tagger(G, "the man in the kitchen")
 	print  "words: ", words, "  tags: ", ranked_tags
 
 	print "NP? ", parser_cyk(grammar_np_simple, ranked_tags[0])
@@ -398,7 +414,7 @@ def test_cyk():
 def test_chunker():
 	G = kb_services.load_semantic_network()
 	#print G.nodes()
-	words, ranked_tags = pos_tagger(G, "3 cold drink lol from the fridge")	
+	words, ranked_tags = pos_tagger(G, "the man in the kitchen")	
 
 	print words
 	print ranked_tags[0]

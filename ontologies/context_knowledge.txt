@@ -10,6 +10,7 @@
 (bedroom_1  		is_object_of  		room)
 (bedroom_2  		is_object_of  		room)
 (bathroom 	 		is_object_of  		room)
+(office 			is_object_of 		room)
 (outside 			is_object_of 		room)
 
 
@@ -68,6 +69,16 @@
 (sofa_1 			is_object_of 		sofa)
 (bag_1 				is_object_of 		bag)
 (box_3 				is_object_of 		box)
+
+(metamorfosis		is_object_of 		book)
+(aleph 				is_object_of 		book)
+(c_for_dummies		is_object_of 		book)
+
+(pencil 			is_object_of 		pencil)
+(my_notes 			is_object_of 		notebook)
+
+(wired_sep 			is_object_of 		magazine)
+(gaceta_unam 		is_object_of 		magazine)
 
 # topological information about furniture
 
@@ -146,6 +157,20 @@
 (chair_6 			near 			table_1)
 (chair_7 			near 			table_1)
 (box_3 				on 				table_1)
+
+(metamorfosis 		color 			blue)
+(metamorfosis 		on 				chair_6)
+(metamorfosis 		in 				livingroom)
+(metamorfosis 		author 			kafka)
+(kafka 				is_object_of 	man)
+
+(aleph		 		color 			red)
+(aleph		 		on 				table_2)
+(aleph		 		in 				bedroom_2)
+(aleph		 		author 			borges)
+(borges 			is_object_of 	man)
+
+
 
 # properties of furniture
 # furniture color
@@ -246,7 +271,9 @@
 
 
 # location of people
-(sam 				in 					bed_zone_2)
+(sam 				in 					kitchen)
+(sam 				near 				kitchen_table)
+(sam 				near 				fridge1)
 (valerie 			in 					sofa_1)
 
 
@@ -257,6 +284,7 @@
 (coke 			aka 			coca_cola)
 (coke 			aka 			pepsi)
 (fruta			aka				fruit)
+(robot 			aka 			humanoid)
 
 
 

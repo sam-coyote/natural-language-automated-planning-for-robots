@@ -38,6 +38,7 @@
 (edible 		is_kind_of		item)
 (furniture		is_kind_of		item)
 (chemical_product is_kind_of 	item)
+(office_item  	is_kind_of 		item)
 
 (tool 			is_kind_of 		instrument)
 (cutlery 		is_kind_of 		instrument)
@@ -74,6 +75,15 @@
 # cleaning_products
 (cleaning_product is_kind_of 	chemical_product)
 
+
+#office_item
+
+(book 		is_kind_of 			office_item)
+(pencil 	is_kind_of 			office_item)
+(pen 		is_kind_of 			office_item)
+(notebook 	is_kind_of 			office_item)
+(computer 	is_kind_of 			office_item)
+(magazine 	is_kind_of 			office_item)
 
 # food
 (fruit	 		is_kind_of 		food)

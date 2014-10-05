@@ -10,10 +10,17 @@
 (functional_status 		is_kind_of 		attribute)
 (location   			is_kind_of 		attribute)
 (social_status 		 	is_kind_of  	attribute)
+(passive_voice			is_kind_of 		attribute)
 
 
 
 # # # #
+
+
+(owned_by 				is_kind_of 		passive_voice)
+(used_by 				is_kind_of 		passive_voice)
+(broken_by 				is_kind_of 		passive_voice)
+(fixed_by 				is_kind_of 		passive_voice)
 
 # social status
 (marriage 		is_kind_of 			social_status)
@@ -82,11 +89,11 @@
 
 # location
 
-(on 			is_object_of 			location)
-(near			is_object_of 			location)
-(under	 		is_object_of 			location)
-(in 			is_object_of 			location)
-(connected_to 	is_object_of 			location)
+(on 			is_kind_of 			location)
+(near			is_kind_of 			location)
+(under	 		is_kind_of 			location)
+(in 			is_kind_of 			location)
+(connected_to 	is_kind_of 			location)
 
 
 

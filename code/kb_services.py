@@ -204,7 +204,13 @@ def language_info():
 				language_tags = merge_dictionaries(language_tags, {nB : [nA]})
 	
 	G = load_semantic_network()
-	language_tags.update({ 'noun': all_subclasses(G, 'stuff') + all_objects(G, 'stuff')})
+	n = [all_aka(G, objclss) for objclss in all_subclasses(G, 'stuff')] + [all_aka(G, objclss) for objclss in all_objects(G, 'stuff')]
+	nouns = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in n:
+		nouns += each_aka
+	#print "nounS ------> ", nouns
+	language_tags.update({ 'noun': nouns })
 	language_tags.update({'adj' : all_objects(G, 'attribute') })
 	language_tags.update({'att' : all_subclasses(G, 'attribute')})
 	return language_tags
@@ -482,12 +488,14 @@ def get_objects_that_match2(G, objclss, attribute, values_list):
 
 G = load_semantic_network()
 #print 'get all attributes and values: ', get_attribute(G, 'fanta_1', 'temperature')
-#print "what is cold? ", verify_satisfability_of_objclss(G, "beer", ["cold"])
+
+
+#print "what is cold? ", verify_satisfability_of_objclss(G, "sam", ["kitchen", "in"])
 
 #print "lolcat", get_objects_that_match(G, "stuff", ["cold"])
 
 
-#print "lolcat", get_objects_that_match2(G, "stuff", "in", ["livingroom_1"])
+#print "lolcat", get_objects_that_match2(G, "man", "in", ["livingroom_1"])
 
 #print "lolcat", is_object(G, "rooooom")
 

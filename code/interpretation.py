@@ -20,132 +20,27 @@ def intersection(a,b):
 	a = set(a)
 	return [bb for bb in b if bb in a]
 # 
-interpreted_verbs = [
+meaning_mapping_patterns = [
 	#
 	# Assertions
 	#
-	# assertion of a new class of object or attribute 
-	# candy is a kind of food --> candy is is_kinf_of food
-	{"arity": 4,
-	# objects to solved (find grounded reference)
-	"solve": ["object", "parentclass", "declareclass"],
-	# sintactical forms of the verb
-	"action": ["is", "are"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"object": [[], ["unknown"], [], []],
-	"declareclass": [[], ["declare_clss"], [], []], 
-	"parentclass": [[], ["att", "noun"], ["attribute", "stuff"], []],
-	"dependency": '(action SAY message "ok =kb_services.add_edges_from_list([["-object-","is_kind_of","-parentclass-"]],"../ontologies/context_knowledge.txt") " 0 0)'
-	},
 
-	# assertion of a new instance of object or attribute 
-	# handsome is an adjetive of handsomeness
-	{"arity": 4,
-	# objects to solved (find grounded reference)
-	"solve": ["object", "parentclass", "declareobj"],
-	# sintactical forms of the verb
-	"action": ["is", "are"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"object": [[], ["unknown"], [], []],
-	"declareobj": [[], ["declare_obj"], [], []], 
-	"parentclass": [[], ["att", "noun"], ["attribute", "stuff"], []],
-	"dependency": '(action SAY message "ok =kb_services.add_edges_from_list([["-object-","is_object_of","-parentclass-"]],"../ontologies/context_knowledge.txt") " 0 0)'
-	},
+# verb give in present
+	{
+	
+	# parameters to be solved 
+	"params": ["what_action", "who", "what_object", "to_whom"],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["give", "gives"], ["vrb"], [], []],
+	"who": [[], ["noun"], ["person"], []],
+	"what_object": [[], ["noun"], ["item"], []],
+	"to_whom": [["to"], ["prep_phrase"], ["person", "robot"], []],
 
-
-	# assertion of a relation between two nouns
-	# all drinks are on kitchen table
-	{"arity": 4,
-	# objects to solved (find grounded reference)
-	"solve": ["object", "attribute", "value"],
-	# sintactical forms of the verb
-	"action": ["is", "are"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"object": [[], ["noun"], ["stuff"], []],
-	"attribute": [[], ["adj", "att"], ["attribute"], []],
-	"value": [[], ["noun"], [], []],
-	"dependency": '(action SAY message "ok =kb_services.add_edges_from_list([["-object-","-attribute-","-value-"]],"../ontologies/context_knowledge.txt") " 0 0)'
-	},
-
-	# assertion of a value of atribute in an object or class
-	# all drinks are on kitchen table
-	{"arity": 3,
-	# objects to solved (find grounded reference)
-	"solve": ["object", "value"],
-	# sintactical forms of the verb
-	"action": ["is", "are"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"object": [[], ["noun"], ["stuff"], []],
-	"value": [[], ["adj"], ["attribute"], []],
-	"dependency": '(action SAY message " ok =kb_services.add_edges_from_list([["-object-",kb_services.all_superclasses(G,"-value-")[0],"-value-"]],"../ontologies/context_knowledge.txt") " 0 0)'
-	},
-
-
-
-
-
-
-	#
-	# Questions
-	#
-
-	# question what is the attribute of object
-	# ex: what is the temperature of each drink, what is the color of a cold beer, what is the location of each drink, what is the location of drinks
-	# arity 6: 1 adv_class, 1 verb is, 1 "the", 1 attribute, 1 "of", 1 object 
-	{"arity": 6,
-	# objects to solved (find grounded reference)
-	"solve": ["adv_what", "attribute", "object"],
-	# sintactical forms of the verb
-	"action": ["is", "are"],
-	# description of element actor: 
-	#[]: no special keywords, [noun]: constituent, [person, robot]: sem type, [robot]: default 
-	"attribute": [[], [], ["attribute"], []],
-	#[to]: special keyword, [noun]: constituent, [place]: sem type, [exit]: default 
-	"adv_what": [["what"], ["adv_class"], [], []],
-	#[to]: special keyword, [noun]: constituent, [place]: sem type, [exit]: default 
-	"object": [[], ["noun"], ["stuff"], []],
-	"dependency": '( action SAY message " -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,"-object-","-attribute-")) " 0 1)'
-	},
-
-	# what is att_value
-	{"arity": 3, 
-	"solve": ["adv_what", "attribute"],
-	"action": ["is", "are"],
-	"attribute": [[], ["adj"], ["attribute"], []],
-	"adv_what": [["what"], ["adv_class"], [], []],
-	"dependency": '( action SAY message " =generate_nl_response_from_list(kb_services.get_objects_that_match(G,"stuff",["-attribute-"])) " 0 1)'
-	},
-
-	{"arity": 3, 
-	"solve": ["adv_what", "attribute"],
-	"action": ["is", "are"],
-	"attribute": [[], ["adj"], ["attribute"], []],
-	"adv_what": [["who"], ["adv_person"], [], []],
-	"dependency": '( action SAY message " =generate_nl_response_from_list(kb_services.get_objects_that_match(G,"person",["-attribute-"])) " 0 1)'
-	},
-
-	# what is attribute att_value
-	# ex what is in table_1?, what is connected to livigroom_1
-	{"arity": 4,
-	"solve": ["adv_what", "attribute", "noun_value"],
-	"action": ["is", "are"],
-	"noun_value": [[], ["noun"], ["stuff"], []],
-	"attribute": [[], ["adj"], ["attribute"], []],
-	"adv_what": [["what"], ["adv_class"], [], []],
-	"dependency": '( action SAY message " =generate_nl_response_from_list(kb_services.get_objects_that_match2(G,"stuff","-attribute-",["-noun_value-"])) " 0 1)'
-	},
-
-	# where is object? ex where is sam? where is a red vegetable?
-	{"arity": 3,
-	"solve": ["adv_where", "object"],
-	"action": ["is", "are"],
-	"object": [[], ["noun"], ["stuff", "person"], []],
-	"adv_where": [["where"], ["adv_loc"], [], []],
-	"dependency": '( action SAY message " -object- =generate_nl_response_from_dict(kb_services.get_attribute(G,"-object-","location")) " 0 1)'
+	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -who- TO: -to_whom-)',
+	"verbal_confirmation": '-what_object- is now with -to_whom- right?',
+	"planner_confirmed": '(action SAY message "ok, got it" =kb_services.add_edges_from_list([["-object-","owned_by","-to_whom-"]],"../ontologies/context_knowledge.txt" 0 0)',
+	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
 	},
 
 
@@ -154,123 +49,22 @@ interpreted_verbs = [
 
 
 
+	# recieve
+	{
+	# parameters to be solved 
+	"params": ["what_action", "who", "what_object", "from_whom"],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["recieve", "recieves"], ["vrb"], [], []],
+	"who": [[], ["noun"], ["person", "robot"], []],
+	"what_object": [[], ["noun"], ["item"], []],
+	"from_whom": [["from"], ["prep_phrase"], ["person"], []],
 
-
-	#
-	# Commands
-	#
-
-	#  GO
-	{"arity": 2,
-	"action": ["go", "walk", "navigate", "return"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["place"], []],
-	"dependency": "( action GO location -destination- 0 0 )"
-	},
-
-	{"arity": 2,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( action GO location =kb_services.get_attribute(G,'-destination-','in')['in'][0] 0 0)"
-	},
-
-
-{"arity": 2,
-	"action": ["go", "walk", "navigate", "return"],
-	"solve": ["destination"],
-	"destination": [["here"], [], [], []],
-	"dependency": "( action GO location =kb_services.get_attribute(G,'justina','in')['in'][0] 0 0 )"
-	},
-
-	{"arity": 2,
-	"action": ["go", "walk", "navigate"],
-	"solve": ["destination"],
-	"destination": [["to"], ["prep_phrase"], ["item", "person"], []],
-	# (go SOURCE DESTINATION)
-	"dependency": "( action GO location =kb_services.get_attribute(G,'-destination-','in')['in'][0] 0 0)"
-	},
-
-
-	# APROACH
-	{"arity": 2,
-	# 
-	"action": ["align", "arrange", "orient", "aproach"],
-	"solve": ["object"],
-	"object": [[], ["prep_phrase", "noun"], ["item", "person"], []],
-	"dependency": "( action APROACH object -object- 0 0 )"
-	},
-
-
-	# RECOGNIZE
-	{"arity": 2,
-	# 
-	"action": ["recognize"],
-	"solve": ["object"],
-	"object": [[], ["noun"], ["item", "person"], []],
-	"dependency": "( action RECOGNIZE object -object- 0 0 )"
-	},
-
-
-	# GRASP
-	{"arity": 2,
-	# 
-	"action": ["grasp"],
-	"solve": ["object"],
-	"object": [[], ["noun"], ["item"], []],
-	"dependency": "( action GRASP object -object- 0 0 )"
-	},
-
-
-	# HAND OVER
-	{"arity": 1,
-	# 
-	"action": ["hand_over", "drop"],
-	"solve": [],
-	"dependency": "( action DROP 0 0 )"
-	},
-
-
-
-
-
-
-# medium complexity
-
-
-	{"arity": 2,
-	# take a drink
-	"action": ["take"],
-	"solve": ["object"],
-	"object": [[], ["noun"], ["item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( action TAKEOBJECT object -object- location =kb_services.get_attribute(G,'-object-','in')['in'][0] 0 0)"
-	},
-
-
-
-
-
-
-
-
-	{"arity": 2,
-	# bring a drink
-	"action": ["bring", "fetch", "get"],
-	"solve": ["object"],
-	"object": [[], ["noun"], ["item"], []],
-	# (get ACTOR OBJECT SOURCE DESTINATION)
-	"dependency": "( action FETCH object -object- location =kb_services.get_attribute(G,'-object-','in')['in'][0] destination =kb_services.get_attribute(G,'justina','in')['in'][0] 0 1)"
-	},
-
-
-
-
-
-
-
-
+	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -from_whom- TO: -who-)',
+	"verbal_confirmation": '-what_object- is now with -who- right?',
+	"planner_confirmed": '(action SAY message "ok, got it" =kb_services.add_edges_from_list([["-object-","owned_by","-who-"]],"../ontologies/context_knowledge.txt" 0 0)',
+	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
+	}
 	
 ]
 
@@ -281,86 +75,73 @@ def generate_dependency(G, sentence_dict):
 	used_objects = []
 	solved_dependency = ''
 	solved = False
-	print "--------->   recibe esto: ", sentence_dict
-	# sentence_dict dict keys: words, constituents, objects, types
-	for each_verb in interpreted_verbs:
-		for each_action_paraphrasis in each_verb["action"]:
-			if not solved and each_action_paraphrasis in sentence_dict["words"] and len(sentence_dict["words"]) == each_verb["arity"]:
-				#print "ok! trying to interpret sentence using: ", each_verb
-				solved_elements = {element: "" for element in each_verb["solve"]}
-				# loading defaults
-				for each in solved_elements:
-					if each_verb[each][3] != []:
-						solved_elements[each] = each_verb[each][3][0]
-				# overwriting defaults if an element match
-				for each_to_solve in each_verb["solve"]:
-					print "trying to solve :", each_to_solve
-					# need to check 4 things:
-					#print "should contain the keywords: ", each_verb[each_to_solve][0]
-					#print "should be from constituent: ", each_verb[each_to_solve][1]
-					#print "should be semantic type: ", each_verb[each_to_solve][2]
-					#print "default: ", each_verb[each_to_solve][3]
-					for each_object in sentence_dict["objects"]:
-						if each_object not in used_objects:
-							inx = sentence_dict["objects"].index(each_object)
-							#print "has the keywords: ", sentence_dict["words"][inx]
-							#print "is from constituent: ", sentence_dict["constituents"][inx]
-							#print "is semantic type: ", sentence_dict["types"][inx]
-							#print "default: ", "naaat"
-							#check palabras clave
-							#print 'for gods sake: ',sentence_dict["words"][inx], each_verb[each_to_solve][0]
-							condition_of_match = len(intersection(sentence_dict["words"][inx], each_verb[each_to_solve][0])) > 0 or each_verb[each_to_solve][0] == []
-							#print 'palabras clave: ', condition_of_match
-							#check constituyente
-							condition_of_match = condition_of_match and (sentence_dict["constituents"][inx] in each_verb[each_to_solve][1] or each_verb[each_to_solve][1] == [])
-							#print 'contituyente: ', condition_of_match
-							#check semantic type
-							condition_of_match = condition_of_match and (len(intersection(sentence_dict["types"][inx], each_verb[each_to_solve][2])) > 0 or each_verb[each_to_solve][2] == [])
-							#print 'tipos semanticos: ', condition_of_match
+	# recibe un diccionario con campos "constituents", "objects", "types", "words", 
+	#la primeras dos son listas de strings y las otras son lista de listas
 
-							if condition_of_match:
-								print "-------> ", each_object, " can solve ", each_to_solve
-								solved_elements[each_to_solve] = each_object
-								used_objects.append(each_object)
-								break
+	print "7::       ------------------------------------"
+	print "assigning a meaning to the sentence"
 
-				# checking if all elements match to something
-				solved = True
-				print "elements solved: ", solved_elements
-				for each_element in solved_elements:
-					if solved_elements[each_element] == "":
-						solved = False
-						used_objects = []
-						print "matching verb pattern failed, will try another"
-
-				if solved:
-					# substituting solved objects to dependency
-					solved_dependency = each_verb["dependency"]
-					for each in solved_elements:
-						solved_dependency = re.sub('-'+each+'-', solved_elements[each], solved_dependency)
-
-					print "-----> planner primitive before evaluation of code: ", solved_dependency
+	# list of interpretations of each meaning pattern
+	# 
+	print "WTF... ", len(meaning_mapping_patterns)
+	interpretations_list = []
+	id_pattern = 0
+	for each_pattern in meaning_mapping_patterns:
+		# init template interpretation
+		id_pattern =+ 1
+		matched_elements = [[each, ""] for each in each_pattern["params"]]
+		#print "hey! elementos a machear: ", matched_elements
+		current_interpretation = {"id_pattern": id_pattern, "rank":0.0, "matched_elements":matched_elements, "conceptual_dependency": each_pattern["conceptual_dependency"], "verbal_confirmation": each_pattern["verbal_confirmation"], "planner_confirmed": each_pattern["planner_confirmed"], "planner_not_confirmed": each_pattern["planner_not_confirmed"]}
+		used_params = []
+		for each_param in each_pattern["params"]:
+			params_matched = []
+			# try fetch an element from sentence metadata to match a parameter
+			for object_index in range(0, len(sentence_dict["objects"])):
+				current_words = sentence_dict["words"][object_index]
+				current_constituent = sentence_dict["constituents"][object_index]
+				current_types = sentence_dict["types"][object_index]
+				current_object = sentence_dict["objects"][object_index]
+				#print "trying to match ", current_object, " with ", each_param
+				# verifying for each_param
+				if each_param not in used_params:
+					#check words
+					veri_words = len(intersection(current_words, each_pattern[each_param][0])) > 0 or each_pattern[each_param][0] == []
+					#print 'palabras clave: ', veri_words
+					#check constituyente
+					veri_const = current_constituent in each_pattern[each_param][1] or each_pattern[each_param][1] == []
+					#print 'contituyente: ', veri_const
+					#check semantic type
+					veri_type = len(intersection(current_types, each_pattern[each_param][2])) > 0 or each_pattern[each_param][2] == []
+					#print 'tipos semanticos: ', veri_type
 					
+					if veri_type and veri_const and veri_words:
+						for each_element in current_interpretation["matched_elements"]:
+							if each_element[0] == each_param:
+								each_element[1] = current_object
+								used_params.append(each_param)
+								current_interpretation["rank"] +=  1.0/len(current_interpretation["matched_elements"])
+		interpretations_list.append(current_interpretation)
 
-					#print "evaluating expressions: "
-					terms = solved_dependency.split(' ')
-					#print "terms are: ", terms
-					join_list = []
-					for each in terms:
-						if each[0] == "=":
-							print "trying evaluation of: ", each[1:]
-							join_list.append(eval(each[1:]))
-						else:
-							join_list.append(each)
+	print "Total of interpretations: ", len(interpretations_list)
 
-					solved_dependency = " ".join(join_list)
-					#print "solved_final_hiper_dependency: ", join_list
+	ranked_interpretations = sorted(interpretations_list, key=lambda k: k["rank"], reverse=True)
 
-							
-	if solved_dependency == '':
-		return "sorry, did not match any verb interpretation..."
-	else:
-		return solved_dependency
+	for each_inter in ranked_interpretations:
+		print "matched: ", each_inter["matched_elements"]
+		print "rank: ", each_inter["rank"]
+		print "____"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -370,15 +151,22 @@ def generate_dependency(G, sentence_dict):
 # 3) solve syntactical well formed noun phrases
 def sentence_grounder(G, sentence):
 	sentence = parsing.ontology_words_mapping(sentence)
-	#print "key words substitution: ", sentence
+	print "1::       ------------------------------------"
+	print "key words substitution: ", sentence
 	
 	words, ranked_tags = parsing.pos_tagger(G, sentence)	
-	#print "part-of-speech tags: ", ranked_tags[0]
+	print "2::       ------------------------------------"
+	print "part-of-speech tags: ", ranked_tags[0]
 	
 	np_interpretation = parsing.constituent_chunker(parsing.grammar_np_simple, words, ranked_tags[0])
-	#print "chunked pos: ", np_interpretation[0]
-	#print "chunked words: ", np_interpretation[1]
-	#print "noun phrases: ", np_interpretation[2]
+	print "3::       ------------------------------------"
+	print "noun phrases segmentation"
+	print "chunked pos: ", np_interpretation[0]
+	print "chunked words: ", np_interpretation[1]
+	print "noun phrases: ", np_interpretation[2]
+
+	
+
 
 	# constituent level
 	constituent_level = np_interpretation[1][:]
@@ -389,9 +177,11 @@ def sentence_grounder(G, sentence):
 		names = noun_phrase_grounder(G, each[0], each[1]) 
 		if names == []:
 			solved = False
-			#print "noun phrase: ", each, " can not be grounded"
+			print "noun phrase: ", each, " can not be grounded"
 		solved_nps.append(names)
-	#print "-----> solved noun phrases: ", solved_nps
+	
+	print "4::       ------------------------------------"
+	print "grounded noun phrases: ", solved_nps
 
 	if solved: 
 		# obtain all combinations using solved noun phrases
@@ -417,7 +207,9 @@ def sentence_grounder(G, sentence):
 
 		#print "packed in lists:::: ", packed_words
 		all_words = parsing.all_combinations(packed_words)
-		print "-----> all combinations: ", all_words
+
+		print "5::       ------------------------------------"
+		print "Separated sentences: ", all_words
 		#print "-----> all combinations POS: ", np_interpretation[0]
 		
 		# up to here all direct grounded commands are contructed therefore
@@ -444,7 +236,7 @@ def sentence_grounder(G, sentence):
 				pp_names.append(prepositional_phrase_grounder(G, each_pp[0], each_pp[1])[0]) 
 				if pp_names == []:
 					solved = False
-					print "noun phrase: ", each, " can not be grounded"
+					print "prepositional phrase: ", each, " can not be grounded"
 				#solved_nps.append(names)
 			#print "-----------PPPPPP", pp_names
 			if solved: 
@@ -493,12 +285,19 @@ def sentence_grounder(G, sentence):
 
 
 			## cut
-			print "sentence ", sentence, " features:"
-			print "--> ", chunked_final_words
-			print "--> ", constituent_level
-			print "--> ", object_level
-			print "--> ", semantic_types
+
+			print "6::       ------------------------------------"
+			print "sentence: ", sentence, " features the metadata:"
+			print "words: ", chunked_final_words
+			print "constituents: ", constituent_level
+			print "objects: ", object_level
+			print "types: ", semantic_types
+
+
 			analized_sentences.append({"words":chunked_final_words, "constituents": constituent_level, "objects": object_level, "types":semantic_types})
+		
+
+		# return a list of dicionaries that
 		return analized_sentences
 	else:
 		print "SOMETHING WRONG! no object matched with the noun phrase"

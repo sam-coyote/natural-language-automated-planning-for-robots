@@ -11,23 +11,30 @@ import re
 import networkx.drawing
 import matplotlib.pyplot as plt
 
+
+bateria_ejemplos = [
+"marie gives the red book to the man in the kitchen"
+]
+
+
+
 G = kb_services.load_semantic_network()
-sentence = "go to the kitchen"
 
+for each_example in bateria_ejemplos:
+	analized_sentences = interpretation.sentence_grounder(G, each_example)	
 
+	commands = []
+	for each_caracterized_sentence in analized_sentences:
 
-analized_sentences = interpretation.sentence_grounder(G, sentence)	
-#print "inicio:::::::", analized_sentences
-commands = []
-for each_caracterized_sentence in analized_sentences:
-	print "generatiing expression to planner from ", each_caracterized_sentence["objects"]
-	commands.append(interpretation.generate_dependency(G, each_caracterized_sentence))
+		print "sentence ready to be matched::       ------------------------------------"
+		print "generatiing meaning expressions from ", each_caracterized_sentence["objects"]
+		commands.append(interpretation.generate_dependency(G, each_caracterized_sentence))
 
-print "commands to planner..."	
-for each in commands:
-	print "sent to planner: ", each
-	print "planner response:"
-	planner_bridge.launch_planner(each)
-	
+#	print "commands to planner..."	
+#	for each in commands:
+#		print "sent to planner: ", each
+#		print "planner response:"
+#		planner_bridge.launch_planner(each)
+		
 	
 # knowledge basesolved_elements[each_element]

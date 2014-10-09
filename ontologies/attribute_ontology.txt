@@ -89,11 +89,15 @@
 
 # location
 
-(on 			is_kind_of 			location)
+(above 			is_kind_of 			location)
 (near			is_kind_of 			location)
 (under	 		is_kind_of 			location)
 (in 			is_kind_of 			location)
 (connected_to 	is_kind_of 			location)
+
+(above			aka					on)
+(above 			aka					on_top)
+(in 			aka					inside)
 
 
 

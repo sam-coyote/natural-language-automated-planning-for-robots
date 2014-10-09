@@ -15,6 +15,9 @@ grammar_np_simple = [
 	['NP',			'number',				'noun'],
 	['NP',			'det',					'noun'],
 
+	['NP',		'adj',						'noun'],
+	['NP',		'ADJS',						'noun'],
+
 	['NP',			'det',					'NP2'],
 
 	['NP',			'existencial',			'noun_q'],
@@ -148,7 +151,15 @@ def ontology_words_mapping(sentence):
 	for each in compound_words:
 		test = re.sub('_', ' ', each)
 		sentence = re.sub(test, each, sentence)
-	return sentence
+
+	print "de aqui debo sustituir aka: ", sentence
+	words = sentence.split(' ')
+	new_sentence = []
+	for each in words:
+		new_sentence.append(kb_services.find_original_aka(G, each))
+
+	new_sentence = " ".join(new_sentence)
+	return new_sentence
 
 def derive_plural(word):
 	plural = word + 's'

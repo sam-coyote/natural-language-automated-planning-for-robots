@@ -192,6 +192,21 @@ def all_aka(G, objclss):
 	else:
 		return [objclss]
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def language_info():
 	# look in the language_pos.txt file and load categories of
 	# POS in a dictionary
@@ -210,10 +225,57 @@ def language_info():
 	for each_aka in n:
 		nouns += each_aka
 	#print "nounS ------> ", nouns
+	nouns = list_merge(nouns, all_subclasses(G, 'stuff') + all_objects(G, 'stuff'))
+
 	language_tags.update({ 'noun': nouns })
-	language_tags.update({'adj' : all_objects(G, 'attribute') })
-	language_tags.update({'att' : all_subclasses(G, 'attribute')})
+
+
+	a = [all_aka(G, objclss) for objclss in all_subclasses(G, 'attribute')]
+	attris = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in a:
+		attris += each_aka
+	attris = list_merge(attris, all_subclasses(G, 'attribute'))
+
+
+	ad = [all_aka(G, objclss) for objclss in all_objects(G, 'attribute')]
+	ads = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in ad:
+		ads += each_aka
+	ads = list_merge(ads, all_objects(G, 'attribute'))
+
+
+
+	language_tags.update({'adj' : ads })
+	language_tags.update({'att' : attris})
 	return language_tags
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def is_type(G, semantic_type, objclss):
 	sub_types = all_subclasses(G, semantic_type) + all_objects(G, semantic_type)
@@ -223,7 +285,19 @@ def is_type(G, semantic_type, objclss):
 	return not len(list_diff(akas, sub_types)) == len(akas) 
 
 def compound_words(G):
-	words = all_subclasses(G, 'stuff') + all_subclasses(G, 'attribute') + all_objects(G, 'stuff') + all_objects(G, 'attribute')
+	n = [all_aka(G, objclss) for objclss in all_subclasses(G, 'stuff')] + [all_aka(G, objclss) for objclss in all_objects(G, 'stuff')]
+	nouns = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in n:
+		nouns += each_aka
+
+	a = [all_aka(G, objclss) for objclss in all_subclasses(G, 'attribute')] + [all_aka(G, objclss) for objclss in all_objects(G, 'attribute')]
+	attris = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in a:
+		attris += each_aka
+
+	words = attris + nouns
 	compound_words = []
 	for each in words:
 		if '_' in each:
@@ -231,6 +305,36 @@ def compound_words(G):
 	return compound_words
 
 
+def find_original_aka(G, aka_word):
+	if aka_word not in G:
+		return aka_word
+
+	n = [all_aka(G, objclss) for objclss in all_subclasses(G, 'stuff')] + [all_aka(G, objclss) for objclss in all_objects(G, 'stuff')]
+	nouns = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in n:
+		nouns += each_aka
+
+	nouns = list_merge(nouns, all_subclasses(G, 'stuff') + all_objects(G, 'stuff'))
+
+	a = [all_aka(G, objclss) for objclss in all_subclasses(G, 'attribute')] + [all_aka(G, objclss) for objclss in all_objects(G, 'attribute')]
+	attris = []
+	#print "nounS PREVIO------> ", n
+	for each_aka in a:
+		attris += each_aka
+
+	attris = list_merge(attris, all_subclasses(G, 'attribute') + all_objects(G, 'attribute'))
+
+	words = attris + nouns
+
+
+	for each_word in words:
+		akas = all_aka(G, each_word)
+		if akas != [] and each_word not in akas and aka_word in akas:
+			return each_word
+
+
+	return aka_word
 
 #########################
 # accesing values of attributes
@@ -500,3 +604,6 @@ G = load_semantic_network()
 #print "lolcat", is_object(G, "rooooom")
 
 #print "objs: ", all_objects(G,"sam")
+
+#print "test aka: ", all_aka(G, "cube")
+print "test original aka", find_original_aka(G, "brick")

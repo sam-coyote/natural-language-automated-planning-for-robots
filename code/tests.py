@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 
 bateria_ejemplos = [
-"marie gives the red book to the man in the kitchen"
+"place green pyramid on top of red brick"
 ]
 
 

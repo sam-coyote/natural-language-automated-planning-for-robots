@@ -21,6 +21,31 @@ def intersection(a,b):
 	return [bb for bb in b if bb in a]
 # 
 meaning_mapping_patterns = [
+	# patrones para shared task semeval 2014
+	{
+	
+	# parameters to be solved 
+	"params": ["what_action", "what_object", "spatial_relation", "to_object" ],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["place", "put", "move"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+	"spatial_relation": [[], ["att"], [], []],
+	"to_object": [["to", "of"], ["prep_phrase"], [], []],
+
+	"conceptual_dependency": '(EVENT (ACTION: move (ENTITY: -what_object-) (DESTINATION (SPATIAL_RELATION: -spatial_relation- ) (ENTITY: -to_object-))) ',
+	
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''
+	},
+
+
+
+
+
+
+
 	#
 	# Assertions
 	#
@@ -38,8 +63,8 @@ meaning_mapping_patterns = [
 	"to_whom": [["to"], ["prep_phrase"], ["person", "robot"], []],
 
 	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -who- TO: -to_whom-)',
-	"verbal_confirmation": '-what_object- is now with -to_whom- right?',
-	"planner_confirmed": '(action SAY message "ok, got it" =kb_services.add_edges_from_list([["-object-","owned_by","-to_whom-"]],"../ontologies/context_knowledge.txt" 0 0)',
+	"verbal_confirmation": '(action SAY message "ok -what_object- is now with -to_whom- right?" 0 0)',
+	"planner_confirmed": '=kb_services.add_edges_from_list([["-object-","owned_by","-to_whom-"]],"../ontologies/context_knowledge.txt" (action SAY message "ok, got it" 0 0)',
 	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
 	},
 
@@ -61,7 +86,7 @@ meaning_mapping_patterns = [
 	"from_whom": [["from"], ["prep_phrase"], ["person"], []],
 
 	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -from_whom- TO: -who-)',
-	"verbal_confirmation": '-what_object- is now with -who- right?',
+	"verbal_confirmation": '(action SAY message "ok, what_object- is now with -who- right?" 0 0)',
 	"planner_confirmed": '(action SAY message "ok, got it" =kb_services.add_edges_from_list([["-object-","owned_by","-who-"]],"../ontologies/context_knowledge.txt" 0 0)',
 	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
 	}
@@ -131,7 +156,45 @@ def generate_dependency(G, sentence_dict):
 		print "rank: ", each_inter["rank"]
 		print "____"
 
+	# hasta aqui se tienen las interpretaciones de todos los patrones ordenados por
+	# porcentaje de roles tematicos aterrizados
 
+	
+
+
+	# si existe un patron interpretado completamente genero las expresiones
+	# de lo contrario empiezo la interaccion para encontrar el resto 
+
+	if ranked_interpretations[0]["rank"] == 1.0:
+		print "substitude grounded parameters"
+		# sustitucion de simbolos aterrizados en las expresiones
+		output_expression = ranked_interpretations[0]["conceptual_dependency"]
+		verbal_confirmation = ranked_interpretations[0]["verbal_confirmation"]
+		planner_confirmed = ranked_interpretations[0]["planner_confirmed"]
+		planner_not_confirmed = ranked_interpretations[0]["planner_not_confirmed"]
+
+		for each_param in ranked_interpretations[0]["matched_elements"]:
+			#print "labeL: ", each_param[0]
+			#print "value: ", each_param[1]
+
+			output_expression = re.sub('-'+each_param[0]+'-', each_param[1], output_expression)
+			
+			verbal_confirmation = re.sub('-'+each_param[0]+'-', each_param[1], verbal_confirmation)
+			planner_confirmed = re.sub('-'+each_param[0]+'-', each_param[1], planner_confirmed)
+			planner_not_confirmed = re.sub('-'+each_param[0]+'-', each_param[1], planner_not_confirmed)
+
+
+
+		print "interpretation: ", output_expression
+
+		print "mensaje de confirmacion: ", verbal_confirmation
+
+		print "accion al planeador de ser confirmado: ", planner_confirmed
+
+		print "accion al planeador de no ser confirmado: ", planner_not_confirmed
+
+	else:
+		print "the sentence was not fully undesrtood, please follow the instructions"
 
 
 
@@ -384,6 +447,8 @@ def solve_simple_np(G, words, pos):
 		else:
 			objs = obj_candidates[:]
 	print "solved np:", objs
+	if objs == []:
+		objs = ["(type:" + " ".join(nouns) + ", attribute:" + " ".join(atts) + ", value:" + " ".join(adjs) + ")" ]
 	return objs
 
 

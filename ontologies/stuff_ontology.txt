@@ -39,6 +39,16 @@
 (furniture		is_kind_of		item)
 (chemical_product is_kind_of 	item)
 (office_item  	is_kind_of 		item)
+(figure 		is_kind_of 		item)
+
+
+(cube 			is_kind_of	 	figure)
+(prism 			is_kind_of	 	figure)
+(parallelipiped 	is_kind_of	 	figure)
+
+
+
+
 
 (tool 			is_kind_of 		instrument)
 (cutlery 		is_kind_of 		instrument)

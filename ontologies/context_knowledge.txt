@@ -260,7 +260,7 @@
 (valerie 			is_object_of 		woman)
 (marie 			is_object_of 		woman)
 (lourdes 			is_object_of 		woman)
-(justina 			is_object_of 		humanoid)
+(justina 			is_object_of 		robot)
 
 (sam 				social_status 		single)
 (valerie 			social_status 		single)
@@ -296,5 +296,18 @@
 (justina carry apple_juice)
 
 (kitchen_door functional_status closed)
+
+
+
+
+
+
+# semeval
+
+(cube 			aka 			block)
+(prism 			aka 			pyramid)
+(parallelipiped aka 			brick)
+
+
 
  # interaction

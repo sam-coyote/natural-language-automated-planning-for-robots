@@ -36,22 +36,6 @@
 (sort			tag			kind)
 
 # prepositions
-#(on 			tag	 		prep_loc)
-#(in 			tag	 		prep_loc)
-(at 			tag	 		prep_loc)
-(near 			tag  		prep_loc)
-(next 			tag	 		prep_loc)
-(beside 		tag	 		prep_loc)
-(under 			tag	 		prep_loc)
-(below 			tag	 		prep_loc)
-(over 			tag	 		prep_loc)
-(above 			tag	 		prep_loc)
-(inside 		tag	 		prep_loc)
-(across 		tag	 		prep_loc)
-(through 		tag	 		prep_loc)
-(into 			tag	 		prep_loc)
-(towards 		tag	 		prep_loc)
-(onto 			tag	 		prep_loc)
 (from 			tag	 		prep)
 (to 			tag 		prep)
 (in_front_of 	tag 		prep_loc)
@@ -65,6 +49,7 @@
 #(of 			tag	 		prep)
 (from 			tag	 		prep)
 (to 			tag 		prep)
+(of 			tag			prep)
 # punctuation
 (?				tag			qmark)
 
@@ -147,6 +132,8 @@
 
 (point			tag			vrb)
 (points			tag			vrb)
+
+(place 			tag 		vrb)
 
 
 # request

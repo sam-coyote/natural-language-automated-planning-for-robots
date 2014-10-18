@@ -152,7 +152,7 @@ def ontology_words_mapping(sentence):
 		test = re.sub('_', ' ', each)
 		sentence = re.sub(test, each, sentence)
 
-	print "de aqui debo sustituir aka: ", sentence
+	#print "de aqui debo sustituir aka: ", sentence
 	words = sentence.split(' ')
 	new_sentence = []
 	for each in words:
@@ -178,7 +178,7 @@ def pos_tagger(G, sentence):
 		tags.append(look_tags(language_info, w))
 	
 	ranked_disambiguated_tags = disambiguate_pos(G, words, tags)
-	print ranked_disambiguated_tags
+	#print ranked_disambiguated_tags
 	return words, ranked_disambiguated_tags
 	
 def look_tags(voc, word):

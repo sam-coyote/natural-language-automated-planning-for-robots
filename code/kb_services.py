@@ -606,4 +606,4 @@ G = load_semantic_network()
 #print "objs: ", all_objects(G,"sam")
 
 #print "test aka: ", all_aka(G, "cube")
-print "test original aka", find_original_aka(G, "brick")
+#print "test original aka", find_original_aka(G, "brick")

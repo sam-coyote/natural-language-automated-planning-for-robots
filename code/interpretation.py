@@ -33,82 +33,39 @@ meaning_mapping_patterns = [
 	"spatial_relation": [[], ["att"], [], []],
 	"to_object": [["to", "of"], ["prep_phrase"], [], []],
 
-	"conceptual_dependency": '(EVENT (ACTION: move (ENTITY: -what_object-) (DESTINATION (SPATIAL_RELATION: -spatial_relation- ) (ENTITY: -to_object-))) ',
+	"conceptual_dependency": '(EVENT: (ACTION: move (ENTITY: -what_object-) (DESTINATION (SPATIAL_RELATION: -spatial_relation- ) (ENTITY: -to_object-))) ',
 	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''
-	},
-
-
-
-
-
-
-
-	#
-	# Assertions
-	#
-
-# verb give in present
-	{
-	
-	# parameters to be solved 
-	"params": ["what_action", "who", "what_object", "to_whom"],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
-	"what_action": [["give", "gives"], ["vrb"], [], []],
-	"who": [[], ["noun"], ["person"], []],
-	"what_object": [[], ["noun"], ["item"], []],
-	"to_whom": [["to"], ["prep_phrase"], ["person", "robot"], []],
-
-	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -who- TO: -to_whom-)',
-	"verbal_confirmation": '(action SAY message "ok -what_object- is now with -to_whom- right?" 0 0)',
-	"planner_confirmed": '=kb_services.add_edges_from_list([["-object-","owned_by","-to_whom-"]],"../ontologies/context_knowledge.txt" (action SAY message "ok, got it" 0 0)',
-	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
-	},
-
-
-
-
-
-
-
-	# recieve
-	{
-	# parameters to be solved 
-	"params": ["what_action", "who", "what_object", "from_whom"],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
-	"what_action": [["recieve", "recieves"], ["vrb"], [], []],
-	"who": [[], ["noun"], ["person", "robot"], []],
-	"what_object": [[], ["noun"], ["item"], []],
-	"from_whom": [["from"], ["prep_phrase"], ["person"], []],
-
-	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -from_whom- TO: -who-)',
-	"verbal_confirmation": '(action SAY message "ok, what_object- is now with -who- right?" 0 0)',
-	"planner_confirmed": '(action SAY message "ok, got it" =kb_services.add_edges_from_list([["-object-","owned_by","-who-"]],"../ontologies/context_knowledge.txt" 0 0)',
-	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
 	}
+
+
+
+
+
+
 	
 ]
 
-
+verbose = False
 #######################
 # match the fragmented grounded sentence to a conceptual dependency 
 def generate_dependency(G, sentence_dict):
+
+	
 	used_objects = []
 	solved_dependency = ''
 	solved = False
 	# recibe un diccionario con campos "constituents", "objects", "types", "words", 
 	#la primeras dos son listas de strings y las otras son lista de listas
 
-	print "7::       ------------------------------------"
-	print "assigning a meaning to the sentence"
+	print "7::       ------------------------------------" if verbose else "",
+	print "assigning a meaning to the sentence" if verbose else "",
 
 	# list of interpretations of each meaning pattern
 	# 
-	print "WTF... ", len(meaning_mapping_patterns)
+	#print "WTF... ", len(meaning_mapping_patterns)
 	interpretations_list = []
 	id_pattern = 0
 	for each_pattern in meaning_mapping_patterns:
@@ -147,14 +104,15 @@ def generate_dependency(G, sentence_dict):
 								current_interpretation["rank"] +=  1.0/len(current_interpretation["matched_elements"])
 		interpretations_list.append(current_interpretation)
 
-	print "Total of interpretations: ", len(interpretations_list)
+	print ""
+	print "- LOG: TOTAL OF PATTERNS ANALISED: ", len(interpretations_list)
 
 	ranked_interpretations = sorted(interpretations_list, key=lambda k: k["rank"], reverse=True)
 
 	for each_inter in ranked_interpretations:
-		print "matched: ", each_inter["matched_elements"]
-		print "rank: ", each_inter["rank"]
-		print "____"
+		print "matched: " + each_inter["matched_elements"] if verbose else "",
+		print "rank: " + each_inter["rank"] if verbose else "",
+		print "____" if verbose else "",
 
 	# hasta aqui se tienen las interpretaciones de todos los patrones ordenados por
 	# porcentaje de roles tematicos aterrizados
@@ -166,7 +124,7 @@ def generate_dependency(G, sentence_dict):
 	# de lo contrario empiezo la interaccion para encontrar el resto 
 
 	if ranked_interpretations[0]["rank"] == 1.0:
-		print "substitude grounded parameters"
+		print "substitude grounded parameters" if verbose else "",
 		# sustitucion de simbolos aterrizados en las expresiones
 		output_expression = ranked_interpretations[0]["conceptual_dependency"]
 		verbal_confirmation = ranked_interpretations[0]["verbal_confirmation"]
@@ -183,15 +141,17 @@ def generate_dependency(G, sentence_dict):
 			planner_confirmed = re.sub('-'+each_param[0]+'-', each_param[1], planner_confirmed)
 			planner_not_confirmed = re.sub('-'+each_param[0]+'-', each_param[1], planner_not_confirmed)
 
+			# falta evaluar expresiones en python
 
 
-		print "interpretation: ", output_expression
+		print ""
+		print "- LOG: GENERATED MEANING: " + output_expression
 
-		print "mensaje de confirmacion: ", verbal_confirmation
+		#print "mensaje de confirmacion: ", verbal_confirmation
 
-		print "accion al planeador de ser confirmado: ", planner_confirmed
+		#print "accion al planeador de ser confirmado: ", planner_confirmed
 
-		print "accion al planeador de no ser confirmado: ", planner_not_confirmed
+		#print "accion al planeador de no ser confirmado: ", planner_not_confirmed
 
 	else:
 		print "the sentence was not fully undesrtood, please follow the instructions"
@@ -214,19 +174,19 @@ def generate_dependency(G, sentence_dict):
 # 3) solve syntactical well formed noun phrases
 def sentence_grounder(G, sentence):
 	sentence = parsing.ontology_words_mapping(sentence)
-	print "1::       ------------------------------------"
-	print "key words substitution: ", sentence
+	print "1::       ------------------------------------" if verbose else "",
+	print "key words substitution: " + sentence if verbose else "",
 	
 	words, ranked_tags = parsing.pos_tagger(G, sentence)	
-	print "2::       ------------------------------------"
-	print "part-of-speech tags: ", ranked_tags[0]
+	print "2::       ------------------------------------" if verbose else "",
+	print "part-of-speech tags: " + ranked_tags[0] if verbose else "",
 	
 	np_interpretation = parsing.constituent_chunker(parsing.grammar_np_simple, words, ranked_tags[0])
-	print "3::       ------------------------------------"
-	print "noun phrases segmentation"
-	print "chunked pos: ", np_interpretation[0]
-	print "chunked words: ", np_interpretation[1]
-	print "noun phrases: ", np_interpretation[2]
+	print "3::       ------------------------------------" if verbose else "",
+	print "noun phrases segmentation" if verbose else "",
+	print "chunked pos: " + np_interpretation[0] if verbose else "",
+	print "chunked words: " + np_interpretation[1] if verbose else "",
+	print "noun phrases: " + np_interpretation[2] if verbose else "",
 
 	
 
@@ -240,11 +200,11 @@ def sentence_grounder(G, sentence):
 		names = noun_phrase_grounder(G, each[0], each[1]) 
 		if names == []:
 			solved = False
-			print "noun phrase: ", each, " can not be grounded"
+			print "noun phrase: " + each + " can not be grounded"
 		solved_nps.append(names)
 	
-	print "4::       ------------------------------------"
-	print "grounded noun phrases: ", solved_nps
+	print "4::       ------------------------------------" if verbose else "",
+	print "grounded noun phrases: " + solved_nps if verbose else "",
 
 	if solved: 
 		# obtain all combinations using solved noun phrases
@@ -271,8 +231,8 @@ def sentence_grounder(G, sentence):
 		#print "packed in lists:::: ", packed_words
 		all_words = parsing.all_combinations(packed_words)
 
-		print "5::       ------------------------------------"
-		print "Separated sentences: ", all_words
+		print "5::       ------------------------------------" if verbose else "",
+		print "Separated sentences: " + all_words if verbose else "",
 		#print "-----> all combinations POS: ", np_interpretation[0]
 		
 		# up to here all direct grounded commands are contructed therefore
@@ -299,7 +259,7 @@ def sentence_grounder(G, sentence):
 				pp_names.append(prepositional_phrase_grounder(G, each_pp[0], each_pp[1])[0]) 
 				if pp_names == []:
 					solved = False
-					print "prepositional phrase: ", each, " can not be grounded"
+					print "prepositional phrase: " + each + " can not be grounded"
 				#solved_nps.append(names)
 			#print "-----------PPPPPP", pp_names
 			if solved: 
@@ -349,12 +309,12 @@ def sentence_grounder(G, sentence):
 
 			## cut
 
-			print "6::       ------------------------------------"
-			print "sentence: ", sentence, " features the metadata:"
-			print "words: ", chunked_final_words
-			print "constituents: ", constituent_level
-			print "objects: ", object_level
-			print "types: ", semantic_types
+			print "6::       ------------------------------------" if verbose else "",
+			print "sentence: " + sentence + " features the metadata:" if verbose else "",
+			print "words: " + chunked_final_words if verbose else "",
+			print "constituents: " + constituent_level if verbose else "",
+			print "objects: " + object_level if verbose else "",
+			print "types: " + semantic_types if verbose else "",
 
 
 			analized_sentences.append({"words":chunked_final_words, "constituents": constituent_level, "objects": object_level, "types":semantic_types})
@@ -407,7 +367,7 @@ def prepositional_phrase_grounder(G, words, pos):
 		
 
 def solve_simple_np(G, words, pos):
-	print "solving np: ", words
+	print "solving np: " + words if verbose else "",
 	nouns = []
 	adjs = []
 	atts = []
@@ -427,7 +387,7 @@ def solve_simple_np(G, words, pos):
 			vrbs.append(words[i])
 		elif pos[i] == 'idf_pro':
 			nouns.append('stuff')
-	print 'nouns: ', nouns, '   adjs: ', adjs, '   vrbs: ', vrbs, '   atts: ', atts
+	print 'nouns: ' + nouns + '   adjs: ' + adjs + '   vrbs: ' + vrbs + '   atts: ' + atts if verbose else "",
 	# collect all objects of class
 	if len(nouns) > 0:
 		obj_candidates = kb_services.all_objects(G, nouns[0])
@@ -446,7 +406,7 @@ def solve_simple_np(G, words, pos):
 					
 		else:
 			objs = obj_candidates[:]
-	print "solved np:", objs
+	print "solved np:" + objs if verbose else "",
 	if objs == []:
 		objs = ["(type:" + " ".join(nouns) + ", attribute:" + " ".join(atts) + ", value:" + " ".join(adjs) + ")" ]
 	return objs
@@ -475,7 +435,7 @@ def generate_nl_response_from_dict(dictio):
 		response = "not information about that, sorry"
 	else:
 		for each in dictio:
-			print "HEY ", each, "  ", dictio[each]
+			print "HEY " + each + "  " + dictio[each] if verbose else "",
 			response +=" is " + each + " " + " and ".join(dictio[each])
 	return response
 
@@ -493,5 +453,56 @@ def generate_nl_response_from_list(ls):
 	return response
 #test_solver("bring valerie something to eat")
 
-print generate_nl_response_from_list([])
+#print generate_nl_response_from_list([])
 #test_solver()
+
+'''
+
+
+	#
+	# Assertions
+	#
+
+# verb give in present
+	{
+	
+	# parameters to be solved 
+	"params": ["what_action", "who", "what_object", "to_whom"],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["give", "gives"], ["vrb"], [], []],
+	"who": [[], ["noun"], ["person"], []],
+	"what_object": [[], ["noun"], ["item"], []],
+	"to_whom": [["to"], ["prep_phrase"], ["person", "robot"], []],
+
+	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -who- TO: -to_whom-)',
+	"verbal_confirmation": '(action SAY message "ok -what_object- is now with -to_whom- right?" 0 0)',
+	"planner_confirmed": '=kb_services.add_edges_from_list([["-object-","owned_by","-to_whom-"]],"../ontologies/context_knowledge.txt" (action SAY message "ok, got it" 0 0)',
+	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
+	},
+
+
+
+
+
+
+
+	# recieve
+	{
+	# parameters to be solved 
+	"params": ["what_action", "who", "what_object", "from_whom"],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["recieve", "recieves"], ["vrb"], [], []],
+	"who": [[], ["noun"], ["person", "robot"], []],
+	"what_object": [[], ["noun"], ["item"], []],
+	"from_whom": [["from"], ["prep_phrase"], ["person"], []],
+
+	"conceptual_dependency": '(ATRANS TIME: present RELATION:possesion OBJECT: -what_object- FROM: -from_whom- TO: -who-)',
+	"verbal_confirmation": '(action SAY message "ok, what_object- is now with -who- right?" 0 0)',
+	"planner_confirmed": '(action SAY message "ok, got it" =kb_services.add_edges_from_list([["-object-","owned_by","-who-"]],"../ontologies/context_knowledge.txt" 0 0)',
+	"planner_not_confirmed": '(action SAY message "ok, please try to rephrase" 0 0)'
+	}
+
+
+'''

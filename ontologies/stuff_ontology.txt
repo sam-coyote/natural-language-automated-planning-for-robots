@@ -2,104 +2,19 @@
 (attribute 		is_kind_of 		top)
 (stuff  		is_kind_of  	top)
 
+(aka 			is_kind_of 		attribute)
+(aka 			algebraic_property 			transitive)
+(aka 			algebraic_property 			symmetric)
 
 
-# # # #
-(person 		is_kind_of 		stuff)
-(place	 		is_kind_of 		stuff)
-(item 			is_kind_of 		stuff)
+(type 			is_kind_of 		stuff)
 
-# # # #
-
-# person
-(woman	 		is_kind_of 		person)
-(man	 		is_kind_of 		person)
-(speaker  		is_kind_of 		person)
-(humanoid 		is_kind_of 		person)
-(humanoid 		aka 			robot)
+(cube 			is_kind_of 	type)
+(prism 			is_kind_of 	type)
+(cube_group 	is_kind_of 	type)
+(tile 			is_kind_of 	type)
+(stack 			is_kind_of 	type)
+(robot 			is_kind_of 	type)
+(edge 			is_kind_of 	type)
 
 
-# place
-(house  		is_kind_of  	place)
-(room 	 		is_kind_of		place)
-(zone 			is_kind_of 		place)
-(container 		is_kind_of		place)
-
-
-(furniture 		is_kind_of		container)
-(shelf 			is_kind_of		container)
-(box	 		is_kind_of		container)
-(bag			is_kind_of 		container)
-
-# # # #
-
-# item
-(instrument		is_kind_of		item)
-(edible 		is_kind_of		item)
-(furniture		is_kind_of		item)
-(chemical_product is_kind_of 	item)
-(office_item  	is_kind_of 		item)
-(figure 		is_kind_of 		item)
-
-
-(cube 			is_kind_of	 	figure)
-(prism 			is_kind_of	 	figure)
-(parallelipiped 	is_kind_of	 	figure)
-
-
-
-
-
-(tool 			is_kind_of 		instrument)
-(cutlery 		is_kind_of 		instrument)
-
-
-# # # #
-
-(food 			is_kind_of 		edible)
-(drink 			is_kind_of 		edible)
-
-
-# tool
-(screw_driver	is_kind_of  	tool)
-(knife	 		is_kind_of 		tool)
-(broom 			is_kind_of  	tool)
-(hammer 		is_kind_of  	tool)
-
-# cutlery
-
-(plate 			is_kind_of 		cutlery)
-(spoon 			is_kind_of 		cutlery)
-(glass 			is_kind_of 		cutlery)
-(knife 			is_kind_of 		cutlery)
-
-
-# furniture
-
-(chair 			is_kind_of 		furniture)
-(shelf 			is_kind_of 		furniture)
-(table 			is_kind_of 		furniture)
-(door 			is_kind_of 		furniture)
-(fridge 		is_kind_of 		furniture)
-
-# cleaning_products
-(cleaning_product is_kind_of 	chemical_product)
-
-
-#office_item
-
-(book 		is_kind_of 			office_item)
-(pencil 	is_kind_of 			office_item)
-(pen 		is_kind_of 			office_item)
-(notebook 	is_kind_of 			office_item)
-(computer 	is_kind_of 			office_item)
-(magazine 	is_kind_of 			office_item)
-
-# food
-(fruit	 		is_kind_of 		food)
-(vegetable		is_kind_of 		food)
-
-# drink
-(juice 			is_kind_of 		drink)
-(soda 			is_kind_of 		drink)
-(beer 			is_kind_of 		drink)

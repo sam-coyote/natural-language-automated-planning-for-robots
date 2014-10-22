@@ -1,313 +1,33 @@
 # test apartment
-(justina 			is_object_of 		robot)
-(speaker 			aka 				sam)
-
-(arena 				is_object_of 		house)
-(main_door 			is_object_of 		door)
-
-(livingroom  		is_object_of 		room)
-(kitchen  			is_object_of 		room)
-(bedroom_1  		is_object_of  		room)
-(bedroom_2  		is_object_of  		room)
-(bathroom 	 		is_object_of  		room)
-(office 			is_object_of 		room)
-(outside 			is_object_of 		room)
-
-
-(rest_area_1 		is_object_of 		zone)
-(back_of_bedroom_1 	is_object_of 		zone)
-(bed_zone_1 		is_object_of 		zone)
-(rest_area_2 		is_object_of 		zone)
-(back_of_bedroom_2 	is_object_of 		zone)
-(bed_zone_2 		is_object_of 		zone)
-(front_of_kitchen 	is_object_of 		zone)
-(back_of_kitchen 	is_object_of 		zone)
-(livingroom_se 		is_object_of 		zone)
-(livingroom_sw 		is_object_of 		zone)
-(livingroom_nw 		is_object_of 		zone)
-(corridor 			is_object_of 		zone)
-
-# kitchen
-(kitchen_door 		is_object_of 		door)
-(fridge1 			is_object_of 		fridge)
-(shelf_1 			is_object_of 		shelf)
-(kitchen_table 		is_object_of 		table)
-(chair_8 			is_object_of 		chair)
-(chair_9 			is_object_of 		chair)
-
-# bedroom 1
-(bedroom_1_door 	is_object_of 		door)
-(desk_1 			is_object_of 		table)
-(chair_1 			is_object_of 		chair)
-(box_1 				is_object_of 		box)
-(bed_1 				is_object_of 		bed)
-(computer_1 		is_object_of 		computer)
-
-# bedroom 2
-(bedroom_2_door 	is_object_of 		door)
-(table_2 			is_object_of 		table)
-(chair_2 			is_object_of 		chair)
-(chair_3 			is_object_of 		chair)
-(box_2 				is_object_of 		box)
-(bed_2 				is_object_of 		bed)
-(tv_1 				is_object_of 		television)
-
-# bathroom 1
-(bathroom_1_door 	is_object_of 		door)
-
-# bathroom 2
-(bathroom_2_door 	is_object_of 		door)
-(bag_2 				is_object_of 		bag)
-
-# livingroom 1
-(front_door 		is_object_of 		door)
-(table_1 			is_object_of 		table)
-(chair_4 			is_object_of 		chair)
-(chair_5 			is_object_of 		chair)
-(chair_6 			is_object_of 		chair)
-(chair_7 			is_object_of 		chair)
-(sofa_1 			is_object_of 		sofa)
-(bag_1 				is_object_of 		bag)
-(box_3 				is_object_of 		box)
-
-(metamorfosis		is_object_of 		book)
-(aleph 				is_object_of 		book)
-(c_for_dummies		is_object_of 		book)
-
-(pencil 			is_object_of 		pencil)
-(my_notes 			is_object_of 		notebook)
-
-(wired_sep 			is_object_of 		magazine)
-(gaceta_unam 		is_object_of 		magazine)
-
-# topological information about furniture
-
-#(kitchen 			in 				arena)
-#(livingroom 		in 				arena)
-#(bedroom_1 			in 				arena)
-#(bedroom_2 			in 				arena)
-
-# kitchen
-(back_of_kitchen 	in 				kitchen)
-(front_of_kitchen 	in 				kitchen)
-(kitchen_door 		connect 				kitchen)
-(kitchen_door 		connect 				livingroom)
-(fridge1 			in 				kitchen)
-(shelf_1 			in 				kitchen)
-(chair_8 			in 				kitchen)
-(chair_9 			in 				kitchen)
-(kitchen_table 		in 				front_of_kitchen)
-(chair_8 			near 			chair_9)
-(chair_9 			near 			kitchen_table)
-
-# bedroom 1
-(rest_area_1 		in 				bedroom_1)
-(bed_zone_1 		in 				bedroom_1)
-(back_of_bedroom_1 	in 				bedroom_1)
-(bedroom_1_door 	connect 		bedroom_1)
-(bedroom_1_door 	connect 		livingroom)
-(bed_1 				in 				bedroom_1)
-(chair_1 			in 				bedroom_1)
-(desk_1 			in 				bedroom_1)
-(box_1 				in 				bedroom_1)
-(computer_1 		in 				bedroom_1)
-(chair_)  			near 			desk_1)
-(computer_1  		on 				desk_1)
-(box_1 				on 				desk_1)
-
-# bedroom 2
-(rest_area_2 		in 				bedroom_2)
-(bed_zone_2 		in 				bedroom_2)
-(back_of_bedroom_2 	in 				bedroom_2)
-(bedroom_2_door 	connect 				bedroom_2)
-(bedroom_2_door 	connect 				livingroom)
-(bed_2 				in 				bedroom_2)
-(chair_2 			in 				bedroom_2)
-(chair_3 			in 				bedroom_2)
-(table_2 			in 				bedroom_2)
-(box_2 				in 				bedroom_2)
-(tv_1 				in 				bedroom_2)
-(chair_2)  			near 			chair_3)
-(chair_3 			near 			bedroom_2_door)
-(tv_1  				on 				table_2)
-(box_2 				under 			bed_2)
-
-# bathroom 1
-(bathroom_1_door  	connect 				bathroom_1)
-(bathroom_1_door  	connect 				livingroom)
-
-
-# livingroom 1
-(livingroom_sw 		in 				livingroom)
-(livingroom_nw  	in 				livingroom)
-(livingroom_se 		in 				livingroom)
-(corridor 			in 				livingroom)
-(table_1 			in 				livingroom)
-(front_door 		connect 				livingroom)
-(front_door 		connect 				outside)
-(sofa_1 			in 				livingroom)
-(chair_4 			in 				livingroom)
-(chair_5 			in 				livingroom)
-(chair_6 			in 				livingroom)
-(chair_7 			in 				livingroom)
-(bag_1 				in 				livingroom)
-(box_3 				in 				livingroom)
-(chair_4 			near 			table_1)
-(chair_5 			near 			table_1)
-(chair_6 			near 			table_1)
-(chair_7 			near 			table_1)
-(box_3 				on 				table_1)
-
-(metamorfosis 		color 			blue)
-(metamorfosis 		on 				chair_6)
-(metamorfosis 		in 				livingroom)
-(metamorfosis 		author 			kafka)
-(kafka 				is_object_of 	man)
-
-(aleph		 		color 			red)
-(aleph		 		on 				table_2)
-(aleph		 		in 				bedroom_2)
-(aleph		 		author 			borges)
-(borges 			is_object_of 	man)
-
-
-
-# properties of furniture
-# furniture color
-(furniture 			color 			black)
-(door 				color 			blue)
-(chair 				color 			white)
-(chair_6 			color 			green)
-(table 				color 			brown)
-
-# weight
-(furniture 			weight 			heavy)
-
-# physical status
-(furnite 			physical_status clean)
-(table_2 			physical_status dirty)
-
-
-#functional status
-(furniture 			functional_status 	good)
-(chair_6 			functional_status 	broken)
-(chair_1 			functional_status 	broken)
-
-# food and drinks
-(carrot_1 			is_object_of 		vegetable)
-(tomato_1 			is_object_of 		vegetable)
-(potato_1 			is_object_of 		vegetable)
-
-(banana_1 			is_object_of 		fruit)
-(banana_2 			is_object_of 		fruit)
-(apple_1 			is_object_of 		fruit)
-(apple_2 			is_object_of 		fruit)
-(kiwi_1 			is_object_of 		fruit)
-
-(vegetable 			on 					fridge1)
-(fruit				on 					kitchen_table)
-(banana_2 			on 					bag_1)
-(apple_2 			on 					table_1)
-
-(apple_juice 		is_object_of 		juice)
-(orange_juice 		is_object_of 		juice)
-(grape_juice 		is_object_of 		juice)
-(pils_1 			is_object_of 		beer)
-(alt_bier_1 		is_object_of 		beer)
-(coke_1 			is_object_of 		soda)
-(fanta_1 			is_object_of 		soda)
-(sprite_1	 		is_object_of 		soda)
-
-(drink 				on 					fridge1)
-(drink 				in 					kitchen)
-
-(beer 				on 					table_1)
-(beer 				on 					livingroom)
-
-# properties of edible
-# color 
-
-(kiwi_1 				color 				green)
-(apple_1 				color 				green)
-(drink 				color 				black)
-(tomato_1 			color 				red)
-(carrot_1 			color 				orange)
-(potato_1 			color 				brown)
-(banana 			color 				yellow)
-(beer 				color 				dark)
-
-# shape
-(edible 			shape 				round)
-(edible 			size 				small)
-
-# taste
-(vegetable 			taste				sour)
-(friut				taste				sweet)
-(drink 				taste 				sweet)
-(beer 				taste 				sour)
-
-#temperature
-(pils_1 			temperature			cold)
-(apple_juice 		temperature			cold)
-
-(alt_bier_1 		temperature 		warm)
-(beer 				temperature 		cold)
-
-
-# people
-(person 			attitud 			friendly)
-(sam 				is_object_of 		man)
-(valerie 			is_object_of 		woman)
-(marie 			is_object_of 		woman)
-(lourdes 			is_object_of 		woman)
-(justina 			is_object_of 		robot)
-
-(sam 				social_status 		single)
-(valerie 			social_status 		single)
-
-(sam 				shape 				tall)
-(sam 				shape 				round)
-(valerie			shape 				thin)
-
-
-# location of people
-(sam 				in 					kitchen)
-(sam 				near 				kitchen_table)
-(sam 				near 				fridge1)
-(valerie 			in 					sofa_1)
-
-
-# alias and also known as 
-
-(coke 			aka 			coke_1)
-(cola 			aka 			coke)
-(coke 			aka 			coca_cola)
-(coke 			aka 			pepsi)
-(fruta			aka				fruit)
-(robot 			aka 			humanoid)
-
-
-
-# state of robot
-
-(justina in corridor)
-(justina attention kitchen_table)
-(apple_2 graspable yes)
-(justina carry apple_juice)
-
-(kitchen_door functional_status closed)
-
-
-
-
-
 
 # semeval
 
 (cube 			aka 			block)
+(cube 			aka 			brick)
+
+
 (prism 			aka 			pyramid)
-(parallelipiped aka 			brick)
+(prism 			aka 			tetrahedron)
 
 
+(above			aka				placed_on_top)
+(above			aka 			on_top)
+(above			aka 			to_the_top)
 
- # interaction
+(white 			aka	 			light_grey)
+
+(gray 			aka 			grey)
+
+(cyan 			aka 			turquoise)
+(cyan 			aka 			light_blue)
+
+(magenta 		aka 			pink)
+(magenta 		aka 			purple)
+
+(individual 	aka 			single)
+
+(above 			aka 			on)
+
+(stack 			aka 			tower)
+(stack 			aka 			parallelipiped)
+

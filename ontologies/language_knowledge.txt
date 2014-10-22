@@ -76,6 +76,8 @@
 (that 			tag 		rel_pro)
 (which 			tag 		rel_pro)
 
+(other 			tag 		infill)
+
 
 (now 			tag 		time)
 (yesterday 		tag 		time)
@@ -107,11 +109,17 @@
 (take			tag			vrb)
 (takes			tag			vrb)
 
+(pick_up		tag			vrb)
+(pick			tag			vrb)
+
+
 (drop			tag			vrb)
 (drops			tag			vrb)
 
 (bring			tag			vrb)
 (brings 		tag			vrb)
+
+(grab			tag			vrb)
 
 (grasp			tag			vrb)
 (grasps			tag			vrb)
@@ -130,10 +138,14 @@
 (find			tag			vrb)
 (finds			tag			vrb)
 
+(lift 			tag 		vrb)
+
 (point			tag			vrb)
 (points			tag			vrb)
 
 (place 			tag 		vrb)
+
+(put 			tag 		vrb)
 
 
 # request

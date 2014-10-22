@@ -22,23 +22,95 @@ def intersection(a,b):
 # 
 meaning_mapping_patterns = [
 	# patrones para shared task semeval 2014
-	{
-	
-	# parameters to be solved 
-	"params": ["what_action", "what_object", "spatial_relation", "to_object" ],
+	{"params": ["what_action", "what_object", "spatial_relation", "to_object" ],
 	
 	# [[]:keywords, []:constituent, []:sem type, []: default
-	"what_action": [["place", "put", "move"], ["vrb"], [], []],
+	"what_action": [["place", "move"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
-	"spatial_relation": [[], ["att"], [], []],
-	"to_object": [["to", "of"], ["prep_phrase"], [], []],
+	"spatial_relation": [[], [], ["relation"], []],
+	"to_object": [[], ["noun", "prep_phrase"], [], []],
 
-	"conceptual_dependency": '(EVENT: (ACTION: move (ENTITY: -what_object-) (DESTINATION (SPATIAL_RELATION: -spatial_relation- ) (ENTITY: -to_object-))) ',
+	"conceptual_dependency": '(event: (action: move) (entity: -what_object-) (destination: (spatial relation: (relation: -spatial_relation- ) (entity: -to_object-))))',
 	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
-	"planner_not_confirmed": ''
-	}
+	"planner_not_confirmed": ''},
+
+
+	# parameters to be solved 
+	{"params": ["what_action", "what_object", "to_object" ],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["place", "move"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+	"to_object": [[], ["noun", "prep_phrase"], [], []],
+
+	"conceptual_dependency": '(event: (action: move) (entity: -what_object-) (destination: (spatial relation: (relation: above ) (entity: -to_object-))))',
+	
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+
+	{"params": ["what_action", "what_object"],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["take", "pick_up", "grab", "lift", "pick"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+
+	"conceptual_dependency": '(event: (action: take) (entity: -what_object-))',
+	
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+
+	{"params": ["what_action", "what_object", "relation", "to_object" ],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["put", "drop"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+	"relation": [[], ["att"], [], []],
+	"to_object": [[], ["noun", "prep_phrase"], [], []],
+	#posible cambio a (action: move) 
+	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-) (destination: (spatial relation: (relation: -relation- ) (entity: -to_object-))))',
+	
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+
+	{"params": ["what_action", "what_object"],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["drop"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+
+	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-))',
+	
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+
+
+	# parameters to be solved 
+	{"params": ["what_action", "what_object", "check_down" ],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"what_action": [["place", "put"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+	"check_down": [["down"], [], [], []],
+
+	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-))',
+	
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''}
 
 
 
@@ -48,7 +120,7 @@ meaning_mapping_patterns = [
 	
 ]
 
-verbose = False
+verbose = True
 #######################
 # match the fragmented grounded sentence to a conceptual dependency 
 def generate_dependency(G, sentence_dict):
@@ -75,17 +147,21 @@ def generate_dependency(G, sentence_dict):
 		#print "hey! elementos a machear: ", matched_elements
 		current_interpretation = {"id_pattern": id_pattern, "rank":0.0, "matched_elements":matched_elements, "conceptual_dependency": each_pattern["conceptual_dependency"], "verbal_confirmation": each_pattern["verbal_confirmation"], "planner_confirmed": each_pattern["planner_confirmed"], "planner_not_confirmed": each_pattern["planner_not_confirmed"]}
 		used_params = []
+		used_objs = []
+
 		for each_param in each_pattern["params"]:
 			params_matched = []
+			
 			# try fetch an element from sentence metadata to match a parameter
-			for object_index in range(0, len(sentence_dict["objects"])):
+			#print "chaaaaa: ", sentence_dict["words"],sentence_dict["objects"], len(sentence_dict["objects"]) -1
+			for object_index in range(0, len(sentence_dict["words"])) :
 				current_words = sentence_dict["words"][object_index]
 				current_constituent = sentence_dict["constituents"][object_index]
 				current_types = sentence_dict["types"][object_index]
 				current_object = sentence_dict["objects"][object_index]
 				#print "trying to match ", current_object, " with ", each_param
 				# verifying for each_param
-				if each_param not in used_params:
+				if each_param not in used_params and current_object not in used_objs:
 					#check words
 					veri_words = len(intersection(current_words, each_pattern[each_param][0])) > 0 or each_pattern[each_param][0] == []
 					#print 'palabras clave: ', veri_words
@@ -98,10 +174,18 @@ def generate_dependency(G, sentence_dict):
 					
 					if veri_type and veri_const and veri_words:
 						for each_element in current_interpretation["matched_elements"]:
-							if each_element[0] == each_param:
+							if each_element[0] == each_param and each_element[1] == "":
 								each_element[1] = current_object
 								used_params.append(each_param)
+								used_objs.append(current_object)
+								#print "----------USED PARAMS: ", used_params
 								current_interpretation["rank"] +=  1.0/len(current_interpretation["matched_elements"])
+
+		# rank con base a los numero de elementos en el enunciado respecto al numero de parametros requeridos
+
+		print "HEY LOCOOOOOOOO: ", current_interpretation["rank"]
+		current_interpretation["rank"] = current_interpretation["rank"] * (1.0 - (float(abs(len(sentence_dict["objects"])- len(each_pattern["params"]))))/(len(each_pattern["params"])+len(sentence_dict["objects"])))
+		print "LOQUISIMOOOOOOO: ", current_interpretation["rank"], len(sentence_dict["objects"]),len(each_pattern["params"]),  (float(abs(len(sentence_dict["objects"])- len(each_pattern["params"]))))//(len(each_pattern["params"])+len(sentence_dict["objects"]))
 		interpretations_list.append(current_interpretation)
 
 	print ""
@@ -110,8 +194,10 @@ def generate_dependency(G, sentence_dict):
 	ranked_interpretations = sorted(interpretations_list, key=lambda k: k["rank"], reverse=True)
 
 	for each_inter in ranked_interpretations:
-		print "matched: " + each_inter["matched_elements"] if verbose else "",
-		print "rank: " + each_inter["rank"] if verbose else "",
+		print "matched: " if verbose else "",
+		print each_inter["matched_elements"] if verbose else "",
+		print "rank: " if verbose else "",
+		print each_inter["rank"] if verbose else "",
 		print "____" if verbose else "",
 
 	# hasta aqui se tienen las interpretaciones de todos los patrones ordenados por
@@ -146,6 +232,7 @@ def generate_dependency(G, sentence_dict):
 
 		print ""
 		print "- LOG: GENERATED MEANING: " + output_expression
+		return output_expression
 
 		#print "mensaje de confirmacion: ", verbal_confirmation
 
@@ -155,6 +242,7 @@ def generate_dependency(G, sentence_dict):
 
 	else:
 		print "the sentence was not fully undesrtood, please follow the instructions"
+		return False
 
 
 
@@ -174,19 +262,20 @@ def generate_dependency(G, sentence_dict):
 # 3) solve syntactical well formed noun phrases
 def sentence_grounder(G, sentence):
 	sentence = parsing.ontology_words_mapping(sentence)
-	print "1::       ------------------------------------" if verbose else "",
-	print "key words substitution: " + sentence if verbose else "",
+	print "1::       ------------------------------------" if verbose else ""
+	print "key words substitution: " + sentence if verbose else ""
 	
 	words, ranked_tags = parsing.pos_tagger(G, sentence)	
-	print "2::       ------------------------------------" if verbose else "",
-	print "part-of-speech tags: " + ranked_tags[0] if verbose else "",
+	print "2::       ------------------------------------" if verbose else ""
+	print "part-of-speech tags: " + " ".join(ranked_tags[0]) if verbose else ""
 	
 	np_interpretation = parsing.constituent_chunker(parsing.grammar_np_simple, words, ranked_tags[0])
 	print "3::       ------------------------------------" if verbose else "",
-	print "noun phrases segmentation" if verbose else "",
-	print "chunked pos: " + np_interpretation[0] if verbose else "",
-	print "chunked words: " + np_interpretation[1] if verbose else "",
-	print "noun phrases: " + np_interpretation[2] if verbose else "",
+	print "noun phrases segmentation" if verbose else ""
+	print "chunked pos: " + " ".join(np_interpretation[0]) if verbose else ""
+	print "chunked words: " + " ".join(np_interpretation[1]) if verbose else ""
+	print "noun phrases: " if verbose else "",
+	print np_interpretation[2] if verbose else ""
 
 	
 
@@ -200,11 +289,12 @@ def sentence_grounder(G, sentence):
 		names = noun_phrase_grounder(G, each[0], each[1]) 
 		if names == []:
 			solved = False
-			print "noun phrase: " + each + " can not be grounded"
+			print "noun phrase can not be grounded"
 		solved_nps.append(names)
 	
-	print "4::       ------------------------------------" if verbose else "",
-	print "grounded noun phrases: " + solved_nps if verbose else "",
+	print "4::       ------------------------------------" if verbose else ""
+	print "grounded noun phrases: " if verbose else "",
+	print solved_nps if verbose else ""
 
 	if solved: 
 		# obtain all combinations using solved noun phrases
@@ -231,8 +321,9 @@ def sentence_grounder(G, sentence):
 		#print "packed in lists:::: ", packed_words
 		all_words = parsing.all_combinations(packed_words)
 
-		print "5::       ------------------------------------" if verbose else "",
-		print "Separated sentences: " + all_words if verbose else "",
+		print "5::       ------------------------------------" if verbose else ""
+		print "Separated sentences: " if verbose else "",
+		print  all_words if verbose else ""
 		#print "-----> all combinations POS: ", np_interpretation[0]
 		
 		# up to here all direct grounded commands are contructed therefore
@@ -309,12 +400,12 @@ def sentence_grounder(G, sentence):
 
 			## cut
 
-			print "6::       ------------------------------------" if verbose else "",
-			print "sentence: " + sentence + " features the metadata:" if verbose else "",
-			print "words: " + chunked_final_words if verbose else "",
-			print "constituents: " + constituent_level if verbose else "",
-			print "objects: " + object_level if verbose else "",
-			print "types: " + semantic_types if verbose else "",
+			print "6::       ------------------------------------" if verbose else ""
+			print  "features the metadata: Words, constituents, objects, types" if verbose else ""
+			print chunked_final_words if verbose else ""
+			print constituent_level if verbose else ""
+			print object_level if verbose else ""
+			print semantic_types if verbose else ""
 
 
 			analized_sentences.append({"words":chunked_final_words, "constituents": constituent_level, "objects": object_level, "types":semantic_types})
@@ -367,7 +458,7 @@ def prepositional_phrase_grounder(G, words, pos):
 		
 
 def solve_simple_np(G, words, pos):
-	print "solving np: " + words if verbose else "",
+	print "solving np: " + " ".join(words) if verbose else "",
 	nouns = []
 	adjs = []
 	atts = []
@@ -387,7 +478,7 @@ def solve_simple_np(G, words, pos):
 			vrbs.append(words[i])
 		elif pos[i] == 'idf_pro':
 			nouns.append('stuff')
-	print 'nouns: ' + nouns + '   adjs: ' + adjs + '   vrbs: ' + vrbs + '   atts: ' + atts if verbose else "",
+	#print 'nouns: ' + nouns + '   adjs: ' + adjs + '   vrbs: ' + vrbs + '   atts: ' + atts if verbose else "",
 	# collect all objects of class
 	if len(nouns) > 0:
 		obj_candidates = kb_services.all_objects(G, nouns[0])
@@ -406,9 +497,16 @@ def solve_simple_np(G, words, pos):
 					
 		else:
 			objs = obj_candidates[:]
-	print "solved np:" + objs if verbose else "",
-	if objs == []:
-		objs = ["(type:" + " ".join(nouns) + ", attribute:" + " ".join(atts) + ", value:" + " ".join(adjs) + ")" ]
+	print "solved np:" if verbose else "",
+	print objs if verbose else ""
+	if objs == [] and (len(nouns)> 0):
+		# generate expression for lazy evaluation in planner
+		exp = "(type: " + nouns[0] + ") "
+		exp_adj = ""
+		if adjs != []:
+			for each in adjs:
+				exp_adj += "(" + kb_services.all_superclasses(G, each)[0] + ": " + each + ") "
+		objs = [exp_adj + exp]
 	return objs
 
 

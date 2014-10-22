@@ -36,12 +36,11 @@ grammar_np_simple = [
 
 	['NP2',			'noun',					'NPad'],
 	['NPad',		'adj',					'NP'],
-	['NPad',		'att',					'NP'],
 	
 	
 
 
-	['NP',			'att',					'adj'],
+	
 	['NP',			'noun',					'NP1'],
 	['NP1',			'prep_loc',				'noun'],
 	['NP',			'existencial',			'NP'],
@@ -137,6 +136,17 @@ def ontology_words_mapping(sentence):
 	# substitutes pronoun me for speaker (later should use contextual info of robot, who is talking?)
 	sentence = re.sub(' me ', ' speaker ', sentence)
 	sentence = re.sub('\?', ' ?', sentence)
+	sentence = re.sub('pick up ', 'take ', sentence)
+
+	sentence = re.sub(' one ', ' 1 ', sentence)
+	sentence = re.sub(' two ', ' 2 ', sentence)
+	sentence = re.sub(' three ', ' 3 ', sentence)
+	sentence = re.sub(' four ', ' 4 ', sentence)
+	sentence = re.sub(' five ', ' 5 ', sentence)
+
+	sentence = re.sub(' other ', ' ', sentence)
+	sentence = re.sub(' placed ', ' ', sentence)
+
 	# declaration of classes and objects
 	sentence = re.sub('((is)|(are)) ((an object of)|(an instance of)|(an adjetive of))( a)? ', 'is is_object_of ', sentence)
 	sentence = re.sub('((is)|(are)) ((a kind of)|(a sort of)) ', 'is is_kind_of ', sentence)

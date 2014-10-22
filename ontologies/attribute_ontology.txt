@@ -4,121 +4,32 @@
 (is_kind_of   	is_kind_of 		attribute)
 (is_object_of   is_kind_of 		attribute)
 
-(is_object_of_action 	is_kind_of 		attribute)
-
-(physical_status 	  	is_kind_of 		attribute)
-(functional_status 		is_kind_of 		attribute)
-(location   			is_kind_of 		attribute)
-(social_status 		 	is_kind_of  	attribute)
-(passive_voice			is_kind_of 		attribute)
 
 
+(relation 		is_kind_of 		attribute)
+(indicator 		is_kind_of 		attribute)
+(color	 		is_kind_of 		attribute)
 
-# # # #
-
-
-(owned_by 				is_kind_of 		passive_voice)
-(used_by 				is_kind_of 		passive_voice)
-(broken_by 				is_kind_of 		passive_voice)
-(fixed_by 				is_kind_of 		passive_voice)
-
-# social status
-(marriage 		is_kind_of 			social_status)
-(single  		is_object_of 	 	marriage)
-(married  		is_object_of 	 	marriage)
-
-
-# physical
-
-(color  		is_kind_of 		physical_status)
-(size   		is_kind_of 		physical_status)
-(shape  		is_kind_of 		physical_status)
-(weight 		is_kind_of 		physical_status)
-(temperature 	is_kind_of 		physical_status)
-(taste 			is_kind_of  	physical_status)
+(red 			is_object_of 	color)
+(blue 			is_object_of 	color)
+(yellow 		is_object_of 	color)
+(green 			is_object_of 	color)
+(white 			is_object_of 	color)
+(gray 			is_object_of 	color)
+(cyan 			is_object_of 	color)
+(magenta 		is_object_of 	color)
 
 
-(sweet  	 	is_object_of  	taste)
-(salty  	 	is_object_of  	taste)
-(sour   	 	is_object_of  	taste)
-
-(clean  		is_object_of  	physical_status)
-(dirty  		is_object_of  	physical_status)
-
-(cold  			is_object_of  	temperature)
-(hot  			is_object_of  	temperature)
-(warm  			is_object_of  	temperature)
-(freezed  		is_object_of  	temperature)
-
-(tall 	 		is_object_of 		shape)
-(round  		is_object_of 		shape)
-(short 	 		is_object_of 		shape)
-(thin 	 		is_object_of 		shape)
-(long 	 		is_object_of 		shape)
-
-(small			is_object_of 		size)
-(big			is_object_of 		size)
-
-(red  			is_object_of  	color)
-(yellow 		is_object_of  	color)
-(blue  			is_object_of  	color)
-(green  		is_object_of  	color)
-(orange 		is_object_of 	color)
-(brown 			is_object_of 	color)
-(white  		is_object_of  	color)
-(black  		is_object_of  	color)
-(dark  			is_object_of  	color)
-
-(heavy 			is_object_of 	weight)
-(light 			is_object_of 	weight)
+(above 			is_kind_of 	relation)
+(left 			is_kind_of 	relation)
+(right 			is_kind_of 	relation)
+(back 			is_kind_of 	relation)
+(forward 		is_kind_of 	relation)
+(backward 		is_kind_of 	relation)
 
 
-# # # #
-
-# functionality
-(closed	  			is_object_of 		 	functional_status)
-(open	  			is_object_of 		 	functional_status)
-(broken	  			is_object_of 		 	functional_status)
-(good	  			is_object_of 		 	functional_status)
-(connect 			is_object_of 			functional_status)
-(attention 			is_object_of 			functional_status)
-(graspable 			is_object_of 			functional_status)
-(carry 				is_object_of 			functional_status)
-
-# # # #
-
-# location
-
-(above 			is_kind_of 			location)
-(near			is_kind_of 			location)
-(under	 		is_kind_of 			location)
-(in 			is_kind_of 			location)
-(connected_to 	is_kind_of 			location)
-
-(above			aka					on)
-(above 			aka					on_top)
-(in 			aka					inside)
-
-
-
-
-(in 			algebraic_property 			transitive)
-(on 			algebraic_property 			transitive)
-(near 			algebraic_property 			transitive)
-(under 			algebraic_property 			transitive)
-(location 		algebraic_property 			transitive)
-(aka 			algebraic_property 			transitive)
-(connected_to 	algebraic_property 			transitive)
-
-(near 			algebraic_property 			symmetric)
-(married 		algebraic_property 			symmetric)
-(connected_to 	algebraic_property 			symmetric)
-(aka 			algebraic_property 			symmetric)
-
-(aka 			algebraic_property 			locally_defined)
-
-(married 		algebraic_property		has_unique_value)
-(weight 		algebraic_property		has_unique_value)
-(temperature 	algebraic_property 		has_unique_value)
-
-
+(nearest 		is_object_of 	indicator)
+(leftmost 		is_object_of 	indicator)
+(rightmost 		is_object_of 	indicator)
+(individual 	is_object_of 	indicator)
+(center 		is_object_of 	indicator)

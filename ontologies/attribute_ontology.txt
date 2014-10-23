@@ -27,6 +27,7 @@
 (forward 		is_kind_of 	relation)
 (backward 		is_kind_of 	relation)
 (nearest 		is_kind_of 	relation)
+(adjacent  		is_kind_of 	relation)
 
 
 (nearest 		is_object_of 	indicator)

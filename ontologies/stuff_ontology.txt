@@ -16,5 +16,6 @@
 (stack 			is_kind_of 	type)
 (robot 			is_kind_of 	type)
 (edge 			is_kind_of 	type)
+(corner 		is_kind_of 	type)
 
 

@@ -25,7 +25,7 @@ meaning_mapping_patterns = [
 	{"params": ["what_action", "what_object", "spatial_relation", "to_object" ],
 	
 	# [[]:keywords, []:constituent, []:sem type, []: default
-	"what_action": [["place", "move"], ["vrb"], [], []],
+	"what_action": [["place", "move","put"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 	"spatial_relation": [[], [], ["relation"], []],
 	"to_object": [[], ["noun", "prep_phrase"], [], []],
@@ -56,7 +56,7 @@ meaning_mapping_patterns = [
 	{"params": ["what_action", "what_object"],
 	
 	# [[]:keywords, []:constituent, []:sem type, []: default
-	"what_action": [["take", "pick_up", "grab", "lift", "pick"], ["vrb"], [], []],
+	"what_action": [["take", "pick_up", "grab", "lift", "pick", "hold"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 
 	"conceptual_dependency": '(event: (action: take) (entity: -what_object-))',
@@ -117,7 +117,7 @@ meaning_mapping_patterns = [
 	{"params": ["action_take", "object_taken", "and_check", "action_drop", "it_check", "reference", "object_referenced" ],
 	
 	# [[]:keywords, []:constituent, []:sem type, []: default
-	"action_take": [["pick", "pick_up", "take", "grasp", "grab"], ["vrb"], [], []],
+	"action_take": [["pick", "pick_up", "take", "grasp", "grab", "move"], ["vrb"], [], []],
 	"object_taken": [[], ["noun"], [], []],
 	"and_check": [["and"], [], [], []],
 	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
@@ -133,6 +133,44 @@ meaning_mapping_patterns = [
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
+
+	# patrones para shared task semeval 2014
+	{"params": ["action_take", "object_taken", "and_check", "action_drop", "it_check",  "object_referenced" ],
+	
+	"action_take": [["pick", "pick_up", "take", "grasp", "grab", "move"], ["vrb"], [], []],
+	"object_taken": [[], ["noun"], [], []],
+	"and_check": [["and"], [], [], []],
+	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
+	"it_check": [["it"], [], [], []],
+	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
+
+	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: above) (entity: -object_referenced-)))))',
+	
+
+
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+
+
+	# patrones para shared task semeval 2014
+	{"params": ["action_take", "object_taken", "action_drop", "it_check",  "object_referenced" ],
+	
+	"action_take": [["pick", "pick_up", "take", "grasp", "grab", "move"], ["vrb"], [], []],
+	"object_taken": [[], ["noun"], [], []],
+	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
+	"it_check": [["it"], [], [], []],
+	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
+
+	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: above) (entity: -object_referenced-)))))',
+	
+
+
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
 
 
 
@@ -166,7 +204,29 @@ verbose = True
 # match the fragmented grounded sentence to a conceptual dependency 
 def generate_dependency(G, sentence_dict):
 
-	
+	#quick hack: break noun phrases 
+
+#	copy = sentence_dict["words"][:]
+#	copy_pos = sentence_dict["constituents"][:]
+#	clean = []
+#	clean_pos = []
+#	
+#	for iterator in range(0, len(sentence_dict["words"])):
+#		if isinstance(sentence_dict["words"][iterator], list):
+#			for each_1 in sentence_dict["words"][iterator]:
+#				clean.append(each_1)
+#			clean_pos.append("att")
+#			clean_pos.append("noun")
+#		else:
+#			clean.append(sentence_dict["words"][iterator])
+#			clean_pos.append(sentence_dict["constituents"][iterator])
+#
+#	sentence_dict["words"] = clean[:]
+#	sentence_dict["constituents"] = clean_pos[:]
+	# fin hack 
+
+
+	print "SOOOOOOOOBRES:.... ", sentence_dict
 	used_objects = []
 	solved_dependency = ''
 	solved = False
@@ -540,6 +600,7 @@ def solve_simple_np(G, words, pos):
 	atts = []
 	vrbs = []
 	objs = []
+	nums = []
 	for i in range(len(words)):
 		if pos[i] == 'noun':
 			if  len(nouns) == 0:
@@ -552,6 +613,8 @@ def solve_simple_np(G, words, pos):
 			atts.append(words[i])
 		elif pos[i] == 'vrb':
 			vrbs.append(words[i])
+		elif pos[i] == 'number':
+			nums.append(words[i])
 		elif pos[i] == 'idf_pro':
 			nouns.append('stuff')
 	print 'nouns: ' , nouns , '   adjs: ' , adjs , '   vrbs: ' , vrbs , '   atts: ' , atts 
@@ -580,8 +643,11 @@ def solve_simple_np(G, words, pos):
 		exp = "(type: " + nouns[0] + ") "
 		exp_adj = ""
 		if adjs != []:
+			for each in nums:
+				exp_adj += "(cardinal: " + each + ") "
 			for each in adjs:
 				exp_adj += "(" + kb_services.all_superclasses(G, each)[0] + ": " + each + ") "
+			
 		objs = [exp_adj + exp]
 	return objs
 

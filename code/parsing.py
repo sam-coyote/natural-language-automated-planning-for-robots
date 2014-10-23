@@ -15,10 +15,16 @@ grammar_np_simple = [
 	['NP',			'number',				'noun'],
 	['NP',			'det',					'noun'],
 
-	['NP',		'adj',						'noun'],
-	['NP',		'ADJS',						'noun'],
+	['NP',			'adj',					'noun'],
+	#['NP',			'att',					'noun'],
+	['NP',			'ADJS',					'noun'],
 
 	['NP',			'det',					'NP2'],
+
+	#['NP',			'NP',					'NPatt'],
+	#['NPatt',		'att',					'NP'],
+
+
 
 	['NP',			'existencial',			'noun_q'],
 	['NP',			'universal',			'noun_q'],
@@ -56,6 +62,7 @@ grammar_np_simple = [
 	['comple',		'rel_pro',				'comple2'],
 	['comple2',		'adj',					'comple3'],
 	['comple2',		'att',					'comple3'],
+	['comple2',		'att',					'NP'],
 	['comple3',		'prep',					'NP'],
 	['comple3',		'prep',					'noun'],
 	
@@ -155,7 +162,9 @@ def ontology_words_mapping(sentence):
 
 	sentence = re.sub('  ', ' ', sentence)
 	sentence = re.sub('\.', '', sentence)
-	sentence = re.sub('\,', '', sentence)
+	sentence = re.sub(', ', ' ', sentence)
+
+	sentence = re.sub(' $', '', sentence)
 
 	sentence = re.sub(' one ', ' 1 ', sentence)
 	sentence = re.sub(' two ', ' 2 ', sentence)
@@ -164,12 +173,19 @@ def ontology_words_mapping(sentence):
 	sentence = re.sub(' five ', ' 5 ', sentence)
 
 	sentence = re.sub(' other ', ' ', sentence)
-	sentence = re.sub(' placed ', ' ', sentence)
+
 
 	sentence = re.sub(' that is ', ' that_is ', sentence)
+	sentence = re.sub(' from ', ' that_is above ', sentence)
+	sentence = re.sub(' from top of ', ' that_is above ', sentence)
+	sentence = re.sub(' placed on ', ' that_is above ', sentence)
+	sentence = re.sub(' off ', ' that_is above ', sentence)
+	
 	sentence = re.sub(' which is ', ' that_is ', sentence)
 
 	sentence = re.sub(' exactly down', ' down', sentence)
+
+	sentence = re.sub(' most left ', ' leftmost ', sentence)
 
 	# declaration of classes and objects
 	sentence = re.sub('((is)|(are)) ((an object of)|(an instance of)|(an adjetive of))( a)? ', 'is is_object_of ', sentence)
@@ -177,9 +193,9 @@ def ontology_words_mapping(sentence):
 	# simple from of verbs
 	sentence = re.sub('((is)|(are)) ', 'is ', sentence)
 	# transform plural into singular
-	for each in language_info['noun']:
-		plural = derive_plural(each)
-		sentence = re.sub(plural, each, sentence)
+	#for each in language_info['noun']:
+	#	plural = derive_plural(each)
+	#	sentence = re.sub(plural, each, sentence)
 	# unite compound words
 	compound_words = kb_services.compound_words(G)
 	for each in compound_words:

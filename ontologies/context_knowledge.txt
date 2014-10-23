@@ -4,15 +4,24 @@
 
 (cube 			aka 			block)
 (cube 			aka 			brick)
+(cube 			aka 			square)
+(cube 			aka 			one)
 
 
 (prism 			aka 			pyramid)
 (prism 			aka 			tetrahedron)
+(prism 			aka	 			triangle)
 
 
 (above			aka				placed_on_top)
 (above			aka 			on_top)
 (above			aka 			to_the_top)
+
+(nearest 		aka 			closest)
+(nearest 		aka 			closer)
+
+(right 			aka	 			right_to)
+(left 			aka	 			left_to)
 
 (white 			aka	 			light_grey)
 
@@ -20,6 +29,7 @@
 
 (cyan 			aka 			turquoise)
 (cyan 			aka 			light_blue)
+(cyan 			aka 			sky_blue)
 
 (magenta 		aka 			pink)
 (magenta 		aka 			purple)
@@ -27,6 +37,8 @@
 (individual 	aka 			single)
 
 (above 			aka 			on)
+
+(robot 			aka 			you)
 
 (stack 			aka 			tower)
 (stack 			aka 			parallelipiped)

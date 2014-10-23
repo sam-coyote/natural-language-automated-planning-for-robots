@@ -28,8 +28,10 @@ grammar_np_simple = [
 	['noun_q',		'adj',					'noun'],
 	['noun_q',		'ADJS',					'noun'],
 	
+	['ADJS',		'adj',					'and'],
 	['ADJS',		'adj',					'adj'],
 	['ADJS',		'ADJS',					'adj'],
+	['ADJS',		'adj',					'ADJS'],
 	
 	['noun_q',		'adj',					'NP2'],
 	['noun_q',		'ADJS',					'NP2'],
@@ -48,6 +50,19 @@ grammar_np_simple = [
 	['NP',			'number',				'NP'],
 	['NP',			'det',					'NP'],
 	['ad_np',		'adj',					'NP'],
+
+	# NOUN_PHRASE_1 that_is nearest to NOUN_PHRASE_2
+	['NP',			'NP',					'comple'],
+	['comple',		'rel_pro',				'comple2'],
+	['comple2',		'adj',					'comple3'],
+	['comple2',		'att',					'comple3'],
+	['comple3',		'prep',					'NP'],
+	['comple3',		'prep',					'noun'],
+	
+	
+	
+	
+
 
 	['NP',			'idf_pro',				'TOVERB'],
 	['TOVERB',		'particule',			'vrb']]
@@ -138,6 +153,10 @@ def ontology_words_mapping(sentence):
 	sentence = re.sub('\?', ' ?', sentence)
 	sentence = re.sub('pick up ', 'take ', sentence)
 
+	sentence = re.sub('  ', ' ', sentence)
+	sentence = re.sub('\.', '', sentence)
+	sentence = re.sub('\,', '', sentence)
+
 	sentence = re.sub(' one ', ' 1 ', sentence)
 	sentence = re.sub(' two ', ' 2 ', sentence)
 	sentence = re.sub(' three ', ' 3 ', sentence)
@@ -146,6 +165,11 @@ def ontology_words_mapping(sentence):
 
 	sentence = re.sub(' other ', ' ', sentence)
 	sentence = re.sub(' placed ', ' ', sentence)
+
+	sentence = re.sub(' that is ', ' that_is ', sentence)
+	sentence = re.sub(' which is ', ' that_is ', sentence)
+
+	sentence = re.sub(' exactly down', ' down', sentence)
 
 	# declaration of classes and objects
 	sentence = re.sub('((is)|(are)) ((an object of)|(an instance of)|(an adjetive of))( a)? ', 'is is_object_of ', sentence)

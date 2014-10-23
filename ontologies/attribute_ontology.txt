@@ -26,6 +26,7 @@
 (back 			is_kind_of 	relation)
 (forward 		is_kind_of 	relation)
 (backward 		is_kind_of 	relation)
+(nearest 		is_kind_of 	relation)
 
 
 (nearest 		is_object_of 	indicator)
@@ -33,3 +34,5 @@
 (rightmost 		is_object_of 	indicator)
 (individual 	is_object_of 	indicator)
 (center 		is_object_of 	indicator)
+#(left 			is_object_of 	indicator)
+#(right 			is_object_of 	indicator)

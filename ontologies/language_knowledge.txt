@@ -73,7 +73,7 @@
 (her 			tag			pos_pro)
 (his 			tag			pos_pro)
 
-(that 			tag 		rel_pro)
+(that_is 		tag 		rel_pro)
 (which 			tag 		rel_pro)
 
 (other 			tag 		infill)

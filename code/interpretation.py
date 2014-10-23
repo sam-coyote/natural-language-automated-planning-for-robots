@@ -102,7 +102,7 @@ meaning_mapping_patterns = [
 	{"params": ["what_action", "what_object", "check_down" ],
 	
 	# [[]:keywords, []:constituent, []:sem type, []: default
-	"what_action": [["place", "put"], ["vrb"], [], []],
+	"what_action": [["place", "put", "drop"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 	"check_down": [["down"], [], [], []],
 
@@ -110,9 +110,50 @@ meaning_mapping_patterns = [
 	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+	# patrones para shared task semeval 2014
+	{"params": ["action_take", "object_taken", "and_check", "action_drop", "it_check", "reference", "object_referenced" ],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"action_take": [["pick", "pick_up", "take", "grasp", "grab"], ["vrb"], [], []],
+	"object_taken": [[], ["noun"], [], []],
+	"and_check": [["and"], [], [], []],
+	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
+	"it_check": [["it"], [], [], []],
+	"reference": [[], [], ["relation"], []],
+	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
+
+	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: -reference-) (entity: -object_referenced-)))))',
+	
+
+
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
+
+
+
+
+
+	{"params": ["action_take", "object_taken", "and_check", "action_drop", "reference", "object_referenced" ],
+	
+	# [[]:keywords, []:constituent, []:sem type, []: default
+	"action_take": [["pick", "pick_up", "take", "grasp", "grab"], ["vrb"], [], []],
+	"object_taken": [[], ["noun"], [], []],
+	"and_check": [["and"], [], [], []],
+	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
+	"reference": [[], [], ["relation"], []],
+	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
+
+	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: -reference-) (entity: -object_referenced-)))))',
+	
+
+
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
 	"planner_not_confirmed": ''}
-
-
 
 
 
@@ -185,7 +226,7 @@ def generate_dependency(G, sentence_dict):
 
 		print "HEY LOCOOOOOOOO: ", current_interpretation["rank"]
 		current_interpretation["rank"] = current_interpretation["rank"] * (1.0 - (float(abs(len(sentence_dict["objects"])- len(each_pattern["params"]))))/(len(each_pattern["params"])+len(sentence_dict["objects"])))
-		print "LOQUISIMOOOOOOO: ", current_interpretation["rank"], len(sentence_dict["objects"]),len(each_pattern["params"]),  (float(abs(len(sentence_dict["objects"])- len(each_pattern["params"]))))//(len(each_pattern["params"])+len(sentence_dict["objects"]))
+		print "LOQUISIMOOOOOOO: ", current_interpretation["rank"], len(sentence_dict["objects"]),len(each_pattern["params"]),  (float(abs(len(sentence_dict["objects"])- len(each_pattern["params"]))))/(len(each_pattern["params"])+len(sentence_dict["objects"]))
 		interpretations_list.append(current_interpretation)
 
 	print ""
@@ -198,7 +239,7 @@ def generate_dependency(G, sentence_dict):
 		print each_inter["matched_elements"] if verbose else "",
 		print "rank: " if verbose else "",
 		print each_inter["rank"] if verbose else "",
-		print "____" if verbose else "",
+		print "____" if verbose else ""
 
 	# hasta aqui se tienen las interpretaciones de todos los patrones ordenados por
 	# porcentaje de roles tematicos aterrizados
@@ -208,8 +249,8 @@ def generate_dependency(G, sentence_dict):
 
 	# si existe un patron interpretado completamente genero las expresiones
 	# de lo contrario empiezo la interaccion para encontrar el resto 
-
-	if ranked_interpretations[0]["rank"] == 1.0:
+	print "_____________ RANKED LIST: ", ranked_interpretations
+	if ranked_interpretations[0]["rank"] > 0.9:
 		print "substitude grounded parameters" if verbose else "",
 		# sustitucion de simbolos aterrizados en las expresiones
 		output_expression = ranked_interpretations[0]["conceptual_dependency"]
@@ -459,6 +500,41 @@ def prepositional_phrase_grounder(G, words, pos):
 
 def solve_simple_np(G, words, pos):
 	print "solving np: " + " ".join(words) if verbose else "",
+	
+
+	if "rel_pro" in pos:
+		print "ENUNCIADO CON NP COMPLEJA, RECHUNKEANDO..."
+		words = words[0:pos.index("rel_pro")] + words[pos.index("rel_pro")+1:len(words)]
+		pos = pos[0:pos.index("rel_pro")] + pos[pos.index("rel_pro")+1:len(pos)]
+		np_complex_postchunk = parsing.constituent_chunker(parsing.grammar_np_simple, words, pos)
+		
+		print "NP COMPLEJA chunked pos: ", " ".join(np_complex_postchunk[0]) 
+		print "NP COMPLEJA chunked words: ", " ".join(np_complex_postchunk[1]) 
+		print "NP COMPLEJA noun phrases: ", np_complex_postchunk[2] 
+		sol_com_np = []
+		for each_np in np_complex_postchunk[2]:
+			sol_com_np.append(solve_simple_np(G, each_np[0], each_np[1]))
+		
+		print "NP COMPLEJA sub NPs aterrizados: ", sol_com_np
+
+		adjs = []
+		complex_noun = []
+		for i in range(len(np_complex_postchunk[0])):
+			if np_complex_postchunk[0][i] == 'adj' or np_complex_postchunk[0][i] == 'att':
+				adjs.append(np_complex_postchunk[1][i])
+			elif np_complex_postchunk[0][i] == 'noun':
+				if re.match('NOUN_PHRASE_[0-9]+', np_complex_postchunk[1][i]):
+					current_np = np_complex_postchunk[2].pop(0)
+					complex_noun.append(solve_simple_np(G, current_np[0], current_np[1]).pop())
+				else:
+					complex_noun.append("(type: " + np_complex_postchunk[1][i] + ")")
+
+		print "NP COMPLEJA: ATTTTENCION", complex_noun
+		conformed_np = complex_noun[0] + "(spatial relation: (relation: " + adjs[0] + " ) (entity: " + complex_noun[1] + "))" 
+		print "OOOORALEEEEE   ", conformed_np
+		return [conformed_np]
+
+
 	nouns = []
 	adjs = []
 	atts = []
@@ -478,7 +554,7 @@ def solve_simple_np(G, words, pos):
 			vrbs.append(words[i])
 		elif pos[i] == 'idf_pro':
 			nouns.append('stuff')
-	#print 'nouns: ' + nouns + '   adjs: ' + adjs + '   vrbs: ' + vrbs + '   atts: ' + atts if verbose else "",
+	print 'nouns: ' , nouns , '   adjs: ' , adjs , '   vrbs: ' , vrbs , '   atts: ' , atts 
 	# collect all objects of class
 	if len(nouns) > 0:
 		obj_candidates = kb_services.all_objects(G, nouns[0])

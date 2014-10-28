@@ -21,102 +21,82 @@ def intersection(a,b):
 	return [bb for bb in b if bb in a]
 # 
 meaning_mapping_patterns = [
-	# patrones para shared task semeval 2014
+
+		# patrones para shared task semeval 2014
+	# 1
 	{"params": ["what_action", "what_object", "spatial_relation", "to_object" ],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"what_action": [["place", "move","put"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 	"spatial_relation": [[], [], ["relation"], []],
 	"to_object": [[], ["noun", "prep_phrase"], [], []],
-
 	"conceptual_dependency": '(event: (action: move) (entity: -what_object-) (destination: (spatial relation: (relation: -spatial_relation- ) (entity: -to_object-))))',
-	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
+	# 2
+	{"params": ["what_action", "what_object", "measure", "to_check", "direction" ],
+	"what_action": [["place", "move","put"], ["vrb"], [], []],
+	"what_object": [[], ["noun"], [], []],
+	"measure": [[], ["noun"], [], []],
+	"to_check": [["to"], [], [], []],
+	"direction": [[], ["noun", "prep_phrase"], [], []],
+	"conceptual_dependency": '(event: (action: -what_action-) (entity: -what_object-) (destination: (spatial relation: (measure: (entity: -measure-)) -direction-)))',
+	"verbal_confirmation": '',
+	"planner_confirmed": '',
+	"planner_not_confirmed": ''},
 
-	# parameters to be solved 
+	# 3
 	{"params": ["what_action", "what_object", "to_object" ],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"what_action": [["place", "move"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 	"to_object": [[], ["noun", "prep_phrase"], [], []],
-
 	"conceptual_dependency": '(event: (action: move) (entity: -what_object-) (destination: (spatial relation: (relation: above ) (entity: -to_object-))))',
-	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-
+	# 4
 	{"params": ["what_action", "what_object"],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"what_action": [["take", "pick_up", "grab", "lift", "pick", "hold"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
-
 	"conceptual_dependency": '(event: (action: take) (entity: -what_object-))',
-	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-
+	# 5
 	{"params": ["what_action", "what_object", "relation", "to_object" ],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"what_action": [["put", "drop"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 	"relation": [[], ["att"], [], []],
 	"to_object": [[], ["noun", "prep_phrase"], [], []],
-	#posible cambio a (action: move) 
-	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-) (destination: (spatial relation: (relation: -relation- ) (entity: -to_object-))))',
-	
+	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-) (destination: (spatial relation: (relation: -relation- ) (entity: -to_object-))))',	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-
+	# 6
 	{"params": ["what_action", "what_object"],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"what_action": [["drop"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
-
-	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-))',
-	
+	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-))',	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-
-
-	# parameters to be solved 
+	# 7
 	{"params": ["what_action", "what_object", "check_down" ],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"what_action": [["place", "put", "drop"], ["vrb"], [], []],
 	"what_object": [[], ["noun"], [], []],
 	"check_down": [["down"], [], [], []],
-
-	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-))',
-	
+	"conceptual_dependency": '(event: (action: drop) (entity: -what_object-))',	
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-	# patrones para shared task semeval 2014
+	# 8
 	{"params": ["action_take", "object_taken", "and_check", "action_drop", "it_check", "reference", "object_referenced" ],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"action_take": [["pick", "pick_up", "take", "grasp", "grab", "move"], ["vrb"], [], []],
 	"object_taken": [[], ["noun"], [], []],
 	"and_check": [["and"], [], [], []],
@@ -124,80 +104,54 @@ meaning_mapping_patterns = [
 	"it_check": [["it"], [], [], []],
 	"reference": [[], [], ["relation"], []],
 	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
-
 	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: -reference-) (entity: -object_referenced-)))))',
-	
-
-
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-	# patrones para shared task semeval 2014
+	# 9
 	{"params": ["action_take", "object_taken", "and_check", "action_drop", "it_check",  "object_referenced" ],
-	
 	"action_take": [["pick", "pick_up", "take", "grasp", "grab", "move"], ["vrb"], [], []],
 	"object_taken": [[], ["noun"], [], []],
 	"and_check": [["and"], [], [], []],
 	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
 	"it_check": [["it"], [], [], []],
 	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
-
 	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: above) (entity: -object_referenced-)))))',
-	
-
-
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-
-
-	# patrones para shared task semeval 2014
+	# 10
 	{"params": ["action_take", "object_taken", "action_drop", "it_check",  "object_referenced" ],
-	
 	"action_take": [["pick", "pick_up", "take", "grasp", "grab", "move"], ["vrb"], [], []],
 	"object_taken": [[], ["noun"], [], []],
 	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
 	"it_check": [["it"], [], [], []],
 	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
-
 	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: above) (entity: -object_referenced-)))))',
-	
-
-
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''},
 
-
-
-
+	# 11
 	{"params": ["action_take", "object_taken", "and_check", "action_drop", "reference", "object_referenced" ],
-	
-	# [[]:keywords, []:constituent, []:sem type, []: default
 	"action_take": [["pick", "pick_up", "take", "grasp", "grab"], ["vrb"], [], []],
 	"object_taken": [[], ["noun"], [], []],
 	"and_check": [["and"], [], [], []],
 	"action_drop": [["place", "put", "drop"], ["vrb"], [], []],
 	"reference": [[], [], ["relation"], []],
 	"object_referenced": [[], ["noun", "prep_phrase"], [], []],
-
 	"conceptual_dependency": '(sequence: (event: (action: take) (entity: (id: 1) -object_taken-)) (event: (action: drop) (entity: (type: reference) (reference id: 1)) (destination: (spatial relation: (relation: -reference-) (entity: -object_referenced-)))))',
-	
-
-
 	"verbal_confirmation": '',
 	"planner_confirmed": '',
 	"planner_not_confirmed": ''}
 
 
 
-
-	
 ]
+
+used_patterns = [0]*len(meaning_mapping_patterns)
 
 verbose = True
 #######################
@@ -243,7 +197,7 @@ def generate_dependency(G, sentence_dict):
 	id_pattern = 0
 	for each_pattern in meaning_mapping_patterns:
 		# init template interpretation
-		id_pattern =+ 1
+		id_pattern += 1
 		matched_elements = [[each, ""] for each in each_pattern["params"]]
 		#print "hey! elementos a machear: ", matched_elements
 		current_interpretation = {"id_pattern": id_pattern, "rank":0.0, "matched_elements":matched_elements, "conceptual_dependency": each_pattern["conceptual_dependency"], "verbal_confirmation": each_pattern["verbal_confirmation"], "planner_confirmed": each_pattern["planner_confirmed"], "planner_not_confirmed": each_pattern["planner_not_confirmed"]}
@@ -310,7 +264,8 @@ def generate_dependency(G, sentence_dict):
 	# si existe un patron interpretado completamente genero las expresiones
 	# de lo contrario empiezo la interaccion para encontrar el resto 
 	print "_____________ RANKED LIST: ", ranked_interpretations
-	if ranked_interpretations[0]["rank"] > 0.9:
+	if ranked_interpretations[0]["rank"] > 0.80:
+		used_patterns[ranked_interpretations[0]["id_pattern"]-1] += 1
 		print "substitude grounded parameters" if verbose else "",
 		# sustitucion de simbolos aterrizados en las expresiones
 		output_expression = ranked_interpretations[0]["conceptual_dependency"]
@@ -638,16 +593,23 @@ def solve_simple_np(G, words, pos):
 			objs = obj_candidates[:]
 	print "solved np:" if verbose else "",
 	print objs if verbose else ""
-	if objs == [] and (len(nouns)> 0):
+	if objs == [] and ((len(nouns)> 0) or len(atts)>0):
 		# generate expression for lazy evaluation in planner
-		exp = "(type: " + nouns[0] + ") "
+		if len(nouns)> 0:
+			exp = "(type: " + nouns[0] + ") "
+		else: 
+			exp = ""
 		exp_adj = ""
-		if adjs != []:
+		if nums != []:
 			for each in nums:
 				exp_adj += "(cardinal: " + each + ") "
+
+		if adjs != []:
 			for each in adjs:
 				exp_adj += "(" + kb_services.all_superclasses(G, each)[0] + ": " + each + ") "
-			
+		if atts != []:
+			for each in atts:
+				exp_adj += "(" + kb_services.all_superclasses(G, each)[0] + ": " + each + ") "
 		objs = [exp_adj + exp]
 	return objs
 

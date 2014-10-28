@@ -1,14 +1,9 @@
-
 (attribute 		is_kind_of 		top)
 (stuff  		is_kind_of  	top)
-
 (aka 			is_kind_of 		attribute)
 (aka 			algebraic_property 			transitive)
 (aka 			algebraic_property 			symmetric)
-
-
 (type 			is_kind_of 		stuff)
-
 (cube 			is_kind_of 	type)
 (prism 			is_kind_of 	type)
 (cube_group 	is_kind_of 	type)

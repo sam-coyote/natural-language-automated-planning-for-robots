@@ -8,12 +8,14 @@ import matplotlib.pyplot as plt
 
 # por diseno el primer valor de la matriz es el simbolo de inicio S
 #grammar for noun frases
-
+unknown_counter = 0
+unknown_list = []
 grammar_np_simple = [
 	['NP',			'existencial',			'noun'],
 	['NP',			'universal',			'noun'],
 	['NP',			'number',				'noun'],
 	['NP',			'det',					'noun'],
+	['NP',			'det',					'att'],
 
 	['NP',			'adj',					'noun'],
 	#['NP',			'att',					'noun'],
@@ -139,11 +141,13 @@ pos_ngrams = [
 	['number', 'adj'],
 	['universal', 'adj', 'noun'],
 	['existencial', 'adj', 'noun'],
+	['number', 'noun', 'to', 'det'],
 	['adj', 'noun'],
 	['idf_pro', 'particule', 'vrb']]
 # 2) pos tag bigrams which second element is a noun with semantic restrictions
 pos_bigrams_noun_semantics = [
-	['prep', 'place'], 
+	['prep', 'place'],
+	['prep', 'relation'], 
 	['prep', 'person']]
 
 
@@ -191,7 +195,7 @@ def ontology_words_mapping(sentence):
 	sentence = re.sub('((is)|(are)) ((an object of)|(an instance of)|(an adjetive of))( a)? ', 'is is_object_of ', sentence)
 	sentence = re.sub('((is)|(are)) ((a kind of)|(a sort of)) ', 'is is_kind_of ', sentence)
 	# simple from of verbs
-	sentence = re.sub('((is)|(are)) ', 'is ', sentence)
+	sentence = re.sub(' ((is)|(are)) ', ' is ', sentence)
 	# transform plural into singular
 	#for each in language_info['noun']:
 	#	plural = derive_plural(each)
@@ -243,7 +247,11 @@ def look_tags(voc, word):
 	if result != []:
 		return result
 	else:
+		
+		if word not in unknown_list:
+			unknown_list.append(word)
 		return ['unknown']
+
 
 def disambiguate_pos(G, words, tags):	
 	# create all combinations posible, then rank them

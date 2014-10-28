@@ -1,52 +1,38 @@
-# test apartment
-
 # semeval
-
 (cube 			aka 			block)
 (cube 			aka 			brick)
-(cube 			aka 			square)
 (cube 			aka 			one)
-
+(cube 			aka 			box)
 (cube_group 	aka 			cubes)
-
-
 (prism 			aka 			pyramid)
 (prism 			aka 			tetrahedron)
 (prism 			aka	 			triangle)
-
-
+(tile 			aka 			square)
 (above			aka				placed_on_top)
 (above			aka 			on_top)
 (above			aka 			on_top_of)
 (above			aka 			to_the_top)
-
+(center 		aka 			center)
 (nearest 		aka 			closest)
 (nearest 		aka 			closer)
-
 (adjacent  		aka 			next_to)
 (adjacent  		aka 			next)
 (adjacent  		aka 			beside)
-
 (right 			aka	 			right_to)
 (left 			aka	 			left_to)
-
 (white 			aka	 			light_grey)
-
+(blue 			aka 			dark_blue)
 (gray 			aka 			grey)
-
+(gray 			aka 			dark_gray)
+(gray 			aka 			dark_grey)
 (cyan 			aka 			turquoise)
 (cyan 			aka 			light_blue)
 (cyan 			aka 			sky_blue)
-
 (magenta 		aka 			pink)
 (magenta 		aka 			purple)
-
 (individual 	aka 			single)
-
 (above 			aka 			on)
-
 (robot 			aka 			you)
-
 (stack 			aka 			tower)
 (stack 			aka 			parallelipiped)
 
